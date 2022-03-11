@@ -1,13 +1,9 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Threading.Tasks;
+using tcc.webapi.Models.Contexto;
+using tcc.webapi.Repositories.IRepositories;
 
 namespace tcc.webapi.Controllers
 {
-    [ApiController]
-    public class GenericoController : ControllerBase
-    {
-    }
+    public class GenericoController : ControllerBase { }
 }

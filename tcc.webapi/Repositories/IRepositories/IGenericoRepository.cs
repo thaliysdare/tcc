@@ -1,11 +1,13 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+﻿using System.Linq;
 
 namespace tcc.webapi.Repositories.IRepositories
 {
-    interface IGenericoRepository
+    public interface IGenericoRepository<TEntity>
+        where TEntity : class
     {
+        IQueryable<TEntity> RecuperarTodos();
+        void Inserir(TEntity entity);
+        void Editar(TEntity entity);
+        void Excluir(TEntity entity);
     }
 }
