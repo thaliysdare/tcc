@@ -4,7 +4,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 namespace tcc.webapi.Models
 {
     [Table("ServicoOrcamento")]
-    public class ServicoOrcamento : GenericoModel
+    public class ServicoOrcamento
     {
         public int ServicoOrcamentoId { get; set; }
 

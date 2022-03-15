@@ -6,7 +6,7 @@ using tcc.webapi.Enums;
 namespace tcc.webapi.Models
 {
     [Table("Servico")]
-    public class Servico : GenericoModel
+    public class Servico
     {
         public int ServicoId { get; set; }
 
@@ -22,7 +22,7 @@ namespace tcc.webapi.Models
         [Required]
         public StatusServicoEnum IdcStatusServico { get; set; }
 
-        public ICollection<ServicoOrcamento> ServicoOrcamento { get; set; }
-        public ICollection<ServicoOrdemServico> ServicoOrdemServico { get; set; }
+        public virtual ICollection<ServicoOrcamento> ServicoOrcamento { get; set; }
+        public virtual ICollection<ServicoOrdemServico> ServicoOrdemServico { get; set; }
     }
 }

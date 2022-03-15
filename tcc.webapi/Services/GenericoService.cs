@@ -2,7 +2,6 @@
 
 namespace tcc.webapi.Services
 {
-    public class GenericoService : IGenericoService
-    {
+    public class GenericoService : IGenericoService { 
     }
 }

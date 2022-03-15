@@ -4,7 +4,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 namespace tcc.webapi.Models
 {
     [Table("Endereco")]
-    public class Endereco : GenericoModel
+    public class Endereco
     {
         public int EnderecoId { get; set; }
 
@@ -14,7 +14,6 @@ namespace tcc.webapi.Models
         [Required]
         public string Numero { get; set; }
 
-        [Required]
         public string Complemento { get; set; }
 
         [Required]

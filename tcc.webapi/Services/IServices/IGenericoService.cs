@@ -1,6 +1,6 @@
 ﻿namespace tcc.webapi.Services.IServices
 {
-    interface IGenericoService
+    public interface IGenericoService
     {
     }
 }
