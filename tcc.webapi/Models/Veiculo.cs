@@ -1,5 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+using tcc.webapi.Enums;
 
 namespace tcc.webapi.Models
 {
@@ -16,6 +17,9 @@ namespace tcc.webapi.Models
         public string Placa { get; set; }
 
         public string Marca { get; set; }
+
+        [Required]
+        public StatusVeiculoEnum IdcStatusVeiculo { get; set; }
 
         public virtual Cliente Cliente { get; set; }
     }

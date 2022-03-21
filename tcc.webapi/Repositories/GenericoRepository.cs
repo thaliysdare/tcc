@@ -1,5 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using System;
 using System.Linq;
+using System.Linq.Expressions;
 using tcc.webapi.Models.Contexto;
 using tcc.webapi.Repositories.IRepositories;
 
@@ -15,19 +17,24 @@ namespace tcc.webapi.Repositories
             _bancoContexto = bancoContexto;
         }
 
-        public IQueryable<TEntity> RecuperarTodos()
+        public IQueryable<TEntity> RecuperarTodos(params Expression<Func<TEntity, dynamic>>[] expressoes)
         {
-            return _bancoContexto.Set<TEntity>()
-                                 .AsNoTracking();
+            var query = _bancoContexto.Set<TEntity>().AsNoTracking();
+            foreach (var item in expressoes)
+                query = query.Include(item);
+            return query;
         }
 
-        public TEntity RecuperarPorId(int id)
+        public TEntity RecuperarPorId(object id, params Expression<Func<TEntity, dynamic>>[] expressoes)
         {
-            DbSet<TEntity> entity = _bancoContexto.Set<TEntity>();
+            var entity = _bancoContexto.Set<TEntity>();
+            foreach (var item in expressoes)
+                entity.Include(item);
+
             return entity.Find(id);
         }
 
-        public void Inserir(TEntity entity) 
+        public void Inserir(TEntity entity)
         {
             _bancoContexto.Entry(entity).State = EntityState.Added;
             _bancoContexto.Set<TEntity>().Add(entity);

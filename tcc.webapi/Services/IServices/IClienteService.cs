@@ -1,15 +1,14 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using tcc.webapi.Models;
+﻿using tcc.webapi.Models;
 
 namespace tcc.webapi.Services.IServices
 {
     public interface IClienteService : IGenericoService
     {
-        Cliente Inserir(Cliente cliente);
-        void Editar(Cliente cliente);
-        void Excluir(Cliente cliente);
+        Cliente InserirCliente(Cliente cliente);
+        void EditarCliente(int id, Cliente cliente);
+        void InativarCliente(int id);
+        Veiculo InserirVeiculo(int clienteId, Veiculo veiculo);
+        void EditarVeiculo(int clienteId, int veiculoId, Veiculo veiculo);
+        void InativarVeiculo(int clienteId, int veiculoId);
     }
 }

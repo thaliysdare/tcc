@@ -1,0 +1,20 @@
+﻿@model ClientesViewModel
+@{
+    ViewData["Title"] = "Clientes";
+}
+
+<div class="row">
+    <div class="col-4">
+        <label for="Nome" class="form-label">Pesquisar cliente</label>
+        <div class="row">
+            <div class="col-10">
+                <input type="text" class="form-control form-control-sm" id="Nome" name="Nome">
+            </div>
+            <div class="col-auto">
+                <button type="submit" title="Pesquisar" class="btn btn-sm btn-outline-info"><i class="fa fa-search" aria-hidden="true"></i></button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<partial name="_ClientesGrid.cshtml" for="ListaClientes" />

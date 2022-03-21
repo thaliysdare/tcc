@@ -1,0 +1,26 @@
+﻿@using tcc.web.Models.DTO;
+@model List<ClienteGridViewModel>
+
+<div class="table-responsive mt-5">
+    <table class="dataTable table table-sm table-bordered">
+        <thead>
+            <tr>
+                <th>Nome</th>
+                <th>CPF / CNPJ</th>
+                <th>Telefone</th>
+                <th>Endereço</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model)
+            {
+                <tr>
+                    <td>@item.Nome</td>
+                    <td>@item.CPFOuCNPJ</td>
+                    <td>@item.Telefone</td>
+                    <td>@item.Endereco</td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>

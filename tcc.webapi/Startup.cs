@@ -5,6 +5,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.OpenApi.Models;
+using Newtonsoft.Json.Serialization;
 using tcc.webapi.Models.Contexto;
 using tcc.webapi.Repositories;
 using tcc.webapi.Repositories.IRepositories;
@@ -25,7 +26,11 @@ namespace tcc.webapi
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddControllers();
+            services.AddControllers()
+                    .AddNewtonsoftJson(options =>
+                    {
+                        options.SerializerSettings.ContractResolver = new DefaultContractResolver();
+                    });
             services.AddSwaggerGen(c =>
             {
                 c.SwaggerDoc("v1", new OpenApiInfo { Title = "tcc.webapi", Version = "v1" });
@@ -37,10 +42,11 @@ namespace tcc.webapi
                     .UseLazyLoadingProxies()
                     .UseNpgsql(Configuration.GetConnectionString("BancoTCC"));
             });
-            
+
             #region[Repositorios]
             services.AddScoped<IClienteRepository, ClienteRepository>();
             services.AddScoped<IEnderecoRepository, EnderecoRepository>();
+            services.AddScoped<IVeiculoRepository, VeiculoRepository>();
             #endregion
 
             #region[Servicos]

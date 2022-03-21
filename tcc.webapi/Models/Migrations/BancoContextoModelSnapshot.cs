@@ -32,6 +32,9 @@ namespace tcc.webapi.Migrations
                     b.Property<int?>("EnderecoId")
                         .HasColumnType("integer");
 
+                    b.Property<int>("IdcStatusCliente")
+                        .HasColumnType("integer");
+
                     b.Property<string>("Nome")
                         .IsRequired()
                         .HasColumnType("text");
@@ -69,7 +72,6 @@ namespace tcc.webapi.Migrations
                         .HasColumnType("text");
 
                     b.Property<string>("Complemento")
-                        .IsRequired()
                         .HasColumnType("text");
 
                     b.Property<string>("Estado")
@@ -303,6 +305,9 @@ namespace tcc.webapi.Migrations
                         .HasAnnotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn);
 
                     b.Property<int>("ClienteId")
+                        .HasColumnType("integer");
+
+                    b.Property<int>("IdcStatusVeiculo")
                         .HasColumnType("integer");
 
                     b.Property<string>("Marca")

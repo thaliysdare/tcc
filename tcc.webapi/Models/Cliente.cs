@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+using tcc.webapi.Enums;
 
 namespace tcc.webapi.Models
 {
@@ -23,6 +24,9 @@ namespace tcc.webapi.Models
 
         [ForeignKey(nameof(Endereco))]
         public int? EnderecoId { get; set; }
+
+        [Required]
+        public StatusClienteEnum IdcStatusCliente { get; set; }
 
         public virtual Endereco Endereco { get; set; }
 

@@ -2,5 +2,7 @@
 {
     public enum StatusServicoEnum
     {
+        Ativo = 1,
+        Inativo = 2
     }
 }

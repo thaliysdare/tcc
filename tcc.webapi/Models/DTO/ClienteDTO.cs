@@ -1,5 +1,6 @@
-﻿using System.ComponentModel.DataAnnotations;
-using System.Text.Json.Serialization;
+﻿using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
+using System.Linq;
 
 namespace tcc.webapi.Models.DTO
 {
@@ -47,13 +48,17 @@ namespace tcc.webapi.Models.DTO
 
         public string Telefone2 { get; set; }
 
-        public int? EnderecoId{ get; set; }
+        public bool Ativo { get; set; }
 
-        public EnderecoRetornoDTO Endereco{ get; set; }
+        public int? EnderecoId { get; set; }
+
+        public EnderecoRetornoDTO Endereco { get; set; }
+
+        public List<VeiculoRetornoDTO> Veiculos { get; set; }
 
         public static ClienteRetornoDTO MapearDTO(Cliente model)
         {
-            return new ClienteRetornoDTO()
+            var clienteDTO = new ClienteRetornoDTO()
             {
                 ClienteId = model.ClienteId,
                 Nome = model.Nome,
@@ -62,8 +67,13 @@ namespace tcc.webapi.Models.DTO
                 Telefone1 = model.Telefone1,
                 Telefone2 = model.Telefone2,
                 EnderecoId = model.EnderecoId,
-                //Endereco = model.EnderecoId.HasValue ? EnderecoRetornoDTO.MapearDTO(model.Endereco) : default(EnderecoRetornoDTO) 
+                Ativo = model.IdcStatusCliente == Enums.StatusClienteEnum.Ativo,
+                Endereco = model.EnderecoId.HasValue ? EnderecoRetornoDTO.MapearDTO(model.Endereco) : default(EnderecoRetornoDTO)
             };
+            if (model.Veiculo.Any())
+                clienteDTO.Veiculos = model.Veiculo.Select(x => VeiculoRetornoDTO.MapearDTO(x)).ToList();
+
+            return clienteDTO;
         }
     }
 }

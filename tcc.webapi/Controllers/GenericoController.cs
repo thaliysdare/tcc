@@ -1,9 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using System.Linq;
-using tcc.webapi.Models.Contexto;
-using tcc.webapi.Repositories.IRepositories;
 
 namespace tcc.webapi.Controllers
 {
+    [Produces("application/json")]
     public class GenericoController : ControllerBase { }
 }
