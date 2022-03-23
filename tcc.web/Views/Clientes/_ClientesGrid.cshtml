@@ -1,4 +1,4 @@
-﻿@using tcc.web.Models.DTO;
+﻿@using tcc.web.Models.API;
 @model List<ClienteGridViewModel>
 
 <div class="table-responsive mt-5">
@@ -9,16 +9,18 @@
                 <th>CPF / CNPJ</th>
                 <th>Telefone</th>
                 <th>Endereço</th>
+                <th>Situação</th>
             </tr>
         </thead>
         <tbody>
             @foreach (var item in Model)
             {
                 <tr>
-                    <td>@item.Nome</td>
+                    <td><a asp-action="CarregarEditar" asp-controller="clientes" asp-route-id="@item.ClienteId">@item.Nome</a></td>
                     <td>@item.CPFOuCNPJ</td>
                     <td>@item.Telefone</td>
                     <td>@item.Endereco</td>
+                    <td data-st="@item.Situacao">@item.Situacao</td>
                 </tr>
             }
         </tbody>

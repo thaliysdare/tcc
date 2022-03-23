@@ -55,15 +55,24 @@ namespace tcc.webapi.Services
 
                 if (cliente.Endereco != null)
                 {
-                    var originalEndereco = _enderecoRepository.RecuperarPorId(originalCliente.EnderecoId.Value);
+                    var originalEndereco = new Endereco();
+                    if (originalCliente.EnderecoId.HasValue) originalEndereco = _enderecoRepository.RecuperarPorId(originalCliente.EnderecoId.Value);
+
                     originalEndereco.Rua = cliente.Endereco.Rua;
                     originalEndereco.Numero = cliente.Endereco.Numero;
                     originalEndereco.Complemento = cliente.Endereco.Complemento;
+                    originalEndereco.CEP = cliente.Endereco.CEP;
                     originalEndereco.Bairro = cliente.Endereco.Bairro;
                     originalEndereco.Cidade = cliente.Endereco.Cidade;
                     originalEndereco.Estado = cliente.Endereco.Estado;
 
-                    _enderecoRepository.Editar(originalEndereco);
+                    if (originalCliente.EnderecoId.HasValue)
+                        _enderecoRepository.Editar(originalEndereco);
+                    else
+                    {
+                        originalEndereco = _enderecoRepository.InserirERecuperar(originalEndereco);
+                        originalCliente.EnderecoId = originalEndereco.EnderecoId;
+                    }
                 }
 
                 _clienteRepository.Editar(originalCliente);
@@ -107,6 +116,7 @@ namespace tcc.webapi.Services
             {
                 var originalCliente = _clienteRepository.RecuperarPorId(clienteId);
                 veiculo.ClienteId = originalCliente.ClienteId;
+                veiculo.IdcStatusVeiculo = Enums.StatusVeiculoEnum.Ativo;
                 veiculoNovo = _veiculoRepository.InserirERecuperar(veiculo);
 
                 scope.Complete();

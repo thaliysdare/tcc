@@ -1,0 +1,30 @@
+﻿@using tcc.web.Utils;
+@model ServicoViewModel
+@{
+    ViewData["Title"] = "Serviços";
+}
+
+<form class="row g3" asp-action="editar" asp-controller="servicos" asp-route-returnlink="@ViewData["returnlink"]" method="post">
+
+    <input asp-for="ServicoId" type="hidden" />
+
+    <div class="col-4">
+        <label asp-for="DescricaoResumida" class="form-label"></label>
+        <input asp-for="DescricaoResumida" type="text" class="form-control form-control-sm" />
+        <span asp-validation-for="DescricaoResumida" class="text-danger"></span>
+    </div>
+    <div class="col-4">
+        <label asp-for="Valor" class="form-label"></label>
+        <input asp-for="Valor" type="text" class="form-control form-control-sm" />
+        <span asp-validation-for="Valor" class="text-danger"></span>
+    </div>
+    <div class="col-6">
+        <label asp-for="Descricao" class="form-label"></label>
+        <input asp-for="Descricao" type="text" class="form-control form-control-sm" />
+        <span asp-validation-for="Descricao" class="text-danger"></span>
+    </div>
+    <div class="col-12 text-end">
+        <a asp-action="excluir" asp-controller="servicos" asp-route-id="@Model.ServicoId" class="btn btn-sm btn-danger">Excluir serviço</a>
+        <button type="submit" class="btn btn-sm btn-primary">Salvar serviço</button>
+    </div>
+</form>

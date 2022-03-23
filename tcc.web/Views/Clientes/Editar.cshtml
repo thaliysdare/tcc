@@ -4,7 +4,10 @@
     ViewData["Title"] = "Clientes";
 }
 
-<form class="row g-3" asp-action="cadastrar" asp-controller="clientes" asp-route-returnlink="@ViewData["returnlink"]" method="post">
+<form class="row g-3" asp-action="editar" asp-controller="clientes" asp-route-returnlink="@ViewData["returnlink"]" method="post">
+
+    <input asp-for="ClienteId" type="hidden" />
+
     <div class="col-2">
         <label asp-for="Nome" class="form-label"></label>
         <input asp-for="Nome" type="text" class="form-control form-control-sm" />
@@ -67,6 +70,11 @@
         </select>
     </div>
     <div class="col-12 text-end">
+        <a asp-action="excluir" asp-controller="clientes" asp-route-id="@Model.ClienteId" class="btn btn-sm btn-danger">Excluir cliente</a>
         <button type="submit" class="btn btn-sm btn-primary">Salvar cliente</button>
     </div>
 </form>
+
+<partial name="_VeiculosGrid.cshtml" />
+
+

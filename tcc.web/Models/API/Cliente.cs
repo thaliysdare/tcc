@@ -1,11 +1,11 @@
 ﻿using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
 using System.Text.Json.Serialization;
 
-namespace tcc.web.Models.DTO
+namespace tcc.web.Models.API
 {
     public class ClienteEnvio
     {
+        public int? ClienteId { get; set; }
         public string Nome { get; set; }
         public string Sobrenome { get; set; }
         public string CPFOuCNPJ { get; set; }
@@ -23,6 +23,8 @@ namespace tcc.web.Models.DTO
     {
         public int ClienteId { get; set; }
         public string Nome { get; set; }
+        [JsonIgnore]
+        public string NomeCompleto { get => $"{Nome} {Sobrenome}"; }
         public string Sobrenome { get; set; }
         public string CPFOuCNPJ { get; set; }
         public string Telefone1 { get; set; }
@@ -30,6 +32,7 @@ namespace tcc.web.Models.DTO
         public int? EnderecoId { get; set; }
         public bool Ativo { get; set; }
         public EnderecoRetorno Endereco { get; set; }
-    }
+        public List<VeiculoRetorno> Veiculos { get; set; }
 
+    }
 }

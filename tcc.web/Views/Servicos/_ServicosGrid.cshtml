@@ -1,0 +1,25 @@
+﻿@model List<ServicoGridViewModel>
+
+<div class="table-responsive mt-5">
+    <table class="dataTable table table-sm table-bordered text-truncate" data-sem-pesquisa="true">
+        <thead>
+            <tr>
+                <th>Descrição resumida</th>
+                <th>Descrição</th>
+                <th>Valor</th>
+                <th>Situação</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model)
+            {
+                <tr>
+                    <td><a asp-action="CarregarEditar" asp-controller="servicos" asp-route-id="@item.ServicoId">@item.DescricaoResumida</a></td>
+                    <td>@item.Descricao</td>
+                    <td>@item.Valor</td>
+                    <td data-st="@item.Situacao">@item.Situacao</td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>

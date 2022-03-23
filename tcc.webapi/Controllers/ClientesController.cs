@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net;
 using tcc.webapi.Models.DTO;
 using tcc.webapi.Repositories.IRepositories;
 using tcc.webapi.Services.IServices;
@@ -42,7 +43,7 @@ namespace tcc.webapi.Controllers
             }
             catch (Exception e)
             {
-                return BadRequest();
+                return Problem(e.Message, null, (int)HttpStatusCode.InternalServerError);
             }
         }
 
@@ -59,7 +60,7 @@ namespace tcc.webapi.Controllers
             }
             catch (Exception e)
             {
-                return BadRequest();
+                return Problem(e.Message, null, (int)HttpStatusCode.InternalServerError);
             }
         }
 
@@ -71,15 +72,15 @@ namespace tcc.webapi.Controllers
                 var clienteNovo = _clienteService.InserirCliente(clienteEnvioDTO.MapearModel());
                 return CreatedAtAction(nameof(GetCliente), new { id = clienteNovo.ClienteId }, ClienteRetornoDTO.MapearDTO(clienteNovo));
             }
-            catch (Exception)
+            catch (Exception e)
             {
-                return BadRequest();
+                return Problem(e.Message, null, (int)HttpStatusCode.InternalServerError);
             }
         }
 
         [HttpPut]
         [Route("{id}")]
-        public ActionResult<ClienteRetornoDTO> PutCliente([FromRoute] int id, 
+        public ActionResult<ClienteRetornoDTO> PutCliente([FromRoute] int id,
                                                           [FromBody] ClienteEnvioDTO clienteEnvioDTO)
         {
             try
@@ -92,7 +93,7 @@ namespace tcc.webapi.Controllers
             }
             catch (Exception e)
             {
-                return BadRequest();
+                return Problem(e.Message, null, (int)HttpStatusCode.InternalServerError);
             }
         }
 
@@ -108,9 +109,9 @@ namespace tcc.webapi.Controllers
                 _clienteService.InativarCliente(id);
                 return Ok();
             }
-            catch (Exception)
+            catch (Exception e)
             {
-                return BadRequest();
+                return Problem(e.Message, null, (int)HttpStatusCode.InternalServerError);
             }
         }
         #endregion
@@ -130,66 +131,7 @@ namespace tcc.webapi.Controllers
             }
             catch (Exception e)
             {
-                return BadRequest();
-            }
-        }
-
-        [HttpPost]
-        [Route("{id}/veiculos")]
-        public ActionResult<ClienteRetornoDTO> PostVeiculoCliente([FromRoute] int id, 
-                                                                  [FromBody] VeiculoEnvioDTO veiculoEnvioDTO)
-        {
-            try
-            {
-                var veiculoNovo = _clienteService.InserirVeiculo(id, veiculoEnvioDTO.MapearModel());
-                return CreatedAtAction(nameof(GetCliente), new { id = veiculoNovo.ClienteId }, VeiculoRetornoDTO.MapearDTO(veiculoNovo));
-            }
-            catch (Exception)
-            {
-                return BadRequest();
-            }
-        }
-
-
-        [HttpPut]
-        [Route("{clienteId}/veiculos/{veiculoId}")]
-        public ActionResult<ClienteRetornoDTO> PutVeiculoCliente([FromRoute] int clienteId, 
-                                                                 [FromRoute] int veiculoId, 
-                                                                 [FromBody] VeiculoEnvioDTO veiculoEnvioDTO)
-        {
-            try
-            {
-                var cliente = _clienteRepository.RecuperarPorId(clienteId);
-                if (cliente == null) return NotFound();
-
-                var veiculo = _veiculoRepository.RecuperarPorId(veiculoId);
-                if (veiculo == null) return NotFound();
-
-                _clienteService.EditarVeiculo(clienteId, veiculoId, veiculoEnvioDTO.MapearModel());
-                return Ok();
-            }
-            catch (Exception e)
-            {
-                return BadRequest();
-            }
-        }
-
-        [HttpDelete]
-        [Route("{clienteId}/veiculos/{veiculoId}")]
-        public ActionResult DeleteVeiculoCliente([FromRoute] int clienteId, 
-                                                 [FromRoute] int veiculoId)
-        {
-            try
-            {
-                var veiculo = _veiculoRepository.RecuperarPorId(veiculoId);
-                if (veiculo == null) return NotFound();
-
-                _clienteService.InativarVeiculo(clienteId, veiculoId);
-                return Ok();
-            }
-            catch (Exception)
-            {
-                return BadRequest();
+                return Problem(e.Message, null, (int)HttpStatusCode.InternalServerError);
             }
         }
         #endregion

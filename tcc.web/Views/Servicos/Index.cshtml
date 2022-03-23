@@ -1,0 +1,23 @@
+﻿@model ServicosViewModel
+@{
+    ViewData["Title"] = "Serviços";
+}
+
+<div class="row align-items-end">
+    <div class="col-6">
+        <label for="Nome" class="form-label">Pesquisar serviços</label>
+        <div class="row">
+            <div class="col-6">
+                <input type="text" class="form-control form-control-sm" id="Nome" name="Nome">
+            </div>
+            <div class="col-auto">
+                <button type="submit" title="Pesquisar" class="btn btn-sm btn-outline-info"><i class="fa fa-search" aria-hidden="true"></i></button>
+            </div>
+        </div>
+    </div>
+    <div class="col-6 text-end">
+        <a asp-area="" asp-controller="Servicos" asp-action="CarregarCadastrar" class="btn btn-sm btn-light ms-auto">Novo serviço</a>
+    </div>
+</div>
+
+<partial name="_ServicosGrid.cshtml" for="ListaServicos" />

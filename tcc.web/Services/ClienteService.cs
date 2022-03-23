@@ -1,53 +1,59 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
 using System.Net.Http;
 using System.Text;
 using System.Text.Json;
-using System.Threading.Tasks;
-using tcc.web.Models.DTO;
+using tcc.web.Models.API;
 using tcc.web.Services.IService;
 
 namespace tcc.web.Services
 {
     public class ClienteService : IClienteService
     {
-        private readonly IHttpClientFactory _httpClientFactory;
+        public readonly HttpClient _tccApi;
 
-        public ClienteService(IHttpClientFactory httpClientFactory) => _httpClientFactory = httpClientFactory;
-
-        public async Task<List<ClienteRetorno>> RecuperarClientes()
+        public ClienteService(IHttpClientFactory httpClientFactory)
         {
-            var json = _httpClientFactory.CreateClient("tcc.api").GetStringAsync("clientes").Result;
-            var listaClientes = JsonSerializer.Deserialize<List<ClienteRetorno>>(json);
-            return listaClientes.Where(x => x.Ativo).ToList();
+            _tccApi = httpClientFactory.CreateClient("tcc.api");
         }
 
-        public async Task<ClienteRetorno> InserirCliente(ClienteEnvio clienteEnvio)
+        public List<ClienteRetorno> RecuperarTodos()
         {
-            var jsonEnvio = JsonSerializer.Serialize(clienteEnvio);
-            var content = new StringContent(jsonEnvio, Encoding.UTF8, "application/json");
-            var response = _httpClientFactory.CreateClient("tcc.api").PostAsync("clientes", content).Result;
-            response.EnsureSuccessStatusCode();
+            var json = _tccApi.GetStringAsync("clientes").Result;
+            var listaClientes = JsonSerializer.Deserialize<List<ClienteRetorno>>(json);
+            return listaClientes.ToList();
+        }
 
-            var json = await response.Content.ReadAsStringAsync();
+        public ClienteRetorno Recuperar(int id)
+        {
+            var json = _tccApi.GetStringAsync($"clientes/{id}").Result;
             return JsonSerializer.Deserialize<ClienteRetorno>(json);
         }
 
-        public async Task EditarCliente(int id, ClienteEnvio clienteEnvio)
+        public ClienteRetorno Inserir(ClienteEnvio clienteEnvio)
         {
-            var content = new StringContent(JsonSerializer.Serialize(clienteEnvio), Encoding.UTF8, "application/json");
-            var response = _httpClientFactory.CreateClient("tcc.api").PutAsync($"clientes/{id}", content).Result;
+            var jsonEnvio = JsonSerializer.Serialize(clienteEnvio);
+            var content = new StringContent(jsonEnvio, Encoding.UTF8, "application/json");
+            var response = _tccApi.PostAsync("clientes", content).Result;
+            response.EnsureSuccessStatusCode();
+
+            var json = response.Content.ReadAsStringAsync().Result;
+            return JsonSerializer.Deserialize<ClienteRetorno>(json);
+        }
+
+        public void Editar(int id, ClienteEnvio clienteEnvio)
+        {
+            var json = JsonSerializer.Serialize(clienteEnvio);
+            var content = new StringContent(json, Encoding.UTF8, "application/json");
+            var response = _tccApi.PutAsync($"clientes/{id}", content).Result;
             response.EnsureSuccessStatusCode();
         }
 
-        public async Task ExcluirCliente(ClienteEnvio clienteEnvio)
+        public void Excluir(int id)
         {
-            //var content = new StringContent(JsonSerializer.Serialize(clienteEnvio), Encoding.UTF8, "application/json");
-            //var response = _httpClientFactory.CreateClient("tcc.api").DeleteAsync("clientes", content).Result;
-            //response.EnsureSuccessStatusCode();
+            var response = _tccApi.DeleteAsync($"clientes/{id}").Result;
+            response.EnsureSuccessStatusCode();
         }
-
-        
+ 
     }
 }

@@ -15,26 +15,23 @@
 <body>
     <nav class="navbar navbar-expand-lg navbar-light bg-light">
         <div class="container">
-            <a class="navbar-brand" href="#">Oficina</a>
+            <a class="navbar-brand" asp-area="" asp-controller="ordemservicos" asp-action="index">Oficina</a>
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
                 <span class="navbar-toggler-icon"></span>
             </button>
             <div class="collapse navbar-collapse" id="navbarSupportedContent">
                 <ul class="navbar-nav ms-auto mb-2 mb-lg-0">
                     <li class="nav-item">
-                        <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Index">Orçamentos</a>
+                        <a class="nav-link text-dark" asp-area="" asp-controller="ordemservicos" asp-action="index">Ordem de serviços</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link text-dark" asp-area="" asp-controller="Clientes" asp-action="Index">Clientes</a>
+                        <a class="nav-link text-dark" asp-area="" asp-controller="clientes" asp-action="index">Clientes</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Privacy">Serviços</a>
+                        <a class="nav-link text-dark" asp-area="" asp-controller="servicos" asp-action="index">Serviços</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Privacy">Relatórios</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Privacy">Sair</a>
+                        <a class="nav-link text-dark" asp-area="" asp-controller="login" asp-action="index">Sair</a>
                     </li>
                 </ul>
             </div>
@@ -48,7 +45,7 @@
 
     <footer class="border-top footer text-muted">
         <div class="container">
-            &copy; 2022 - tcc.web - <a href="https://www.instagram.com/thaliysd">thaliysdare</a>
+            &copy; 2022 - tcc.web - <a href="https://www.instagram.com/thaliysd">thaliysd</a>
         </div>
     </footer>
 

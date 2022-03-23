@@ -47,10 +47,12 @@ namespace tcc.webapi
             services.AddScoped<IClienteRepository, ClienteRepository>();
             services.AddScoped<IEnderecoRepository, EnderecoRepository>();
             services.AddScoped<IVeiculoRepository, VeiculoRepository>();
+            services.AddScoped<IServicoRepository, ServicoRepository>();
             #endregion
 
             #region[Servicos]
             services.AddScoped<IClienteService, ClienteService>();
+            services.AddScoped<IServicoService, ServicoService>();
             #endregion
         }
 

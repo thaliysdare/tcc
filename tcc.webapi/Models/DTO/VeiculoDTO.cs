@@ -5,6 +5,9 @@ namespace tcc.webapi.Models.DTO
     public class VeiculoEnvioDTO
     {
         [Required]
+        public int ClienteId { get; set; }
+
+        [Required]
         public string Placa { get; set; }
 
         [Required]
@@ -14,6 +17,7 @@ namespace tcc.webapi.Models.DTO
         {
             return new Veiculo()
             {
+                ClienteId = this.ClienteId,
                 Placa = this.Placa,
                 Marca = this.Marca
             };

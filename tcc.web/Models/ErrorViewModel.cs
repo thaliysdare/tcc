@@ -1,5 +1,3 @@
-using System;
-
 namespace tcc.web.Models
 {
     public class ErrorViewModel

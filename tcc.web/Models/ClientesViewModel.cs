@@ -1,11 +1,8 @@
-﻿using Microsoft.AspNetCore.Mvc.Rendering;
-using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Text;
-using System.Threading.Tasks;
-using tcc.web.Models.DTO;
+using tcc.web.Models.API;
 using tcc.web.Utils;
 
 namespace tcc.web.Models
@@ -37,11 +34,15 @@ namespace tcc.web.Models
 
         public string Telefone2 { get; set; }
 
+        public bool Ativo { get; set; }
+
         public EnderecoViewModel EnderecoViewModel { get; set; }
+        public List<VeiculoGridViewModel> ListaVeiculos { get; set; }
 
         public ClienteViewModel()
         {
             EnderecoViewModel = new EnderecoViewModel();
+            ListaVeiculos = new List<VeiculoGridViewModel>();
         }
 
         public static ClienteViewModel MapearViewModel(ClienteRetorno cliente)
@@ -54,8 +55,13 @@ namespace tcc.web.Models
                 CPFOuCNPJ = cliente.CPFOuCNPJ,
                 Telefone1 = cliente.Telefone1,
                 Telefone2 = cliente.Telefone2,
-                EnderecoViewModel = EnderecoViewModel.MapearViewModel(cliente.Endereco)
+                Ativo = cliente.Ativo,
+                EnderecoViewModel = EnderecoViewModel.MapearViewModel(cliente.Endereco),
             };
+
+            if (cliente.Veiculos != null && cliente.Veiculos.Any())
+                model.ListaVeiculos = cliente.Veiculos.Select(x => VeiculoGridViewModel.MapearViewModel(x)).ToList();
+
             return model;
         }
 
@@ -63,12 +69,13 @@ namespace tcc.web.Models
         {
             return new ClienteEnvio()
             {
+                ClienteId = this.ClienteId,
                 Nome = this.Nome,
                 Sobrenome = this.Sobrenome,
                 CPFOuCNPJ = this.CPFOuCNPJ,
                 Telefone1 = this.Telefone1,
                 Telefone2 = this.Telefone2,
-                Endereco = this.EnderecoViewModel != null ? this.EnderecoViewModel.MapearModel() : default(EnderecoEnvio)
+                Endereco = this.EnderecoViewModel != null ? this.EnderecoViewModel.MapearModel() : default(EnderecoEnvio),
             };
         }
     }
@@ -80,14 +87,16 @@ namespace tcc.web.Models
         public string CPFOuCNPJ { get; set; }
         public string Telefone { get; set; }
         public string Endereco { get; set; }
+        public string Situacao { get; set; }
 
         public static ClienteGridViewModel MapearViewModel(ClienteRetorno cliente)
         {
             var viewModel = new ClienteGridViewModel()
             {
                 ClienteId = cliente.ClienteId,
-                Nome = $"{cliente.Nome} {cliente.Sobrenome}",
+                Nome = cliente.NomeCompleto,
                 CPFOuCNPJ = cliente.CPFOuCNPJ.FormatarCPFOuCNPJ(),
+                Situacao = cliente.Ativo ? "Ativo" : "Inativo"
             };
 
             viewModel.Telefone = cliente.Telefone1.FormatarContato();
@@ -136,6 +145,7 @@ namespace tcc.web.Models
                 Rua = endereco.Rua,
                 Numero = endereco.Numero,
                 Complemento = endereco.Complemento,
+                CEP = endereco.CEP,
                 Bairro = endereco.Bairro,
                 Cidade = endereco.Cidade,
                 Estado = endereco.Estado
@@ -151,6 +161,7 @@ namespace tcc.web.Models
                 Rua = this.Rua,
                 Numero = this.Numero,
                 Complemento = this.Complemento,
+                CEP = this.CEP,
                 Bairro = this.Bairro,
                 Cidade = this.Cidade,
                 Estado = this.Estado

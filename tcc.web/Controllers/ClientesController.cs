@@ -1,36 +1,33 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Net.Http;
-using System.Text.Json;
-using System.Threading.Tasks;
 using tcc.web.Models;
-using tcc.web.Models.DTO;
 using tcc.web.Services.IService;
 
 namespace tcc.web.Controllers
 {
-    [Route("clientes")]
+    [Route("[controller]")]
     public class ClientesController : GenericoController
     {
         private readonly IClienteService _clienteService;
-        private readonly IHttpClientFactory _httpClientFactory;
-
-        public ClientesController(IHttpClientFactory httpClientFactory, IClienteService clienteService)
+        public ClientesController(IClienteService clienteService)
         {
-            _httpClientFactory = httpClientFactory;
             _clienteService = clienteService;
         }
 
         [HttpGet]
         public IActionResult Index()
         {
-            var viewModel = new ClientesViewModel();
-            viewModel.ListaClientes = _clienteService.RecuperarClientes().Result.Where(x => x.Ativo).Select(x => ClienteGridViewModel.MapearViewModel(x)).ToList();
+            var viewModel = new ClientesViewModel
+            {
+                ListaClientes = _clienteService.RecuperarTodos()
+                                               .Select(x => ClienteGridViewModel.MapearViewModel(x))
+                                               .ToList()
+            };
             return View(viewModel);
         }
 
+        #region[Cadastrar]
         [HttpGet]
         [Route("cadastrar")]
         public IActionResult CarregarCadastrar()
@@ -57,7 +54,7 @@ namespace tcc.web.Controllers
             try
             {
                 var clienteEnvio = viewModel.MapearModel();
-                _clienteService.InserirCliente(clienteEnvio);
+                _clienteService.Inserir(clienteEnvio);
             }
             catch (Exception e)
             {
@@ -66,6 +63,67 @@ namespace tcc.web.Controllers
             }
             return RedirectToAction(nameof(Index));
         }
+        #endregion
+
+        #region[Editar]
+        [HttpGet]
+        [Route("editar/{id}")]
+        public IActionResult CarregarEditar(int id)
+        {
+            var cliente = _clienteService.Recuperar(id);
+            var viewModel = ClienteViewModel.MapearViewModel(cliente);
+
+            if (!cliente.Ativo)
+                return View("Inativo", viewModel);
+            return View("Editar", viewModel);
+        }
+
+        [HttpPost]
+        [Route("editar")]
+        public IActionResult Editar(ClienteViewModel viewModel)
+        {
+            #region[Validação]
+            if (ValidarSeEnderecoDigitado(viewModel.EnderecoViewModel))
+            {
+                if (!ValidarSeTodosCamposEnderecoDigitado(viewModel.EnderecoViewModel))
+                    ModelState.AddModelError("ErroEndereco", "Se for informar o endereço todos os campos devem ser preenchidos");
+            }
+            else viewModel.EnderecoViewModel = null;
+            #endregion
+
+            if (!ModelState.IsValid) return View(viewModel);
+
+            try
+            {
+                var clienteEnvio = viewModel.MapearModel();
+                _clienteService.Editar(clienteEnvio.ClienteId.Value, clienteEnvio);
+            }
+            catch (Exception e)
+            {
+                ModelState.AddModelError("ErroServidor", e.Message);
+                return View(viewModel);
+            }
+            return RedirectToAction(nameof(Index));
+        }
+        #endregion
+
+        #region[Excluir]
+        [HttpGet]
+        [Route("excluir/{id}")]
+        public IActionResult Excluir(int id)
+        {
+            try
+            {
+                _clienteService.Excluir(id);
+            }
+            catch (Exception e)
+            {
+                ModelState.AddModelError("ErroServidor", e.Message);
+                return View();
+            }
+            return RedirectToAction(nameof(Index));
+        }
+        #endregion
 
         #region[Auxiliares]
         private bool ValidarSeEnderecoDigitado(EnderecoViewModel endereco)

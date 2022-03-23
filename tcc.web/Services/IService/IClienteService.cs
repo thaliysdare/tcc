@@ -1,16 +1,14 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using tcc.web.Models.DTO;
+﻿using System.Collections.Generic;
+using tcc.web.Models.API;
 
 namespace tcc.web.Services.IService
 {
     public interface IClienteService
     {
-        Task EditarCliente(int id, ClienteEnvio clienteEnvio);
-        Task ExcluirCliente(ClienteEnvio clienteEnvio);
-        Task<ClienteRetorno> InserirCliente(ClienteEnvio clienteEnvio);
-        Task<List<ClienteRetorno>> RecuperarClientes();
+        void Editar(int id, ClienteEnvio clienteEnvio);
+        void Excluir(int id);
+        ClienteRetorno Inserir(ClienteEnvio clienteEnvio);
+        ClienteRetorno Recuperar(int id);
+        List<ClienteRetorno> RecuperarTodos();
     }
 }

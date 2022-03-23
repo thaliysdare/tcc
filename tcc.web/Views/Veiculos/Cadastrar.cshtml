@@ -1,0 +1,38 @@
+﻿@using tcc.web.Utils;
+@model VeiculoViewModel
+@{
+    ViewData["Title"] = "Veiculos";
+}
+
+<form class="" asp-action="cadastrar" asp-controller="veiculos" asp-route-returnlink="@ViewData["returnlink"]" method="post">
+
+    <input asp-for="ClienteId" type="hidden" />
+
+    <div class="mb-3 row">
+        <div class="col-3">
+            <label asp-for="NomeCliente" class="form-label"></label>
+            <input asp-for="NomeCliente" type="text" class="form-control form-control-sm" readonly />
+            <span asp-validation-for="NomeCliente" class="text-danger"></span>
+        </div>
+    </div>
+
+    <div class="mb-3 row">
+        <div class="col-2">
+            <label asp-for="Placa" class="form-label"></label>
+            <input asp-for="Placa" type="text" class="form-control form-control-sm" />
+            <span asp-validation-for="Placa" class="text-danger"></span>
+        </div>
+        <div class="col-3">
+            <label asp-for="Marca" class="form-label"></label>
+            <input asp-for="Marca" type="text" class="form-control form-control-sm" />
+            <span asp-validation-for="Marca" class="text-danger"></span>
+        </div>
+    </div>
+
+    <div class="mb-3 row">
+        <div class="col-12 text-end">
+            <a asp-action="carregareditar" asp-controller="clientes" asp-route-id="@Model.ClienteId" class="btn btn-sm btn-light">Voltar ao cliente</a>
+            <button type="submit" class="btn btn-sm btn-primary">Salvar veiculo</button>
+        </div>
+    </div>
+</form>
