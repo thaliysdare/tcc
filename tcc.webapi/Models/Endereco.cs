@@ -17,6 +17,9 @@ namespace tcc.webapi.Models
         public string Complemento { get; set; }
 
         [Required]
+        public string CEP { get; set; }
+
+        [Required]
         public string Bairro { get; set; }
 
         [Required]

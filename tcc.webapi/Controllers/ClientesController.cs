@@ -40,7 +40,7 @@ namespace tcc.webapi.Controllers
                 var listaClientes = clientes.Select(x => ClienteRetornoDTO.MapearDTO(x)).ToList();
                 return Ok(listaClientes);
             }
-            catch (Exception)
+            catch (Exception e)
             {
                 return BadRequest();
             }

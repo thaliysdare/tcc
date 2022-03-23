@@ -8,6 +8,8 @@ using Microsoft.AspNetCore.HttpsPolicy;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using tcc.web.Services;
+using tcc.web.Services.IService;
 
 namespace tcc.web
 {
@@ -24,6 +26,14 @@ namespace tcc.web
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddControllersWithViews();
+            services.AddHttpClient("tcc.api", httpClient =>
+            {
+                httpClient.BaseAddress = new Uri("https://localhost:44362/");
+            });
+
+            #region[Servicos]
+            services.AddScoped<IClienteService, ClienteService>();
+            #endregion
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

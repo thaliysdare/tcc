@@ -28,6 +28,7 @@ namespace tcc.web.Models.DTO
         public string Telefone1 { get; set; }
         public string Telefone2 { get; set; }
         public int? EnderecoId { get; set; }
+        public bool Ativo { get; set; }
         public EnderecoRetorno Endereco { get; set; }
     }
 

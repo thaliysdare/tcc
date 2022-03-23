@@ -33,6 +33,7 @@ namespace tcc.webapi.Services
                     cliente.EnderecoId = novoEndereco.EnderecoId;
                 }
 
+                cliente.IdcStatusCliente = Enums.StatusClienteEnum.Ativo;
                 clienteNovo = _clienteRepository.InserirERecuperar(cliente);
                 scope.Complete();
             }
@@ -61,8 +62,11 @@ namespace tcc.webapi.Services
                     originalEndereco.Bairro = cliente.Endereco.Bairro;
                     originalEndereco.Cidade = cliente.Endereco.Cidade;
                     originalEndereco.Estado = cliente.Endereco.Estado;
+
+                    _enderecoRepository.Editar(originalEndereco);
                 }
 
+                _clienteRepository.Editar(originalCliente);
                 scope.Complete();
             }
         }

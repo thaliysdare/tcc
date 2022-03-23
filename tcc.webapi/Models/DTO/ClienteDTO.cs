@@ -29,7 +29,7 @@ namespace tcc.webapi.Models.DTO
                 CPFOuCNPJ = this.CPFOuCNPJ,
                 Telefone1 = this.Telefone1,
                 Telefone2 = this.Telefone2,
-                Endereco = this.Endereco.MapearModel()
+                Endereco = this.Endereco != null ? this.Endereco.MapearModel() : default(Endereco)
             };
         }
     }

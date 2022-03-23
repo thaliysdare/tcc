@@ -13,6 +13,9 @@ namespace tcc.webapi.Models.DTO
         public string Complemento { get; set; }
 
         [Required]
+        public string CEP { get; set; }
+
+        [Required]
         public string Bairro { get; set; }
 
         [Required]
@@ -28,6 +31,7 @@ namespace tcc.webapi.Models.DTO
                 Rua = this.Rua,
                 Numero = this.Numero,
                 Complemento = this.Complemento,
+                CEP = this.CEP,
                 Bairro = this.Bairro,
                 Cidade = this.Cidade,
                 Estado = this.Estado
@@ -45,6 +49,8 @@ namespace tcc.webapi.Models.DTO
 
         public string Complemento { get; set; }
 
+        public string CEP { get; set; }
+
         public string Bairro { get; set; }
 
         public string Cidade { get; set; }
@@ -59,6 +65,7 @@ namespace tcc.webapi.Models.DTO
                 Rua = model.Rua,
                 Numero = model.Numero,
                 Complemento = model.Complemento,
+                CEP = model.CEP,
                 Bairro = model.Bairro,
                 Cidade = model.Cidade,
                 Estado = model.Estado

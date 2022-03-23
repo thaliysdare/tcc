@@ -1,5 +1,7 @@
-﻿using System;
+﻿using Microsoft.AspNetCore.Mvc.Rendering;
+using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -21,16 +23,30 @@ namespace tcc.web.Models
     public class ClienteViewModel
     {
         public int? ClienteId { get; set; }
+
+        [Required(ErrorMessage = "Favor informar o nome do cliente")]
         public string Nome { get; set; }
+
         public string Sobrenome { get; set; }
+
+        [Display(Name = "CPF / CNPJ")]
         public string CPFOuCNPJ { get; set; }
+
+        [Required(ErrorMessage = "Favor informar o telefone do cliente")]
         public string Telefone1 { get; set; }
+
         public string Telefone2 { get; set; }
-        public int? EnderecoId { get; set; }
+
+        public EnderecoViewModel EnderecoViewModel { get; set; }
+
+        public ClienteViewModel()
+        {
+            EnderecoViewModel = new EnderecoViewModel();
+        }
 
         public static ClienteViewModel MapearViewModel(ClienteRetorno cliente)
         {
-            return new ClienteViewModel()
+            var model = new ClienteViewModel()
             {
                 ClienteId = cliente.ClienteId,
                 Nome = cliente.Nome,
@@ -38,7 +54,21 @@ namespace tcc.web.Models
                 CPFOuCNPJ = cliente.CPFOuCNPJ,
                 Telefone1 = cliente.Telefone1,
                 Telefone2 = cliente.Telefone2,
-                EnderecoId = cliente.EnderecoId
+                EnderecoViewModel = EnderecoViewModel.MapearViewModel(cliente.Endereco)
+            };
+            return model;
+        }
+
+        public ClienteEnvio MapearModel()
+        {
+            return new ClienteEnvio()
+            {
+                Nome = this.Nome,
+                Sobrenome = this.Sobrenome,
+                CPFOuCNPJ = this.CPFOuCNPJ,
+                Telefone1 = this.Telefone1,
+                Telefone2 = this.Telefone2,
+                Endereco = this.EnderecoViewModel != null ? this.EnderecoViewModel.MapearModel() : default(EnderecoEnvio)
             };
         }
     }
@@ -76,6 +106,55 @@ namespace tcc.web.Models
             }
 
             return viewModel;
+        }
+    }
+
+    public class EnderecoViewModel
+    {
+        public int? EnderecoId { get; set; }
+
+        public string Rua { get; set; }
+
+        public string Numero { get; set; }
+
+        public string Complemento { get; set; }
+
+        public string CEP { get; set; }
+
+        public string Bairro { get; set; }
+
+        public string Cidade { get; set; }
+
+        public string Estado { get; set; }
+
+        public static EnderecoViewModel MapearViewModel(EnderecoRetorno endereco)
+        {
+            if (endereco == null) return new EnderecoViewModel();
+
+            var model = new EnderecoViewModel()
+            {
+                Rua = endereco.Rua,
+                Numero = endereco.Numero,
+                Complemento = endereco.Complemento,
+                Bairro = endereco.Bairro,
+                Cidade = endereco.Cidade,
+                Estado = endereco.Estado
+            };
+
+            return model;
+        }
+
+        public EnderecoEnvio MapearModel()
+        {
+            return new EnderecoEnvio()
+            {
+                Rua = this.Rua,
+                Numero = this.Numero,
+                Complemento = this.Complemento,
+                Bairro = this.Bairro,
+                Cidade = this.Cidade,
+                Estado = this.Estado
+            };
         }
     }
 }
