@@ -27,7 +27,7 @@ namespace tcc.webapi.Controllers
 
         [HttpGet]
         [Route("")]
-        public ActionResult<VeiculoRetornoDTO> GetVeiculos()
+        public ActionResult<VeiculoRetornoDTO> GetTodos()
         {
             try
             {
@@ -45,7 +45,7 @@ namespace tcc.webapi.Controllers
 
         [HttpGet]
         [Route("{id}")]
-        public ActionResult<VeiculoRetornoDTO> GetVeiculo([FromRoute] int id)
+        public ActionResult<VeiculoRetornoDTO> Get([FromRoute] int id)
         {
             try
             {
@@ -62,12 +62,12 @@ namespace tcc.webapi.Controllers
 
         [HttpPost]
         [Route("")]
-        public ActionResult<VeiculoRetornoDTO> PostVeiculo([FromBody] VeiculoEnvioDTO veiculoEnvioDTO)
+        public ActionResult<VeiculoRetornoDTO> Post([FromBody] VeiculoEnvioDTO veiculoEnvioDTO)
         {
             try
             {
                 var veiculoNovo = _clienteService.InserirVeiculo(veiculoEnvioDTO.ClienteId, veiculoEnvioDTO.MapearModel());
-                return CreatedAtAction(nameof(GetVeiculo), new { id = veiculoNovo.VeiculoId }, VeiculoRetornoDTO.MapearDTO(veiculoNovo));
+                return CreatedAtAction(nameof(Get), new { id = veiculoNovo.VeiculoId }, VeiculoRetornoDTO.MapearDTO(veiculoNovo));
             }
             catch (Exception e)
             {
@@ -78,7 +78,7 @@ namespace tcc.webapi.Controllers
 
         [HttpPut]
         [Route("{id}")]
-        public ActionResult<VeiculoRetornoDTO> PutVeiculo([FromRoute] int id,
+        public ActionResult<VeiculoRetornoDTO> Put([FromRoute] int id,
                                                           [FromBody] VeiculoEnvioDTO veiculoEnvioDTO)
         {
             try
@@ -100,7 +100,7 @@ namespace tcc.webapi.Controllers
 
         [HttpDelete]
         [Route("{id}")]
-        public ActionResult DeleteVeiculo([FromRoute] int veiculoId)
+        public ActionResult Delete([FromRoute] int veiculoId)
         {
             try
             {

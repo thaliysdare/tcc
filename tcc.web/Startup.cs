@@ -24,7 +24,12 @@ namespace tcc.web
             services.AddControllersWithViews();
             services.AddHttpClient("tcc.api", httpClient =>
             {
+#if (DEBUG)
                 httpClient.BaseAddress = new Uri("https://localhost:44362/");
+#else
+	            httpClient.BaseAddress = new Uri("https://tcc-oficina-api.herokuapp.com/");
+#endif
+
             });
 
             #region[Servicos]

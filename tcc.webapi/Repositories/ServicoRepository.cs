@@ -9,5 +9,10 @@ namespace tcc.webapi.Repositories
         public ServicoRepository(BancoContexto bancoContexto) : base(bancoContexto)
         {
         }
+
+        public bool VerificarServicoAtivo(int id)
+        {
+            return RecuperarPorId(id).IdcStatusServico == Enums.StatusServicoEnum.Ativo;
+        }
     }
 }

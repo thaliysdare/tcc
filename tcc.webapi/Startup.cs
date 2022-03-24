@@ -48,11 +48,16 @@ namespace tcc.webapi
             services.AddScoped<IEnderecoRepository, EnderecoRepository>();
             services.AddScoped<IVeiculoRepository, VeiculoRepository>();
             services.AddScoped<IServicoRepository, ServicoRepository>();
+            services.AddScoped<IOrdemServicoRepository, OrdemServicoRepository>();
+            services.AddScoped<IServicoOrdemServicoRepository, ServicoOrdemServicoRepository>();
+            services.AddScoped<IUsuarioRepository, UsuarioRepository>();
             #endregion
 
-            #region[Servicos]
+            #region[Serviços]
             services.AddScoped<IClienteService, ClienteService>();
             services.AddScoped<IServicoService, ServicoService>();
+            services.AddScoped<IOrdemServicoService, OrdemServicoService>();
+            services.AddScoped<IUsuarioService, UsuarioService>();
             #endregion
         }
 
@@ -62,9 +67,10 @@ namespace tcc.webapi
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
-                app.UseSwagger();
-                app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "tcc.webapi v1"));
             }
+
+            app.UseSwagger();
+            app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "tcc.webapi v1"));
 
             app.UseHttpsRedirection();
 

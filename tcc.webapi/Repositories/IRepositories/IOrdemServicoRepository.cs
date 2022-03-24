@@ -1,6 +1,11 @@
-﻿namespace tcc.webapi.Repositories.IRepositories
+﻿using System.Collections.Generic;
+using tcc.webapi.Models;
+
+namespace tcc.webapi.Repositories.IRepositories
 {
-    interface IOrdemServicoRepository
+    public interface IOrdemServicoRepository : IGenericoRepository<OrdemServico>
     {
+        List<OrdemServico> RecuperarTodosOrdemServicoCompleto();
+        OrdemServico RecuperarOrdemServicoCompleto(int id);
     }
 }

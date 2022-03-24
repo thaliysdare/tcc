@@ -28,7 +28,7 @@ namespace tcc.webapi.Controllers
 
         #region[Cliente]
         [HttpGet]
-        public ActionResult<List<ClienteRetornoDTO>> GetListaClientes()
+        public ActionResult<List<ClienteRetornoDTO>> GetTodos()
         {
             try
             {
@@ -49,7 +49,7 @@ namespace tcc.webapi.Controllers
 
         [HttpGet]
         [Route("{id}")]
-        public ActionResult<ClienteRetornoDTO> GetCliente([FromRoute] int id)
+        public ActionResult<ClienteRetornoDTO> Get([FromRoute] int id)
         {
             try
             {
@@ -65,12 +65,12 @@ namespace tcc.webapi.Controllers
         }
 
         [HttpPost]
-        public ActionResult<ClienteRetornoDTO> PostCliente([FromBody] ClienteEnvioDTO clienteEnvioDTO)
+        public ActionResult<ClienteRetornoDTO> Post([FromBody] ClienteEnvioDTO clienteEnvioDTO)
         {
             try
             {
                 var clienteNovo = _clienteService.InserirCliente(clienteEnvioDTO.MapearModel());
-                return CreatedAtAction(nameof(GetCliente), new { id = clienteNovo.ClienteId }, ClienteRetornoDTO.MapearDTO(clienteNovo));
+                return CreatedAtAction(nameof(Get), new { id = clienteNovo.ClienteId }, ClienteRetornoDTO.MapearDTO(clienteNovo));
             }
             catch (Exception e)
             {
@@ -80,7 +80,7 @@ namespace tcc.webapi.Controllers
 
         [HttpPut]
         [Route("{id}")]
-        public ActionResult<ClienteRetornoDTO> PutCliente([FromRoute] int id,
+        public ActionResult<ClienteRetornoDTO> Put([FromRoute] int id,
                                                           [FromBody] ClienteEnvioDTO clienteEnvioDTO)
         {
             try
@@ -99,7 +99,7 @@ namespace tcc.webapi.Controllers
 
         [HttpDelete]
         [Route("{id}")]
-        public ActionResult DeleteCliente([FromRoute] int id)
+        public ActionResult Delete([FromRoute] int id)
         {
             try
             {
@@ -119,7 +119,7 @@ namespace tcc.webapi.Controllers
         #region[Veiculo]
         [HttpGet]
         [Route("{id}/veiculos")]
-        public ActionResult<VeiculoRetornoDTO> GetVeiculosCliente([FromRoute] int id)
+        public ActionResult<VeiculoRetornoDTO> GetTodosVeiculos([FromRoute] int id)
         {
             try
             {

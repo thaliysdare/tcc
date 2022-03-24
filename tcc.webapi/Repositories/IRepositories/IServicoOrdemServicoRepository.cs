@@ -1,6 +1,8 @@
-﻿namespace tcc.webapi.Repositories.IRepositories
+﻿using tcc.webapi.Models;
+
+namespace tcc.webapi.Repositories.IRepositories
 {
-    interface IServicoOrdemServicoRepository
+    public interface IServicoOrdemServicoRepository : IGenericoRepository<ServicoOrdemServico>
     {
     }
 }
