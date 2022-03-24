@@ -1,5 +1,4 @@
 ﻿using System.Collections.Generic;
-using System.Linq;
 using System.Net.Http;
 using System.Text;
 using System.Text.Json;
@@ -12,8 +11,8 @@ namespace tcc.web.Services
     {
         public readonly HttpClient _tccApi;
 
-        public VeiculoService(IHttpClientFactory httpClientFactory) 
-        { 
+        public VeiculoService(IHttpClientFactory httpClientFactory)
+        {
             _tccApi = httpClientFactory.CreateClient("tcc.api");
         }
 

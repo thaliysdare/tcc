@@ -54,6 +54,6 @@ namespace tcc.web.Services
             var response = _tccApi.DeleteAsync($"clientes/{id}").Result;
             response.EnsureSuccessStatusCode();
         }
- 
+
     }
 }

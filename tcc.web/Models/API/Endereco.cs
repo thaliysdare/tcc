@@ -1,6 +1,4 @@
-﻿using System.Text.Json.Serialization;
-
-namespace tcc.web.Models.API
+﻿namespace tcc.web.Models.API
 {
     public class EnderecoEnvio
     {
