@@ -1,0 +1,32 @@
+﻿@using tcc.web.Models.API;
+@model List<OrdemServicoGridViewModel>
+
+<div class="table-responsive mt-5">
+    <table class="dataTable table table-sm table-bordered" data-sem-pesquisa="true">
+        <thead>
+            <tr>
+                <th>Número da OS</th>
+                <th>Cliente</th>
+                <th>Placa</th>
+                <th>Marca</th>
+                <th>Data previsão</th>
+                <th>Valor</th>
+                <th>Status</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model)
+            {
+                <tr>
+                    <td><a asp-action="carregareditar" asp-controller="ordemservico" asp-route-id="@item.OrdemServicoId">@item.OrdemServicoId</a></td>
+                    <td>@item.NomeCliente</td>
+                    <td>@item.PlacaVeiculo</td>
+                    <td>@item.Marca</td>
+                    <td>@item.DataPrevisao</td>
+                    <td>@item.ValorOS</td>
+                    <td>@item.Situacao</td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>

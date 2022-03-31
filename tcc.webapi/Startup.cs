@@ -1,6 +1,5 @@
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
@@ -31,17 +30,15 @@ namespace tcc.webapi
                     {
                         options.SerializerSettings.ContractResolver = new DefaultContractResolver();
                     });
+
             services.AddSwaggerGen(c =>
             {
                 c.SwaggerDoc("v1", new OpenApiInfo { Title = "tcc.webapi", Version = "v1" });
             });
 
-            services.AddDbContext<BancoContexto>(options =>
-            {
-                options
-                    .UseLazyLoadingProxies()
-                    .UseNpgsql(Configuration.GetConnectionString("BancoTCC"));
-            });
+            services.AddDbContext<BancoContexto>();
+
+            services.AddRouting(opt => opt.LowercaseUrls = true);
 
             #region[Repositorios]
             services.AddScoped<IClienteRepository, ClienteRepository>();

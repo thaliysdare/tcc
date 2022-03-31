@@ -32,7 +32,7 @@ namespace tcc.webapi.Controllers
         {
             try
             {
-                var clientes = _clienteRepository.RecuperarTodosClientesCompleto();
+                var clientes = _clienteRepository.RecuperarTodos().ToList();
                 if (!clientes.Any())
                 {
                     return NotFound();
@@ -53,7 +53,7 @@ namespace tcc.webapi.Controllers
         {
             try
             {
-                var cliente = _clienteRepository.RecuperarClienteCompleto(id);
+                var cliente = _clienteRepository.RecuperarPorId(id);
                 if (cliente == null) return NotFound();
 
                 return ClienteRetornoDTO.MapearDTO(cliente);

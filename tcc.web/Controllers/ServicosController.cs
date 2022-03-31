@@ -20,7 +20,10 @@ namespace tcc.web.Controllers
         {
             var viewModel = new ServicosViewModel()
             {
-                ListaServicos = _servicoService.RecuperarTodos().Select(x => ServicoGridViewModel.MapearViewModel(x)).ToList()
+                ListaServicos = _servicoService.RecuperarTodos()
+                                               .OrderByDescending(x => x.Ativo)
+                                               .Select(x => ServicoGridViewModel.MapearViewModel(x))
+                                               .ToList()
             };
             return View(viewModel);
         }
@@ -106,6 +109,5 @@ namespace tcc.web.Controllers
             return RedirectToAction(nameof(Index));
         }
         #endregion
-
     }
 }

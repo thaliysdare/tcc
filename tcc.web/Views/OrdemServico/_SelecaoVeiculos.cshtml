@@ -1,0 +1,14 @@
+﻿@model OrdemServicoViewModel
+
+<div class="row">
+    <div class="col-10">
+        <label asp-for="VeiculoId" class="form-label"></label>
+    </div>
+    <div class="col-2 text-end">
+        <i class="fa fa-plus-circle" aria-hidden="true" id="btnNovoVeiculo" data-abrir-modal="True" data-abrir-modal-url="/veiculos/cadastrar/@Model.ClienteId?modal=true"></i>
+    </div>
+</div>
+
+<select asp-for="VeiculoId" asp-items="@Model.ListaVeiculos" class="select2 select2-hidden-accessible form-select form-select-sm" style="width: 100%;" tabindex="-1" aria-hidden="true">
+</select>
+<span asp-validation-for="VeiculoId" class="text-danger"></span>

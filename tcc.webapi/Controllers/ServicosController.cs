@@ -27,7 +27,7 @@ namespace tcc.webapi.Controllers
         {
             try
             {
-                var retorno = _servicoRepository.RecuperarTodos();
+                var retorno = _servicoRepository.RecuperarTodos().ToList();
                 if (!retorno.Any()) return NotFound();
 
                 var retornoDTO = retorno.Select(x => ServicoRetornoDTO.MapearDTO(x)).ToList();

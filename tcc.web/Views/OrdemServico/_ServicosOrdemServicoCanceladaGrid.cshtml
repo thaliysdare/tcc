@@ -1,0 +1,21 @@
+﻿@model List<OrdemServicoItensViewModel>
+
+<div class="table-responsive mt-5">
+    <table class="dataTable table table-sm table-bordered text-truncate" data-sem-pesquisa="true">
+        <thead>
+            <tr>
+                <th>Descrição resumida</th>
+                <th>Valor</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model)
+            {
+                <tr>
+                    <td>@item.DescricaoResumida</td>
+                    <td><input type="number" name="Valor" value="@item.Valor" data-id="@item.ServicoOrdemServicoId" /></td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>

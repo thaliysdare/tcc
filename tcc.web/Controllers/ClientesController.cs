@@ -21,6 +21,8 @@ namespace tcc.web.Controllers
             var viewModel = new ClientesViewModel
             {
                 ListaClientes = _clienteService.RecuperarTodos()
+                                               .OrderByDescending(x => x.Ativo)
+                                               .ThenBy(x => x.NomeCompleto)
                                                .Select(x => ClienteGridViewModel.MapearViewModel(x))
                                                .ToList()
             };
@@ -30,38 +32,42 @@ namespace tcc.web.Controllers
         #region[Cadastrar]
         [HttpGet]
         [Route("cadastrar")]
-        public IActionResult CarregarCadastrar()
+        public IActionResult CarregarCadastrar(bool modal)
         {
             var viewModel = new ClienteViewModel();
+
+            if (modal)
+                return PartialView("Modal/_CadastrarModal", viewModel);
+
             return View("Cadastrar", viewModel);
         }
 
         [HttpPost]
         [Route("cadastrar")]
-        public IActionResult Cadastrar(ClienteViewModel viewModel)
+        public JsonResult Cadastrar(ClienteViewModel viewModel)
         {
-            #region[Validação]
             if (ValidarSeEnderecoDigitado(viewModel.EnderecoViewModel))
             {
                 if (!ValidarSeTodosCamposEnderecoDigitado(viewModel.EnderecoViewModel))
                     ModelState.AddModelError("ErroEndereco", "Se for informar o endereço todos os campos devem ser preenchidos");
             }
             else viewModel.EnderecoViewModel = null;
-            #endregion
 
-            if (!ModelState.IsValid) return View(viewModel);
+            if (!ModelState.IsValid)
+                return Json(PrepararJsonRetornoErro());
 
             try
             {
-                var clienteEnvio = viewModel.MapearModel();
-                _clienteService.Inserir(clienteEnvio);
+                var model = viewModel.MapearModel();
+                var retorno = _clienteService.Inserir(model);
+
+                return Json(PrepararJsonRetorno(GenericoJsonRetorno.POST, retorno));
             }
             catch (Exception e)
             {
                 ModelState.AddModelError("ErroServidor", e.Message);
-                return View(viewModel);
+                return Json(PrepararJsonRetornoErro());
             }
-            return RedirectToAction(nameof(Index));
         }
         #endregion
 
@@ -80,30 +86,30 @@ namespace tcc.web.Controllers
 
         [HttpPost]
         [Route("editar")]
-        public IActionResult Editar(ClienteViewModel viewModel)
+        public JsonResult Editar(ClienteViewModel viewModel)
         {
-            #region[Validação]
             if (ValidarSeEnderecoDigitado(viewModel.EnderecoViewModel))
             {
                 if (!ValidarSeTodosCamposEnderecoDigitado(viewModel.EnderecoViewModel))
                     ModelState.AddModelError("ErroEndereco", "Se for informar o endereço todos os campos devem ser preenchidos");
             }
             else viewModel.EnderecoViewModel = null;
-            #endregion
 
-            if (!ModelState.IsValid) return View(viewModel);
+            if (!ModelState.IsValid)
+                return Json(PrepararJsonRetornoErro());
 
             try
             {
-                var clienteEnvio = viewModel.MapearModel();
-                _clienteService.Editar(clienteEnvio.ClienteId.Value, clienteEnvio);
+                var model = viewModel.MapearModel();
+                 _clienteService.Editar(viewModel.ClienteId.Value, model);
+
+                return Json(PrepararJsonRetorno(GenericoJsonRetorno.PUT));
             }
             catch (Exception e)
             {
                 ModelState.AddModelError("ErroServidor", e.Message);
-                return View(viewModel);
+                return Json(PrepararJsonRetornoErro());
             }
-            return RedirectToAction(nameof(Index));
         }
         #endregion
 
@@ -122,6 +128,35 @@ namespace tcc.web.Controllers
                 return View();
             }
             return RedirectToAction(nameof(Index));
+        }
+        #endregion
+
+        #region[PartialView]
+        [HttpGet]
+        [Route("editar/{id}/veiculos")]
+        public IActionResult RecuperarVeiculosCliente(int id)
+        {
+            var cliente = _clienteService.Recuperar(id);
+            var viewModel = ClienteViewModel.MapearViewModel(cliente);
+            return PartialView("_VeiculosGrid", viewModel);
+        }
+        #endregion
+
+        #region[JsonResult]
+        [HttpGet]
+        [Route("json")]
+        public JsonResult RecuperarClientes()
+        {
+            try
+            {
+                var clientes = _clienteService.RecuperarTodos().Where(x => x.Ativo).ToList();
+                return Json(PrepararJsonRetorno(GenericoJsonRetorno.GET, clientes));
+            }
+            catch (Exception e)
+            {
+                ModelState.AddModelError("ErroServidor", e.Message);
+                return Json(PrepararJsonRetornoErro());
+            }
         }
         #endregion
 

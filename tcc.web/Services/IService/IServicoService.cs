@@ -10,5 +10,6 @@ namespace tcc.web.Services.IService
         ServicoRetorno Recuperar(int id);
         void Excluir(int id);
         List<ServicoRetorno> RecuperarTodos();
+        List<ServicoRetorno> RecuperarApenasAtivos();
     }
 }

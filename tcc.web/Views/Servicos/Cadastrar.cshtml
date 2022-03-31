@@ -4,25 +4,65 @@
     ViewData["Title"] = "Serviços";
 }
 
-<form class="row g3" asp-action="cadastrar" asp-controller="servicos" asp-route-returnlink="@ViewData["returnlink"]" method="post">
+<form id="formCadServico" asp-action="cadastrar" asp-controller="servicos" asp-route-returnlink="@ViewData["returnlink"]" method="post">
 
-    <div class="col-4">
-        <label asp-for="DescricaoResumida" class="form-label"></label>
-        <input asp-for="DescricaoResumida" type="text" class="form-control form-control-sm" />
-        <span asp-validation-for="DescricaoResumida" class="text-danger"></span>
+    <div class="form-validacao"></div>
+
+    <div class="row">
+        <div class="col-12 text-start">
+            <button type="submit" class="btn btn-sm btn-light icone icone-salvar">Salvar serviço</button>
+            <a asp-action="index" asp-controller="servicos" class="btn btn-sm btn-light icone icone-voltar" id="btnVoltar">Voltar aos serviços</a>
+        </div>
     </div>
-    <div class="col-4">
-        <label asp-for="Valor" class="form-label"></label>
-        <input asp-for="Valor" type="text" class="form-control form-control-sm" />
-        <span asp-validation-for="Valor" class="text-danger"></span>
+
+    <hr class="mb-3 mt-3" />
+
+    <div class="row mb-3">
+        <div class="col-3">
+            <label asp-for="DescricaoResumida" class="form-label"></label>
+            <input asp-for="DescricaoResumida" type="text" class="form-control form-control-sm" />
+            <span asp-validation-for="DescricaoResumida" class="text-danger"></span>
+        </div>
+        <div class="col-2">
+            <label asp-for="Valor" class="form-label"></label>
+            <input asp-for="Valor" type="text" class="form-control form-control-sm" />
+            <span asp-validation-for="Valor" class="text-danger"></span>
+        </div>
     </div>
-    <div class="col-6">
-        <label asp-for="Descricao" class="form-label"></label>
-        <input asp-for="Descricao" type="text" class="form-control form-control-sm" />
-        <span asp-validation-for="Descricao" class="text-danger"></span>
-    </div>
-    <div class="col-12 text-end">
-        <a asp-action="index" asp-controller="servicos" class="btn btn-sm btn-light">Voltar aos serviços</a>
-        <button type="submit" class="btn btn-sm btn-primary">Salvar serviço</button>
+
+    <div class="row">
+        <div class="col-12">
+            <label asp-for="Descricao" class="form-label"></label>
+            <textarea asp-for="Descricao" type="text" class="form-control form-control-sm" rows="2"> </textarea>
+            <span asp-validation-for="Descricao" class="text-danger"></span>
+        </div>
     </div>
 </form>
+
+<script>
+    $('#formCadServico').off('submit').on('submit', function (e) {
+        e.preventDefault();
+
+        $("#formCadServico").validate();
+        if (!$('#formCadServico').valid()) return;
+
+        carregando(true);
+
+        let form = new FormData($(this)[0]);
+        $.ajax({
+            url: $(this).attr('action'),
+            data: form,
+            processData: false,
+            contentType: false,
+            cache: false,
+            enctype: 'multipart/form-data',
+            type: "POST",
+        }).done(function (dados) {
+            window.location.href = '/servicos';
+        }).fail(function (error) {
+            processarErros('formCadServico', error.responseJSON.erros);
+        }).always(function () {
+            carregando(false);
+        });
+    });
+</script>

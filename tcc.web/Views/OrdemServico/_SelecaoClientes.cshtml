@@ -1,0 +1,23 @@
+﻿@model OrdemServicoViewModel
+
+<div class="row">
+    <div class="col-10">
+        <label asp-for="ClienteId" class="form-label"></label>
+    </div>
+    <div class="col-2 text-end">
+        <i class="fa fa-plus-circle" aria-hidden="true" id="btnNovoCliente" data-abrir-modal="True" data-abrir-modal-url="/clientes/cadastrar?modal=true"></i>
+    </div>
+</div>
+
+<select asp-for="ClienteId" asp-items="@Model.ListaClientes" class="select2 select2-hidden-accessible form-select form-select-sm" style="width: 100%;" tabindex="-1" aria-hidden="true">
+</select>
+<span asp-validation-for="ClienteId" class="text-danger"></span>
+
+
+<script>
+    $('#ClienteId').off('change').on('change', function () {
+        let clienteId = $(this).val();
+        carregarAjax(`/ordemservico/veiculos/${clienteId}`, 'selecaoVeiculos');
+    });
+</script>
+

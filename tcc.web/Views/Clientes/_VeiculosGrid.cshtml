@@ -1,12 +1,6 @@
 ﻿@model ClienteViewModel
 
-<div class="row mt-5">
-    <div class="col-6">
-        <a asp-action="Carregarcadastrar" asp-controller="veiculos" asp-route-id="@Model.ClienteId" class="btn btn-sm btn-secondary">Novo veiculo</a>
-    </div>
-</div>
-
-<div class="table-responsive mt-3">
+<div class="table-responsive mt-5">
     <table class="dataTable table table-sm table-bordered" data-sem-pesquisa="true">
         <thead>
             <tr>
@@ -19,9 +13,7 @@
             @foreach (var item in Model.ListaVeiculos)
             {
                 <tr>
-                    <td>
-                        <a asp-action="carregareditar" asp-controller="veiculos" asp-route-id="@item.VeiculoId">@item.Placa</a>
-                    </td>
+                    <td><a data-abrir-modal="True" data-abrir-modal-url="/veiculos/editar/@item.VeiculoId?modal=true">@item.Placa</a></td>
                     <td>@item.Marca</td>
                     <td data-st="@item.Situacao">@item.Situacao</td>
                 </tr>

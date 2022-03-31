@@ -1,0 +1,26 @@
+﻿@model List<OrdemServicoServicosViewModel>
+
+<div class="table-responsive mt-5">
+    <table class="dataTable table table-sm table-bordered text-truncate">
+        <thead>
+            <tr>
+                <th>Descrição resumida</th>
+                <th>Valor</th>
+                <th>Ação</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model)
+            {
+                <tr>
+                    <td>@item.DescricaoResumida</td>
+                    <td>@item.Valor</td>
+                    <td>
+                        <i class="fa fa-plus-circle inserir-servico-os" aria-hidden="true" data-id="@item.ServicoId"></i>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>
+

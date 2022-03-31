@@ -1,0 +1,78 @@
+﻿@using tcc.web.Utils;
+@model ClienteViewModel
+
+
+<div class="modal fade" id="jqueryModal" tabindex="-1" role="dialog" aria-labelledby="modalVeiculoTitle" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-md">
+        <div class="modal-content">
+
+            <div class="modal-header">
+                <h6 class="modal-title">Cadastrar novo cliente</h6>
+            </div>
+
+            <form id="formCadCliente" asp-action="cadastrar" asp-controller="clientes" method="post">
+
+                <div class="modal-body">
+                    <div class="row mb-3">
+                        <div class="col-6">
+                            <label asp-for="Nome" class="form-label"></label>
+                            <input asp-for="Nome" type="text" class="form-control form-control-sm" />
+                            <span asp-validation-for="Nome" class="text-danger"></span>
+                        </div>
+                        <div class="col-6">
+                            <label asp-for="Sobrenome" class="form-label"></label>
+                            <input asp-for="Sobrenome" type="text" class="form-control form-control-sm" />
+                            <span asp-validation-for="Sobrenome" class="text-danger"></span>
+                        </div>
+                    </div>
+
+                    <div class="row mb-3">
+                        <div class="col-6">
+                            <label asp-for="CPFOuCNPJ" class="form-label"></label>
+                            <input asp-for="CPFOuCNPJ" type="number" class="form-control form-control-sm" />
+                            <span asp-validation-for="CPFOuCNPJ" class="text-danger"></span>
+                        </div>
+                        <div class="col-6">
+                            <label asp-for="Telefone1" class="form-label"></label>
+                            <input asp-for="Telefone1" type="tel" class="form-control form-control-sm" />
+                            <span asp-validation-for="Telefone1" class="text-danger"></span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-sm btn-light" data-bs-dismiss="modal"><i class="fa fa-times" aria-hidden="true"></i> Fechar</button>
+                    <button type="submit" class="btn btn-sm btn-light"><i class="fa fa-floppy-o" aria-hidden="true"></i> Salvar cliente</button>
+                </div>
+
+            </form>
+
+        </div>
+    </div>
+</div>
+
+<script>
+    $('#formCadCliente').off('submit').on('submit', function (e) {
+        e.preventDefault();
+
+        carregando(true);
+
+        let form = new FormData($(this)[0]);
+        $.ajax({
+            url: $(this).attr('action'),
+            data: form,
+            processData: false,
+            contentType: false,
+            cache: false,
+            enctype: 'multipart/form-data',
+            type: "POST"
+        }).done(function (data) {
+            if (data.sucesso) {
+                fecharModal();
+                recarregarConteudo();
+            }
+        }).always(function () {
+            carregando(false);
+        });
+    });
+</script>

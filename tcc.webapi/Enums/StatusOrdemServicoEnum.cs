@@ -4,7 +4,7 @@
     {
         OSGerada = 1,
         OSEmAndamento = 2,
-        OSParalisada = 3,
+        OSParalizada = 3,
         OSFinalizada = 4,
         OSCancelada = 5
     }

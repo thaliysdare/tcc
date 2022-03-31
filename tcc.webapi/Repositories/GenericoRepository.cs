@@ -19,7 +19,7 @@ namespace tcc.webapi.Repositories
 
         public IQueryable<TEntity> RecuperarTodos(params Expression<Func<TEntity, dynamic>>[] expressoes)
         {
-            var query = _bancoContexto.Set<TEntity>().AsNoTracking();
+            var query = _bancoContexto.Set<TEntity>().AsQueryable();
             foreach (var item in expressoes)
                 query = query.Include(item);
             return query;

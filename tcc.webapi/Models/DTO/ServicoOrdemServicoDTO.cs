@@ -13,11 +13,18 @@ namespace tcc.webapi.Models.DTO
 
         public ServicoOrdemServico MapearModel()
         {
-            return new ServicoOrdemServico()
+            var model =  new ServicoOrdemServico()
             {
                 ServicoId = this.ServicoId,
                 Valor = this.Valor
             };
+
+            if (this.ServicoOrdemServicoId.HasValue)
+            {
+                model.ServicoOrdemServicoId = this.ServicoOrdemServicoId.Value;
+                model.OrdemServicoId = this.OrdemServicoId.Value;
+            }
+            return model;
         }
     }
 
@@ -28,15 +35,22 @@ namespace tcc.webapi.Models.DTO
         public int OrdemServicoId { get; set; }
         public double Valor { get; set; }
 
+        public ServicoRetornoDTO Servico { get; set; }
+
         public static ServicoOrdemServicoRetornoDTO MapearDTO(ServicoOrdemServico model)
         {
-            return new ServicoOrdemServicoRetornoDTO()
+            if (model == null) return null;
+
+            var dto = new ServicoOrdemServicoRetornoDTO()
             {
                 ServicoOrdemServicoId = model.ServicoOrdemServicoId,
                 ServicoId = model.ServicoId,
                 OrdemServicoId = model.OrdemServicoId,
                 Valor = model.Valor
             };
+
+            dto.Servico = ServicoRetornoDTO.MapearDTO(model.Servico);
+            return dto;
         }
     }
 }

@@ -15,13 +15,13 @@ namespace tcc.web.Utils
         public static string FormatarCelular(this string valor)
         {
             if (string.IsNullOrEmpty(valor)) return string.Empty;
-            return Convert.ToUInt64(valor).ToString(@"(00)0\.0000\.0000");
+            return Convert.ToUInt64(valor).ToString(@"(00) 0\.0000\.0000");
         }
 
         public static string FormatarTelefone(this string valor)
         {
             if (string.IsNullOrEmpty(valor)) return string.Empty;
-            return Convert.ToUInt64(valor).ToString(@"(00)0000\.0000");
+            return Convert.ToUInt64(valor).ToString(@"(00) 0000\.0000");
         }
 
         public static string SemFormatacao(this string valor)

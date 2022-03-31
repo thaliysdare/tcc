@@ -1,0 +1,79 @@
+﻿@model VeiculoViewModel
+
+
+<div class="modal fade" id="jqueryModal" tabindex="-1" role="dialog" aria-labelledby="modalVeiculoTitle" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-md">
+        <div class="modal-content">
+
+            <div class="modal-header">
+                <h6 class="modal-title">Cadastrar novo veiuclo para @Model.NomeCliente</h6>
+            </div>
+
+            <form id="formCadVeiculo" asp-action="cadastrar" asp-controller="veiculos" method="post">
+
+                <div class="modal-body">
+                    <div class="form-validacao"></div>
+                    <input asp-for="ClienteId" type="hidden" />
+
+                    <div class="mb-3 row">
+                        <div class="col-12">
+                            <label asp-for="NomeCliente" class="form-label"></label>
+                            <input asp-for="NomeCliente" type="text" class="form-control form-control-sm" readonly />
+                            <span asp-validation-for="NomeCliente" class="text-danger"></span>
+                        </div>
+                    </div>
+
+                    <div class="mb-3 row">
+                        <div class="col-6">
+                            <label asp-for="Placa" class="form-label"></label>
+                            <input asp-for="Placa" type="text" class="form-control form-control-sm" />
+                            <span asp-validation-for="Placa" class="text-danger"></span>
+                        </div>
+                        <div class="col-6">
+                            <label asp-for="Marca" class="form-label"></label>
+                            <input asp-for="Marca" type="text" class="form-control form-control-sm" />
+                            <span asp-validation-for="Marca" class="text-danger"></span>
+                        </div>
+                    </div>
+
+                </div>
+
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-sm btn-light icone icone-fechar" data-bs-dismiss="modal">Fechar</button>
+                    <button type="submit" class="btn btn-sm btn-light icone icone-salvar">Salvar veiculo</button>
+                </div>
+
+            </form>
+
+        </div>
+    </div>
+</div>
+
+<script>
+    $('#formCadVeiculo').off('submit').on('submit', function (e) {
+        e.preventDefault();
+
+        $("#formCadVeiculo").validate();
+        if (!$('#formCadVeiculo').valid()) return;
+
+        carregando(true);
+
+        let form = new FormData($(this)[0]);
+        $.ajax({
+            url: $(this).attr('action'),
+            data: form,
+            processData: false,
+            contentType: false,
+            cache: false,
+            enctype: 'multipart/form-data',
+            type: "POST",
+        }).done(function (dados) {
+            fecharModal();
+            recarregarConteudo();
+        }).fail(function (error) {
+            processarErros('formCadVeiculo', error.responseJSON.erros);
+        }).always(function () {
+            carregando(false);
+        });
+    });
+</script>

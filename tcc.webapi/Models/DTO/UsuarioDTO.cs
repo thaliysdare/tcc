@@ -1,5 +1,4 @@
 ﻿using System.ComponentModel.DataAnnotations;
-using System.ComponentModel.DataAnnotations.Schema;
 using tcc.webapi.Enums;
 
 namespace tcc.webapi.Models.DTO
@@ -46,6 +45,7 @@ namespace tcc.webapi.Models.DTO
 
         public static UsuarioRetornoDTO MapearDTO(Usuario model)
         {
+            if (model == null) return null;
             return new UsuarioRetornoDTO()
             {
                 UsuarioId = model.UsuarioId,

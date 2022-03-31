@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using System;
+using System.Linq;
 using tcc.web.Models;
 using tcc.web.Services.IService;
 
@@ -25,7 +26,7 @@ namespace tcc.web.Controllers
 
         [HttpGet]
         [Route("cadastrar/{id}")]
-        public IActionResult CarregarCadastrar(int id)
+        public IActionResult CarregarCadastrar(int id, bool modal)
         {
             var cliente = _clienteService.Recuperar(id);
             var viewModel = new VeiculoViewModel
@@ -33,40 +34,45 @@ namespace tcc.web.Controllers
                 ClienteId = id,
                 NomeCliente = cliente.NomeCompleto,
             };
+
+            if (modal)
+                return PartialView("Modal/_CadastrarModal", viewModel);
             return View("Cadastrar", viewModel);
         }
 
         [HttpPost]
         [Route("cadastrar")]
-        public IActionResult Cadastrar(VeiculoViewModel viewModel)
+        public JsonResult Cadastrar(VeiculoViewModel viewModel)
         {
-            #region[Validação]
-            #endregion
-
-            if (!ModelState.IsValid) return View(viewModel);
+            if (!ModelState.IsValid)
+                return Json(PrepararJsonRetornoErro());
 
             try
             {
-                var veiculoEnvio = viewModel.MapearModel();
-                _veiculoService.Inserir(veiculoEnvio);
+                var model = viewModel.MapearModel();
+                var retorno = _veiculoService.Inserir(model);
+
+                return Json(PrepararJsonRetorno(GenericoJsonRetorno.POST, retorno));
             }
             catch (Exception e)
             {
                 ModelState.AddModelError("ErroServidor", e.Message);
-                return View(viewModel);
+                return Json(PrepararJsonRetornoErro());
             }
-            return RedirectToAction("carregareditar", "clientes", new { id = viewModel.ClienteId });
         }
 
         [HttpGet]
         [Route("editar/{id}")]
-        public IActionResult CarregarEditar(int id)
+        public IActionResult CarregarEditar(int id, bool modal)
         {
             var veiculo = _veiculoService.Recuperar(id);
             var cliente = _clienteService.Recuperar(veiculo.ClienteId);
 
             var viewModel = VeiculoViewModel.MapearViewModel(veiculo);
             viewModel.NomeCliente = cliente.NomeCompleto;
+
+            if (modal)
+                return PartialView("Modal/_EditarModal", viewModel);
             return View("Editar", viewModel);
         }
 
@@ -90,6 +96,38 @@ namespace tcc.web.Controllers
                 return View(viewModel);
             }
             return RedirectToAction("carregareditar", "clientes", new { id = viewModel.ClienteId });
+        }
+
+        [HttpGet]
+        [Route("json")]
+        public JsonResult RecuperarVeiculos()
+        {
+            try
+            {
+                var veiculos = _veiculoService.RecuperarTodos().Where(x => x.Ativo).ToList();
+                return Json(PrepararJsonRetorno(GenericoJsonRetorno.GET, veiculos));
+            }
+            catch (Exception e)
+            {
+                ModelState.AddModelError("ErroServidor", e.Message);
+                return Json(PrepararJsonRetornoErro());
+            }
+        }
+
+        [HttpGet]
+        [Route("cliente/{id}/json")]
+        public JsonResult RecuperarVeiculosDoCliente(int id)
+        {
+            try
+            {
+                var veiculos = _veiculoService.RecuperarTodos().Where(x => x.Ativo && x.ClienteId == id).ToList();
+                return Json(PrepararJsonRetorno(GenericoJsonRetorno.GET, veiculos));
+            }
+            catch (Exception e)
+            {
+                ModelState.AddModelError("ErroServidor", e.Message);
+                return Json(PrepararJsonRetornoErro());
+            }
         }
 
     }

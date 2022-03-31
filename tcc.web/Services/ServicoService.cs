@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Linq;
 using System.Net.Http;
 using System.Text;
 using System.Text.Json;
@@ -46,6 +47,11 @@ namespace tcc.web.Services
         {
             var json = _tccApi.GetStringAsync($"servicos").Result;
             return JsonSerializer.Deserialize<List<ServicoRetorno>>(json);
+        }
+        public List<ServicoRetorno> RecuperarApenasAtivos()
+        {
+            var json = _tccApi.GetStringAsync($"servicos").Result;
+            return JsonSerializer.Deserialize<List<ServicoRetorno>>(json).Where(x => x.Ativo).ToList();
         }
 
         public void Excluir(int id)

@@ -37,8 +37,8 @@ namespace tcc.webapi.Services
 
                 foreach (var item in listaItens)
                 {
-                    if (_servicoRepository.VerificarServicoAtivo(item.ServicoId))
-                        throw new Exception($"Existe serviço não liberado para uso");
+                    if (!_servicoRepository.VerificarServicoAtivo(item.ServicoId))
+                        throw new Exception($"Existe serviço não está liberado para uso");
 
                     var servicoOrdemServico = item.MapearModel();
                     servicoOrdemServico.OrdemServicoId = modelNovo.OrdemServicoId;
@@ -60,17 +60,23 @@ namespace tcc.webapi.Services
                 originalModel.DataSaida = model.DataSaida;
                 originalModel.KMAtual = model.KMAtual;
                 originalModel.Observacao = model.Observacao;
+                originalModel.IdcStatusOrdemServico = model.IdcStatusOrdemServico;
 
                 var listaAIncluir = listaItens.Where(x => !x.ServicoOrdemServicoId.HasValue).ToList();
-                var listaIdsAVerificar = listaItens.Where(x => x.ServicoOrdemServicoId.HasValue).Select(x => x.ServicoOrdemServicoId).ToList();
+                var listaAVerificar = listaItens.Where(x => x.ServicoOrdemServicoId.HasValue).ToList();
+                var listaIdsAVerificar = listaAVerificar.Select(x => x.ServicoOrdemServicoId).ToList();
                 var listaServicosExcluidos = originalModel.ServicoOrdemServico.Where(x => !listaIdsAVerificar.Contains(x.ServicoOrdemServicoId)).ToList();
 
-                if (listaServicosExcluidos.Count == originalModel.ServicoOrdemServico.Count)
+                if (listaAIncluir.Count == 0
+                    && listaServicosExcluidos.Count == originalModel.ServicoOrdemServico.Count)
                     throw new Exception("Não é permitido ordem de serviço sem itens");
 
                 foreach (var item in listaAIncluir)
                 {
                     var servicoOrdemServico = item.MapearModel();
+                    if (!_servicoRepository.VerificarServicoAtivo(item.ServicoId))
+                        throw new Exception($"Existe serviço não está liberado para uso");
+
                     servicoOrdemServico.OrdemServicoId = originalModel.OrdemServicoId;
                     _servicoOrdemServicoRepository.Inserir(servicoOrdemServico);
                 }
@@ -78,6 +84,13 @@ namespace tcc.webapi.Services
                 foreach (var item in listaServicosExcluidos)
                 {
                     _servicoOrdemServicoRepository.Excluir(item);
+                }
+
+                foreach (var item in listaAVerificar)
+                {
+                    var originalServicoOrdemServico = originalModel.ServicoOrdemServico.FirstOrDefault(x => x.ServicoOrdemServicoId == item.ServicoOrdemServicoId.Value);
+                    originalServicoOrdemServico.Valor = item.Valor;
+                    _servicoOrdemServicoRepository.Editar(originalServicoOrdemServico);
                 }
 
                 originalModel.ValorOrdemServico = originalModel.ServicoOrdemServico.Sum(x => x.Valor);
@@ -119,7 +132,7 @@ namespace tcc.webapi.Services
             {
                 motivo = $"[**{motivo}**]";
                 var originalModel = _ordemServicoRepository.RecuperarPorId(id);
-                originalModel.IdcStatusOrdemServico = Enums.StatusOrdemServicoEnum.OSParalisada;
+                originalModel.IdcStatusOrdemServico = Enums.StatusOrdemServicoEnum.OSParalizada;
                 originalModel.Observacao = motivo + "\n" + originalModel.Observacao;
 
                 _ordemServicoRepository.Editar(originalModel);

@@ -27,7 +27,7 @@ namespace tcc.webapi.Controllers
         {
             try
             {
-                var retorno = _ordemServicoRepository.RecuperarTodosOrdemServicoCompleto();
+                var retorno = _ordemServicoRepository.RecuperarTodos().ToList();
                 if (!retorno.Any()) return NotFound();
 
                 var retornoDTO = retorno.Select(x => OrdemServicoRetornoDTO.MapearDTO(x)).ToList();
@@ -45,7 +45,7 @@ namespace tcc.webapi.Controllers
         {
             try
             {
-                var retorno = _ordemServicoRepository.RecuperarOrdemServicoCompleto(id);
+                var retorno = _ordemServicoRepository.RecuperarPorId(id);
                 if (retorno == null) return NotFound();
 
                 return Ok(OrdemServicoRetornoDTO.MapearDTO(retorno));
@@ -62,7 +62,7 @@ namespace tcc.webapi.Controllers
         {
             try
             {
-                var retornoNovo = _ordemServicoService.Inserir(ordemServicoEnvioDTO.MapearModel(), ordemServicoEnvioDTO.ListaServicos);
+                var retornoNovo = _ordemServicoService.Inserir(ordemServicoEnvioDTO.MapearModel(), ordemServicoEnvioDTO.ListaItensServicos);
                 return CreatedAtAction(nameof(Get), new { id = retornoNovo.OrdemServicoId }, OrdemServicoRetornoDTO.MapearDTO(retornoNovo));
             }
             catch (Exception e)
@@ -82,8 +82,10 @@ namespace tcc.webapi.Controllers
                 var model = _ordemServicoRepository.RecuperarPorId(id);
                 if (model == null) return NotFound();
 
-                _ordemServicoService.Editar(id, ordemServicoEnvioDTO.MapearModel(), ordemServicoEnvioDTO.ListaServicos);
-                return Ok(OrdemServicoRetornoDTO.MapearDTO(ordemServicoEnvioDTO.MapearModel()));
+                _ordemServicoService.Editar(id, ordemServicoEnvioDTO.MapearModel(), ordemServicoEnvioDTO.ListaItensServicos);
+                model = _ordemServicoRepository.RecuperarPorId(id);
+
+                return Ok(OrdemServicoRetornoDTO.MapearDTO(model));
             }
             catch (Exception e)
             {

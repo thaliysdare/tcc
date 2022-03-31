@@ -3,9 +3,11 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 16
 VisualStudioVersion = 16.0.30114.105
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "tcc.web", "tcc.web\tcc.web.csproj", "{FCAD19DB-BCCB-4762-AB14-71BA09DDE788}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "tcc.web", "tcc.web\tcc.web.csproj", "{FCAD19DB-BCCB-4762-AB14-71BA09DDE788}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "tcc.webapi", "tcc.webapi\tcc.webapi.csproj", "{4029428B-0354-49BD-B077-17036F8A8AB4}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "tcc.webapi", "tcc.webapi\tcc.webapi.csproj", "{4029428B-0354-49BD-B077-17036F8A8AB4}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "tcc.test", "tcc.test\tcc.test.csproj", "{C2C9F598-8807-4A5A-AFD0-A7211A116B13}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -15,9 +17,6 @@ Global
 		Release|Any CPU = Release|Any CPU
 		Release|x64 = Release|x64
 		Release|x86 = Release|x86
-	EndGlobalSection
-	GlobalSection(SolutionProperties) = preSolution
-		HideSolutionNode = FALSE
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
 		{FCAD19DB-BCCB-4762-AB14-71BA09DDE788}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
@@ -44,5 +43,23 @@ Global
 		{4029428B-0354-49BD-B077-17036F8A8AB4}.Release|x64.Build.0 = Release|Any CPU
 		{4029428B-0354-49BD-B077-17036F8A8AB4}.Release|x86.ActiveCfg = Release|Any CPU
 		{4029428B-0354-49BD-B077-17036F8A8AB4}.Release|x86.Build.0 = Release|Any CPU
+		{C2C9F598-8807-4A5A-AFD0-A7211A116B13}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C2C9F598-8807-4A5A-AFD0-A7211A116B13}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C2C9F598-8807-4A5A-AFD0-A7211A116B13}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{C2C9F598-8807-4A5A-AFD0-A7211A116B13}.Debug|x64.Build.0 = Debug|Any CPU
+		{C2C9F598-8807-4A5A-AFD0-A7211A116B13}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{C2C9F598-8807-4A5A-AFD0-A7211A116B13}.Debug|x86.Build.0 = Debug|Any CPU
+		{C2C9F598-8807-4A5A-AFD0-A7211A116B13}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C2C9F598-8807-4A5A-AFD0-A7211A116B13}.Release|Any CPU.Build.0 = Release|Any CPU
+		{C2C9F598-8807-4A5A-AFD0-A7211A116B13}.Release|x64.ActiveCfg = Release|Any CPU
+		{C2C9F598-8807-4A5A-AFD0-A7211A116B13}.Release|x64.Build.0 = Release|Any CPU
+		{C2C9F598-8807-4A5A-AFD0-A7211A116B13}.Release|x86.ActiveCfg = Release|Any CPU
+		{C2C9F598-8807-4A5A-AFD0-A7211A116B13}.Release|x86.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {4649DCA8-45C7-4DF3-99D9-E7ED6ABF807A}
 	EndGlobalSection
 EndGlobal

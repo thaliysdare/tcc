@@ -38,6 +38,7 @@ namespace tcc.webapi.Models.DTO
 
         public static VeiculoRetornoDTO MapearDTO(Veiculo model)
         {
+            if (model == null) return null;
             return new VeiculoRetornoDTO()
             {
                 VeiculoId = model.VeiculoId,

@@ -1,24 +1,22 @@
-﻿@using tcc.web.Utils;
-@model ServicoViewModel
+﻿@model ServicoViewModel
 @{
     ViewData["Title"] = "Serviços";
 }
 
-<form class="row g3">
-
-    <div class="col-4">
+<div class="row mb-3">
+    <div class="col-3">
         <label asp-for="DescricaoResumida" class="form-label"></label>
         <input asp-for="DescricaoResumida" type="text" class="form-control form-control-sm" readonly />
         <span asp-validation-for="DescricaoResumida" class="text-danger"></span>
     </div>
-    <div class="col-4">
+    <div class="col-2">
         <label asp-for="Valor" class="form-label"></label>
         <input asp-for="Valor" type="text" class="form-control form-control-sm" readonly/>
         <span asp-validation-for="Valor" class="text-danger"></span>
     </div>
-    <div class="col-6">
+    <div class="col-7">
         <label asp-for="Descricao" class="form-label"></label>
         <input asp-for="Descricao" type="text" class="form-control form-control-sm" readonly/>
         <span asp-validation-for="Descricao" class="text-danger"></span>
     </div>
-</form>
+</div>

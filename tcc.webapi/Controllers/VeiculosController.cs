@@ -31,7 +31,7 @@ namespace tcc.webapi.Controllers
         {
             try
             {
-                var veiculos = _veiculoRepository.RecuperarTodos();
+                var veiculos = _veiculoRepository.RecuperarTodos().ToList();
                 if (!veiculos.Any()) return NotFound();
 
                 var listaVeiculos = veiculos.Select(x => VeiculoRetornoDTO.MapearDTO(x)).ToList();

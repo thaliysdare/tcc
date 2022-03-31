@@ -4,7 +4,7 @@
     ViewData["Title"] = "Veiculos";
 }
 
-<form class="" asp-action="cadastrar" asp-controller="veiculos" asp-route-returnlink="@ViewData["returnlink"]" method="post">
+<form id="formCadVeiculo" asp-action="cadastrar" asp-controller="veiculos" asp-route-returnlink="@ViewData["returnlink"]" method="post">
 
     <input asp-for="ClienteId" type="hidden" />
 
@@ -31,8 +31,36 @@
 
     <div class="mb-3 row">
         <div class="col-12 text-end">
-            <a asp-action="carregareditar" asp-controller="clientes" asp-route-id="@Model.ClienteId" class="btn btn-sm btn-light">Voltar ao cliente</a>
+            <a asp-action="carregareditar" asp-controller="clientes" asp-route-id="@Model.ClienteId" class="btn btn-sm btn-light" id="btnVoltar">Voltar ao cliente</a>
             <button type="submit" class="btn btn-sm btn-primary">Salvar veiculo</button>
         </div>
     </div>
 </form>
+
+<script>
+    $('#formCadVeiculo').off('submit').on('submit', function (e) {
+        e.preventDefault();
+
+        $("#formCadVeiculo").validate();
+        if (!$('#formCadVeiculo').valid()) return;
+
+        carregando(true);
+
+        let form = new FormData($(this)[0]);
+        $.ajax({
+            url: $(this).attr('action'),
+            data: form,
+            processData: false,
+            contentType: false,
+            cache: false,
+            enctype: 'multipart/form-data',
+            type: "POST",
+        }).done(function (dados) {
+            window.location.href = '/veiculos';
+        }).fail(function (error) {
+            processarErros('formCadVeiculo', error.responseJSON.erros);
+        }).always(function () {
+            carregando(false);
+        });
+    });
+</script>

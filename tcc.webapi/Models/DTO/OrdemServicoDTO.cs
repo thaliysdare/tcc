@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
+using tcc.webapi.Enums;
 
 namespace tcc.webapi.Models.DTO
 {
@@ -30,8 +31,10 @@ namespace tcc.webapi.Models.DTO
         [MaxLength(1000)]
         public string Observacao { get; set; }
 
+        public StatusOrdemServicoEnum Situacao { get; set; }
+
         [Required]
-        public List<ServicoOrdemServicoEnvioDTO> ListaServicos { get; set; }
+        public List<ServicoOrdemServicoEnvioDTO> ListaItensServicos { get; set; }
 
         public OrdemServico MapearModel()
         {
@@ -44,7 +47,8 @@ namespace tcc.webapi.Models.DTO
                 DataPrevisao = this.DataPrevisao,
                 DataSaida = this.DataSaida,
                 KMAtual = this.KMAtual,
-                Observacao = this.Observacao
+                Observacao = this.Observacao,
+                IdcStatusOrdemServico = this.Situacao
             };
         }
     }
@@ -62,7 +66,11 @@ namespace tcc.webapi.Models.DTO
         public string Observacao { get; set; }
         public double ValorOrdemServico { get; set; }
         public int Situacao { get; set; }
-        public List<ServicoOrdemServicoRetornoDTO> ListaServicos { get; set; }
+        public List<ServicoOrdemServicoRetornoDTO> ListaItensServicos { get; set; }
+
+        public ClienteRetornoDTO Cliente { get; set; }
+        public VeiculoRetornoDTO Veiculo { get; set; }
+        public UsuarioRetornoDTO Usuario { get; set; }
 
         public static OrdemServicoRetornoDTO MapearDTO(OrdemServico model)
         {
@@ -82,7 +90,11 @@ namespace tcc.webapi.Models.DTO
             };
 
             if (model.ServicoOrdemServico != null && model.ServicoOrdemServico.Any())
-                ordemServicoDTO.ListaServicos = model.ServicoOrdemServico.Select(x => ServicoOrdemServicoRetornoDTO.MapearDTO(x)).ToList();
+                ordemServicoDTO.ListaItensServicos = model.ServicoOrdemServico.Select(x => ServicoOrdemServicoRetornoDTO.MapearDTO(x)).ToList();
+
+            ordemServicoDTO.Cliente = ClienteRetornoDTO.MapearDTO(model.Cliente);
+            ordemServicoDTO.Veiculo = VeiculoRetornoDTO.MapearDTO(model.Veiculo);
+            ordemServicoDTO.Usuario = UsuarioRetornoDTO.MapearDTO(model.Usuario);
 
             return ordemServicoDTO;
         }

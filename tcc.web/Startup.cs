@@ -21,21 +21,26 @@ namespace tcc.web
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddControllersWithViews();
+            services.AddControllersWithViews()
+                    .AddNewtonsoftJson(opt =>
+                    {
+                        opt.UseCamelCasing(false);
+                    });
+            services.AddRouting(opt => opt.LowercaseUrls = true);
             services.AddHttpClient("tcc.api", httpClient =>
             {
+                httpClient.BaseAddress = new Uri("https://tcc-oficina-api.herokuapp.com/");
 #if (DEBUG)
                 httpClient.BaseAddress = new Uri("https://localhost:44362/");
-#else
-	            httpClient.BaseAddress = new Uri("https://tcc-oficina-api.herokuapp.com/");
 #endif
 
             });
 
-            #region[Servicos]
+            #region[Injeção]
             services.AddScoped<IClienteService, ClienteService>();
             services.AddScoped<IVeiculoService, VeiculoService>();
             services.AddScoped<IServicoService, ServicoService>();
+            services.AddScoped<IOrdemServicoService, OrdemServicoService>();
             #endregion
         }
 
@@ -52,6 +57,7 @@ namespace tcc.web
                 // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
                 app.UseHsts();
             }
+
             app.UseHttpsRedirection();
             app.UseStaticFiles();
 

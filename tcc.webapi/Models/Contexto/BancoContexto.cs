@@ -4,7 +4,9 @@ namespace tcc.webapi.Models.Contexto
 {
     public class BancoContexto : DbContext
     {
-        public BancoContexto(DbContextOptions<BancoContexto> options) : base(options) { }
+        public BancoContexto(DbContextOptions<BancoContexto> options) : base(options)
+        {
+        }
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
             => optionsBuilder

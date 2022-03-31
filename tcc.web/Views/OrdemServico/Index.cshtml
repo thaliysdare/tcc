@@ -1,0 +1,15 @@
+﻿@model OrdemServicosViewModel
+@{
+    ViewData["Title"] = "Ordem serviço";
+}
+
+<div class="row align-items-end">
+    <div class="col-6">
+        <h5>Listagem de ordem de serviço</h5>
+    </div>
+    <div class="col-6 text-end">
+        <a asp-area="" asp-controller="ordemservico" asp-action="carregarcadastrar" class="btn btn-sm btn-light icone icone-novo ms-auto">Nova OS</a>
+    </div>
+</div>
+
+<partial name="_OrdemServicosGrid.cshtml" for="ListaOS" />
