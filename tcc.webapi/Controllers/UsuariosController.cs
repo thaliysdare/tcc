@@ -21,6 +21,24 @@ namespace tcc.webapi.Controllers
             _usuarioService = usuarioService;
         }
 
+        [HttpPost]
+        [Route("autenticar")]
+        public ActionResult<UsuarioRetornoDTO> Autenticar([FromBody] UsuarioAutenticacaoDTO usuario)
+        {
+            try
+            {
+                var retorno = _usuarioRepository.RecuperarTodos().FirstOrDefault(x => x.Login == usuario.Login
+                                                                                   && x.Senha == usuario.Senha);
+
+                if (retorno == null) throw new Exception("Autenticação falhou, usuário não encontrado");
+                return Ok(UsuarioRetornoDTO.MapearDTO(retorno));
+            }
+            catch (Exception e)
+            {
+                return Problem(e.Message, null, (int)HttpStatusCode.InternalServerError);
+            }
+        }
+
         [HttpGet]
         [Route("")]
         public ActionResult<UsuarioRetornoDTO> GetTodos()
@@ -70,7 +88,6 @@ namespace tcc.webapi.Controllers
                 return Problem(e.Message, null, (int)HttpStatusCode.InternalServerError);
             }
         }
-
 
         [HttpPut]
         [Route("{id}")]

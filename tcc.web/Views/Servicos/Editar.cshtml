@@ -7,8 +7,16 @@
 <form id="formEditServico" asp-action="editar" asp-controller="servicos" asp-route-returnlink="@ViewData["returnlink"]" method="post">
 
     <div class="form-validacao"></div>
-
     <input asp-for="ServicoId" type="hidden" />
+
+    <div class="row">
+        <div class="col-12 text-start">
+            <button type="submit" class="btn btn-sm btn-light icone icone-salvar">Salvar serviço</button>
+            <a asp-action="excluir" asp-controller="servicos" asp-route-id="@Model.ServicoId" class="btn btn-sm btn-light icone icone-deletar">Excluir serviço</a>
+        </div>
+    </div>
+
+    <hr class="mb-3 mt-3" />
 
     <div class="row mb-3">
         <div class="col-3">
@@ -21,17 +29,13 @@
             <input asp-for="Valor" type="text" class="form-control form-control-sm" />
             <span asp-validation-for="Valor" class="text-danger"></span>
         </div>
-        <div class="col-7">
-            <label asp-for="Descricao" class="form-label"></label>
-            <input asp-for="Descricao" type="text" class="form-control form-control-sm" />
-            <span asp-validation-for="Descricao" class="text-danger"></span>
-        </div>
     </div>
 
     <div class="row">
-        <div class="col-12 text-end">
-            <a asp-action="excluir" asp-controller="servicos" asp-route-id="@Model.ServicoId" class="btn btn-sm btn-danger">Excluir serviço</a>
-            <button type="submit" class="btn btn-sm btn-primary">Salvar serviço</button>
+        <div class="col-12">
+            <label asp-for="Descricao" class="form-label"></label>
+            <textarea asp-for="Descricao" type="text" class="form-control form-control-sm" rows="2"> </textarea>
+            <span asp-validation-for="Descricao" class="text-danger"></span>
         </div>
     </div>
 </form>

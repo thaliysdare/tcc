@@ -8,31 +8,14 @@
     <link rel="stylesheet" href="~/lib/bootstrap/css/bootstrap.css" />
     <link rel="stylesheet" href="~/lib/fontawesome/css/font-awesome.min.css">
     <link rel="stylesheet" href="~/lib/DataTables/datatables.css" />
+    <link rel="stylesheet" href="~/lib/select2/css/select2.min.css" />
 
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.3/css/select2.min.css" rel="stylesheet" />
     <link rel="stylesheet" href="~/css/site.css" />
-
     <style>
-        .load,
-        .load-ativo {
-            width: 100%;
-            height: 100%;
-            position: absolute;
-            background-color: rgba(0, 0, 0, 0.3);
-            z-index: 1055;
-            display: none;
-            align-items: center;
-            justify-content: center;
-        }
-
-        .load-ativo {
-            display: grid !important;
-        }
     </style>
 
     <script src="~/lib/jquery/dist/jquery.js"></script>
     <script src="~/js/site-inicio.js" asp-append-version="true"></script>
-
 </head>
 <body>
 
@@ -63,18 +46,30 @@
             </button>
             <div class="collapse navbar-collapse" id="navbarSupportedContent">
                 <ul class="navbar-nav ms-auto mb-2 mb-lg-0">
-                    <li class="nav-item">
-                        <a class="nav-link text-dark" asp-area="" asp-controller="ordemservico" asp-action="index">Ordem de serviços</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link text-dark" asp-area="" asp-controller="clientes" asp-action="index">Clientes</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link text-dark" asp-area="" asp-controller="servicos" asp-action="index">Serviços</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link text-dark" asp-area="" asp-controller="login" asp-action="index">Sair</a>
-                    </li>
+                    @if (User.Identity.IsAuthenticated)
+                    {
+                        <li class="nav-item">
+                            <a class="nav-link text-dark" asp-area="" asp-controller="ordemservico" asp-action="index">Ordem de serviços</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link text-dark" asp-area="" asp-controller="clientes" asp-action="index">Clientes</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link text-dark" asp-area="" asp-controller="servicos" asp-action="index">Serviços</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link text-dark" asp-area="" asp-controller="usuarios" asp-action="index">Usuários</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link text-dark" asp-area="" asp-controller="autenticacao" asp-action="sair">Sair</a>
+                        </li>
+                    }
+                    else
+                    {
+                        <li class="nav-item">
+                            <a class="nav-link text-dark" asp-area="" asp-controller="autenticacao" asp-action="entrar">Entrar</a>
+                        </li>
+                    }
                 </ul>
             </div>
         </div>
@@ -94,8 +89,7 @@
 
     <script src="~/lib/bootstrap/js/bootstrap.js"></script>
     <script src="~/lib/DataTables/datatables.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/js/select2.min.js" integrity="sha512-2ImtlRlf2VVmiGZsjm9bEyhjGW4dU7B6TNwh/hx/iSByxNENtj3WVE6o/9Lj4TJeVXPi4bnOIMXFIJJAeufa0A==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
-
+    <script src="~/lib/select2/js/select2.min.js"></script>
     <script src="~/lib/jquery-validation/dist/jquery.validate.js"></script>
     <script src="~/lib/jquery-validation-unobtrusive/jquery.validate.unobtrusive.js"></script>
 

@@ -67,6 +67,7 @@ namespace tcc.web.Models
 
         [Display(Name = "Situação")]
         public int Situacao { get; set; }
+        public string SituacaoDescricao { get; set; }
         public List<SelectListItem> ListaSituacao { get; set; }
 
         public List<OrdemServicoItensViewModel> ListaItens { get; set; }
@@ -100,11 +101,15 @@ namespace tcc.web.Models
                 DataSaida = model.DataSaida,
                 KMAtual = model.KMAtual,
                 Observacao = model.Observacao,
+                Situacao = (int)model.Situacao,
+                SituacaoDescricao = model.Situacao.GetDescription()
             };
 
             viewModel.ListaSituacao = EnumExtensions.GetEnumSelectList<OrdemServicoSituacaoEnum>()
-                                                    .Where(x => x.Value != ((int)OrdemServicoSituacaoEnum.OSGerada).ToString())
                                                     .ToList();
+            if (viewModel.Situacao != (int)OrdemServicoSituacaoEnum.OSGerada)
+                viewModel.ListaSituacao = viewModel.ListaSituacao.Where(x => Convert.ToInt32(x.Value) != (int)OrdemServicoSituacaoEnum.OSGerada).ToList();
+
             viewModel.ListaSituacao.ForEach(x => x.Selected = (x.Value == model.Situacao.ToString()));
 
             if (model.ListaItensServicos != null)
@@ -146,7 +151,8 @@ namespace tcc.web.Models
         public string Marca { get; set; }
         public string DataPrevisao { get; set; }
         public string ValorOS { get; set; }
-        public string Situacao { get; set; }
+        public string SituacaoDescricao { get; set; }
+        public int Situacao { get; set; }
 
         public static OrdemServicoGridViewModel MapearViewModel(OrdemServicoRetorno model)
         {
@@ -158,7 +164,8 @@ namespace tcc.web.Models
                 Marca = model.Veiculo.Marca,
                 DataPrevisao = model.DataPrevisao.ToString("dd/MM/yyyy"),
                 ValorOS = "R$" + model.ValorOrdemServico.ToString(),
-                Situacao = model.Situacao.GetDescription()
+                SituacaoDescricao = model.Situacao.GetDescription(),
+                Situacao = (int)model.Situacao,
             };
             return viewModel;
         }

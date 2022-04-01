@@ -1,3 +1,4 @@
+using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
@@ -22,10 +23,8 @@ namespace tcc.web
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddControllersWithViews()
-                    .AddNewtonsoftJson(opt =>
-                    {
-                        opt.UseCamelCasing(false);
-                    });
+                    .AddNewtonsoftJson(opt => { opt.UseCamelCasing(false); });
+
             services.AddRouting(opt => opt.LowercaseUrls = true);
             services.AddHttpClient("tcc.api", httpClient =>
             {
@@ -36,11 +35,21 @@ namespace tcc.web
 
             });
 
+            services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
+                    .AddCookie(options =>
+                    {
+                        options.ExpireTimeSpan = TimeSpan.FromMinutes(20);
+                        options.SlidingExpiration = true;
+                        options.AccessDeniedPath = "/autenticacao/acessonegado/";
+                        options.LoginPath = "/autenticacao/entrar";
+                    });
+
             #region[Injeção]
             services.AddScoped<IClienteService, ClienteService>();
             services.AddScoped<IVeiculoService, VeiculoService>();
             services.AddScoped<IServicoService, ServicoService>();
             services.AddScoped<IOrdemServicoService, OrdemServicoService>();
+            services.AddScoped<IUsuarioService, UsuarioService>();
             #endregion
         }
 
@@ -63,6 +72,7 @@ namespace tcc.web
 
             app.UseRouting();
 
+            app.UseAuthentication();
             app.UseAuthorization();
 
             app.UseEndpoints(endpoints =>

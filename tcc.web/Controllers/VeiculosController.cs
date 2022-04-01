@@ -11,7 +11,9 @@ namespace tcc.web.Controllers
     {
         private readonly IVeiculoService _veiculoService;
         private readonly IClienteService _clienteService;
-        public VeiculosController(IVeiculoService veiculoService, IClienteService clienteService)
+        public VeiculosController(IVeiculoService veiculoService,
+                                  IClienteService clienteService,
+                                  IUsuarioService usuarioService) : base(usuarioService)
         {
             _veiculoService = veiculoService;
             _clienteService = clienteService;

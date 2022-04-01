@@ -2,7 +2,7 @@
 @model List<OrdemServicoGridViewModel>
 
 <div class="table-responsive mt-5">
-    <table class="dataTable table table-sm table-bordered" data-sem-pesquisa="true">
+    <table class="dataTable table table-sm table-bordered" data-sem-pesquisa="true" id="tbOS">
         <thead>
             <tr>
                 <th>Número da OS</th>
@@ -24,7 +24,7 @@
                     <td>@item.Marca</td>
                     <td>@item.DataPrevisao</td>
                     <td>@item.ValorOS</td>
-                    <td>@item.Situacao</td>
+                    <td data-situacao="@item.Situacao"><span>@item.SituacaoDescricao</span></td>
                 </tr>
             }
         </tbody>

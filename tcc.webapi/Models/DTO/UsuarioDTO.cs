@@ -1,4 +1,5 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using tcc.webapi.Enums;
 
 namespace tcc.webapi.Models.DTO
@@ -42,6 +43,7 @@ namespace tcc.webapi.Models.DTO
         public string Sobrenome { get; set; }
         public string Email { get; set; }
         public bool Ativo { get; set; }
+        public List<string> ListaPermissoes { get; set; }
 
         public static UsuarioRetornoDTO MapearDTO(Usuario model)
         {
@@ -55,6 +57,24 @@ namespace tcc.webapi.Models.DTO
                 Sobrenome = model.Sobrenome,
                 Email = model.Email,
                 Ativo = model.IdcStatusUsuario == StatusUsuarioEnum.Ativo,
+            };
+        }
+    }
+
+    public class UsuarioAutenticacaoDTO
+    {
+        [Required]
+        public string Login { get; set; }
+
+        [Required]
+        public string Senha { get; set; }
+
+        public Usuario MapearModel()
+        {
+            return new Usuario()
+            {
+                Login = this.Login,
+                Senha = this.Senha
             };
         }
     }

@@ -1,12 +1,11 @@
-﻿@model List<ServicoGridViewModel>
+﻿@model List<UsuarioGridViewModel>
 
 <div class="table-responsive mt-5">
     <table class="dataTable table table-sm table-bordered text-truncate" data-sem-pesquisa="true">
         <thead>
             <tr>
-                <th>Descrição resumida</th>
-                <th>Descrição</th>
-                <th>Valor</th>
+                <th>Nome</th>
+                <th>Email</th>
                 <th>Situação</th>
             </tr>
         </thead>
@@ -14,9 +13,8 @@
             @foreach (var item in Model)
             {
                 <tr>
-                    <td><a asp-action="CarregarEditar" asp-controller="servicos" asp-route-id="@item.ServicoId">@item.DescricaoResumida</a></td>
-                    <td>@item.Descricao</td>
-                    <td>@item.Valor</td>
+                    <td><a asp-action="editar" asp-controller="usuarios" asp-route-id="@item.UsuarioId">@item.NomeCompleto</a></td>
+                    <td>@item.Email</td>
                     <td data-situacao="@item.Situacao"><span>@item.Situacao</span></td>
                 </tr>
             }

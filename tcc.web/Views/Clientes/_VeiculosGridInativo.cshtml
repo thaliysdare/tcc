@@ -1,7 +1,7 @@
 ﻿@model ClienteViewModel
 
 <div class="table-responsive mt-5">
-    <table class="table table-sm table-bordered">
+    <table class="dataTable table table-sm table-bordered" data-sem-pesquisa="true">
         <thead>
             <tr>
                 <th>Placa</th>
@@ -15,7 +15,7 @@
                 <tr>
                     <td><span>@item.Placa</span></td>
                     <td>@item.Marca</td>
-                    <td>@item.Situacao</td>
+                    <td data-situacao="@item.Situacao"><span>@item.Situacao</span></td>
                 </tr>
             }
         </tbody>

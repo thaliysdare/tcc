@@ -10,7 +10,7 @@ namespace tcc.web.Controllers
     public class ServicosController : GenericoController
     {
         private readonly IServicoService _servicoService;
-        public ServicosController(IServicoService servicoService)
+        public ServicosController(IServicoService servicoService, IUsuarioService usuarioService) : base(usuarioService)
         {
             _servicoService = servicoService;
         }

@@ -10,6 +10,7 @@ namespace tcc.web.Models.API
         public string Nome { get; set; }
         public string Sobrenome { get; set; }
         public string Email { get; set; }
+
     }
 
     public class UsuarioRetornoRoot
@@ -25,9 +26,17 @@ namespace tcc.web.Models.API
         public string Token { get; set; }
         public string Nome { get; set; }
         public string Sobrenome { get; set; }
-        [JsonIgnore]
-        public string NomeCompleto { get => $"{Nome} {Sobrenome}"; }
         public string Email { get; set; }
         public bool Ativo { get; set; }
+        public List<string> ListaPermissoes { get; set; }
+
+        [JsonIgnore]
+        public string NomeCompleto { get => $"{Nome} {Sobrenome}"; }
+    }
+
+    public class UsuarioAutenticacao
+    {
+        public string Login { get; set; }
+        public string Senha { get; set; }
     }
 }

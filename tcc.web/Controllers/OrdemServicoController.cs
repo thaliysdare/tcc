@@ -21,7 +21,8 @@ namespace tcc.web.Controllers
         public OrdemServicoController(IOrdemServicoService ordemServicoService,
                                       IClienteService clienteService,
                                       IVeiculoService veiculoService,
-                                      IServicoService servicoService)
+                                      IUsuarioService usuarioService,
+                                      IServicoService servicoService) : base(usuarioService)
         {
             _ordemServicoService = ordemServicoService;
             _clienteService = clienteService;
@@ -49,10 +50,11 @@ namespace tcc.web.Controllers
         [Route("cadastrar")]
         public IActionResult CarregarCadastrar()
         {
+            var usuario = RecuperarUsuarioLogado();
             var viewModel = new OrdemServicoViewModel()
             {
-                UsuarioId = 1,
-                UsuarioNome = "Thaliys",
+                UsuarioId = usuario.UsuarioId,
+                UsuarioNome = usuario.Nome,
                 DataEntrada = DateTime.Now,
                 DataPrevisao = DateTime.Now.AddDays(1),
             };
@@ -98,7 +100,8 @@ namespace tcc.web.Controllers
             var model = _ordemServicoService.Recuperar(id);
             var viewModel = OrdemServicoViewModel.MapearViewModel(model);
 
-            if (model.Situacao == OrdemServicoSituacaoEnum.OSCancelada)
+            if (model.Situacao == OrdemServicoSituacaoEnum.OSCancelada
+                || model.Situacao == OrdemServicoSituacaoEnum.OSFinalizada)
                 return View("Cancelada", viewModel);
 
             return View("Editar", viewModel);
@@ -182,7 +185,8 @@ namespace tcc.web.Controllers
             var model = _ordemServicoService.Recuperar(id);
             var viewModel = model.ListaItensServicos.Select(x => OrdemServicoItensViewModel.MapearViewModel(x)).ToList();
 
-            if(model.Situacao == OrdemServicoSituacaoEnum.OSCancelada)
+            if(model.Situacao == OrdemServicoSituacaoEnum.OSCancelada
+                || model.Situacao == OrdemServicoSituacaoEnum.OSFinalizada)
                 return PartialView("_ServicosOrdemServicoCanceladaGrid", viewModel);
 
             return PartialView("_ServicosOrdemServicoGrid", viewModel);

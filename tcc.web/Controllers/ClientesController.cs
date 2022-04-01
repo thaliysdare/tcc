@@ -10,7 +10,7 @@ namespace tcc.web.Controllers
     public class ClientesController : GenericoController
     {
         private readonly IClienteService _clienteService;
-        public ClientesController(IClienteService clienteService)
+        public ClientesController(IClienteService clienteService, IUsuarioService usuarioService) : base(usuarioService)
         {
             _clienteService = clienteService;
         }
@@ -21,8 +21,7 @@ namespace tcc.web.Controllers
             var viewModel = new ClientesViewModel
             {
                 ListaClientes = _clienteService.RecuperarTodos()
-                                               .OrderByDescending(x => x.Ativo)
-                                               .ThenBy(x => x.NomeCompleto)
+                                               .OrderByDescending(x => x.ClienteId)
                                                .Select(x => ClienteGridViewModel.MapearViewModel(x))
                                                .ToList()
             };

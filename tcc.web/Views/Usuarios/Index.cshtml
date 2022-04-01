@@ -1,0 +1,15 @@
+﻿@model UsuariosViewModel
+@{
+    ViewData["Title"] = "Usuarios";
+}
+
+<div class="row align-items-end">
+    <div class="col-6">
+        <h5>Listagem de usuários</h5>
+    </div>
+    <div class="col-6 text-end">
+        <a asp-area="" asp-controller="usuarios" asp-action="cadastrar" class="btn btn-sm btn-light icone icone-novo ms-auto">Novo usuário</a>
+    </div>
+</div>
+
+<partial name="_UsuariosGrid.cshtml" for="ListaUsuarios" />

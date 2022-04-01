@@ -1,13 +1,23 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Net;
+using System.Security.Claims;
+using tcc.web.Models.API;
+using tcc.web.Services.IService;
 using tcc.web.Utils;
 
 namespace tcc.web.Controllers
 {
+    [Authorize]
     public class GenericoController : Controller
     {
+        public readonly IUsuarioService _usuarioService;
+
+        public GenericoController(IUsuarioService usuarioService) => _usuarioService = usuarioService;
+
         public JsonRetornoWEB PrepararJsonRetornoErro()
         {
             HttpContext.Response.StatusCode = (int)HttpStatusCode.BadRequest;
@@ -48,13 +58,26 @@ namespace tcc.web.Controllers
             return json;
         }
 
-    }
+        public UsuarioRetorno RecuperarUsuarioLogado()
+        {
+            try
+            {
+                var sid = User.Claims.FirstOrDefault(x => x.Type == ClaimTypes.Sid);
+                return _usuarioService.Recuperar(Convert.ToInt32(sid.Value));
+            }
+            catch (Exception e)
+            {
+                RedirectToAction("sair", "autenticacao");
+            }
+            return null;
+        }
 
-    public enum GenericoJsonRetorno
-    {
-        GET,
-        POST,
-        PUT,
-        DELETE
+        public enum GenericoJsonRetorno
+        {
+            GET,
+            POST,
+            PUT,
+            DELETE
+        }
     }
 }

@@ -3,6 +3,25 @@
     ViewData["Title"] = "Ordem serviço";
 }
 
+<style>
+    #tbOS tbody tr td[data-situacao="2"] span {
+        background-color: var(--bs-primary);
+        color: var(--bs-white);
+    }
+    #tbOS tbody tr td[data-situacao="3"] span {
+        background-color: var(--bs-warning);
+        color: var(--bs-white);
+    }
+    #tbOS tbody tr td[data-situacao="4"] span {
+        background-color: var(--bs-success);
+        color: var(--bs-white);
+    }
+    #tbOS tbody tr td[data-situacao="5"] span {
+        background-color: var(--bs-danger);
+        color: var(--bs-white);
+    }
+</style>
+
 <div class="row align-items-end">
     <div class="col-6">
         <h5>Listagem de ordem de serviço</h5>

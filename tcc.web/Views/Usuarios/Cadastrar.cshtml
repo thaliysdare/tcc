@@ -1,0 +1,81 @@
+﻿@using tcc.web.Utils;
+@model UsuarioViewModel
+@{
+    ViewData["Title"] = "Usuarios";
+}
+
+<form id="formCadUsuario" asp-action="cadastrar" asp-controller="usuarios" asp-route-returnlink="@ViewData["returnlink"]" method="post">
+
+    <div class="form-validacao"></div>
+
+    <div class="row">
+        <div class="col-12 text-start">
+            <button type="submit" class="btn btn-sm btn-light icone icone-salvar">Salvar usuário</button>
+        </div>
+    </div>
+
+    <hr class="mb-3 mt-3" />
+
+    <div class="row mb-3">
+        <div class="col-3">
+            <label asp-for="Nome" class="form-label"></label>
+            <input asp-for="Nome" type="text" class="form-control form-control-sm" />
+            <span asp-validation-for="Nome" class="text-danger"></span>
+        </div>
+        <div class="col-3">
+            <label asp-for="Sobrenome" class="form-label"></label>
+            <input asp-for="Sobrenome" type="text" class="form-control form-control-sm" />
+            <span asp-validation-for="Sobrenome" class="text-danger"></span>
+        </div>
+        <div class="col-3">
+            <label asp-for="Email" class="form-label"></label>
+            <input asp-for="Email" type="email" class="form-control form-control-sm" />
+            <span asp-validation-for="Email" class="text-danger"></span>
+        </div>
+    </div>
+    <div class="row mb-3">
+        <div class="col-3">
+            <label asp-for="Login" class="form-label"></label>
+            <input asp-for="Login" type="text" class="form-control form-control-sm" />
+            <span asp-validation-for="Login" class="text-danger"></span>
+        </div>
+        <div class="col-3">
+            <label asp-for="Senha" class="form-label"></label>
+            <input asp-for="Senha" type="password" class="form-control form-control-sm" />
+            <span asp-validation-for="Senha" class="text-danger"></span>
+        </div>
+        <div class="col-3">
+            <label asp-for="ConfirmaSenha" class="form-label"></label>
+            <input asp-for="ConfirmaSenha" type="password" class="form-control form-control-sm" />
+            <span asp-validation-for="ConfirmaSenha" class="text-danger"></span>
+        </div>
+    </div>
+</form>
+
+<script>
+    $('#formCadUsuario').off('submit').on('submit', function (e) {
+        e.preventDefault();
+
+        $("#formCadUsuario").validate();
+        if (!$('#formCadUsuario').valid()) return;
+
+        carregando(true);
+
+        let form = new FormData($(this)[0]);
+        $.ajax({
+            url: $(this).attr('action'),
+            data: form,
+            processData: false,
+            contentType: false,
+            cache: false,
+            enctype: 'multipart/form-data',
+            type: "POST",
+        }).done(function (dados) {
+            window.location.href = '/usuarios';
+        }).fail(function (error) {
+            processarErros('formCadUsuario', error.responseJSON.erros);
+        }).always(function () {
+            carregando(false);
+        });
+    });
+</script>
