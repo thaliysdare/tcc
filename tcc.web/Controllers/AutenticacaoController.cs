@@ -4,11 +4,9 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Security.Claims;
 using System.Threading.Tasks;
 using tcc.web.Models;
-using tcc.web.Models.API;
 using tcc.web.Services.IService;
 
 namespace tcc.web.Controllers
@@ -25,7 +23,7 @@ namespace tcc.web.Controllers
         [HttpGet]
         public IActionResult CarregarLogar()
         {
-            return View("Logar");
+            return View("Logar", new AutenticacaoViewModel());
         }
 
         [AllowAnonymous]
@@ -83,6 +81,7 @@ namespace tcc.web.Controllers
         [HttpGet]
         public async Task<IActionResult> LogoffAsync()
         {
+            HttpContext.Session.Clear();
             await HttpContext.SignOutAsync();
             return RedirectToAction("entrar", "autenticacao");
         }

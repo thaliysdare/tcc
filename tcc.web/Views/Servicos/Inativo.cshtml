@@ -3,25 +3,15 @@
     ViewData["Title"] = "Serviços";
 }
 
-
-
-<div class="row">
-    <div class="col-12 text-start">
-        <a asp-action="index" asp-controller="servicos" class="btn btn-sm btn-light icone icone-voltar" id="btnVoltar">Voltar aos serviços</a>
-    </div>
-</div>
-
-<hr class="mb-3 mt-3" />
-
 <div class="row mb-3">
-    <div class="col-3">
+    <div class="col-lg-3 col-sm-6 col-md-3">
         <label asp-for="DescricaoResumida" class="form-label"></label>
-        <input asp-for="DescricaoResumida" type="text" class="form-control form-control-sm" readonly/>
+        <input asp-for="DescricaoResumida" type="text" class="form-control form-control-sm" disabled />
         <span asp-validation-for="DescricaoResumida" class="text-danger"></span>
     </div>
-    <div class="col-2">
+    <div class="col-lg-3 col-sm-6 col-md-3">
         <label asp-for="Valor" class="form-label"></label>
-        <input asp-for="Valor" type="text" class="form-control form-control-sm" readonly/>
+        <input asp-for="Valor" type="text" class="form-control form-control-sm" disabled/>
         <span asp-validation-for="Valor" class="text-danger"></span>
     </div>
 </div>
@@ -29,7 +19,7 @@
 <div class="row">
     <div class="col-12">
         <label asp-for="Descricao" class="form-label"></label>
-        <textarea asp-for="Descricao" type="text" class="form-control form-control-sm" rows="2" readonly> </textarea>
+        <textarea asp-for="Descricao" type="text" class="form-control form-control-sm" rows="2" disabled> </textarea>
         <span asp-validation-for="Descricao" class="text-danger"></span>
     </div>
 </div>

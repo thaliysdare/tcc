@@ -5,7 +5,7 @@ namespace tcc.web.Services.IService
 {
     public interface IVeiculoService
     {
-        VeiculoRetorno Editar(VeiculoEnvio veiculoEnvio);
+        void Editar(int id, VeiculoEnvio clienteEnvio);
         VeiculoRetorno Inserir(VeiculoEnvio veiculoEnvio);
         VeiculoRetorno Recuperar(int veiculoId);
         List<VeiculoRetorno> RecuperarTodos();

@@ -1,14 +1,7 @@
-﻿using Microsoft.AspNetCore.Authentication;
-using Microsoft.AspNetCore.Authentication.Cookies;
-using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
 using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Security.Claims;
-using System.Threading.Tasks;
 using tcc.web.Models;
-using tcc.web.Models.API;
 using tcc.web.Services.IService;
 
 namespace tcc.web.Controllers
@@ -24,7 +17,8 @@ namespace tcc.web.Controllers
             var viewModel = new UsuariosViewModel()
             {
                 ListaUsuarios = _usuarioService.RecuperarTodos()
-                                               .OrderByDescending(x => x.Ativo)
+                                               .Where(x => x.UsuarioId != RecuperarUsuarioLogado().UsuarioId)
+                                               .OrderByDescending(x => x.UsuarioId)
                                                .Select(x => UsuarioGridViewModel.MapearViewModel(x))
                                                .ToList()
             };
@@ -79,15 +73,23 @@ namespace tcc.web.Controllers
         [Route("editar")]
         public JsonResult Editar(EditarUsuarioViewModel viewModel)
         {
-            if (string.IsNullOrEmpty(viewModel.Senha))
+            if (viewModel.AlterarSenha)
+            {
+                if (string.IsNullOrEmpty(viewModel.Senha))
+                    ModelState.AddModelError("ErroServidor", "Favor informar a senha");
+                else if (string.IsNullOrEmpty(viewModel.ConfirmaSenha))
+                    ModelState.AddModelError("ErroServidor", "Favor informar a confirmação da senha");
+                else if (!viewModel.Senha.Equals(viewModel.ConfirmaSenha))
+                    ModelState.AddModelError("ErroServidor", "Senhas informadas não correspondem");
+            }
 
-                if (!ModelState.IsValid)
-                    return Json(PrepararJsonRetornoErro());
+            if (!ModelState.IsValid)
+                return Json(PrepararJsonRetornoErro());
 
             try
             {
                 var model = viewModel.MapearModel();
-                _usuarioService.Editar(model);
+                _usuarioService.Editar(viewModel.UsuarioId, model);
 
                 return Json(PrepararJsonRetorno(GenericoJsonRetorno.PUT));
             }

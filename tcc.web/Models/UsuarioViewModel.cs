@@ -13,7 +13,7 @@ namespace tcc.web.Models
             ListaUsuarios = new List<UsuarioGridViewModel>();
         }
     }
-    
+
     public class UsuarioViewModel
     {
         public int? UsuarioId { get; set; }
@@ -76,13 +76,66 @@ namespace tcc.web.Models
         }
     }
 
-    public class EditarUsuarioViewModel : UsuarioViewModel
+    public class EditarUsuarioViewModel
     {
+        public int UsuarioId { get; set; }
+
+        [Required(ErrorMessage = "Favor informar um usuário")]
+        [Display(Name = "Usuário")]
+        public string Login { get; set; }
+
         [Display(Name = "Senha")]
-        public override string Senha { get; set; }
+        public virtual string Senha { get; set; }
 
         [Display(Name = "Confirmação senha")]
-        public override string ConfirmaSenha { get; set; }
+        public virtual string ConfirmaSenha { get; set; }
+
+        [Required(ErrorMessage = "Favor informar um nome")]
+        [Display(Name = "Nome")]
+        public string Nome { get; set; }
+
+        [Required(ErrorMessage = "Favor informar um sobrenome")]
+        [Display(Name = "Sobrenome")]
+        public string Sobrenome { get; set; }
+
+        [Required(ErrorMessage = "Favor informar um email")]
+        [Display(Name = "Email")]
+        public string Email { get; set; }
+
+        [Display(Name = "Deseja alterar a senha?")]
+        public bool AlterarSenha { get; set; } = false;
+
+        public bool Ativo { get; set; }
+
+        public static EditarUsuarioViewModel MapearViewModel(UsuarioRetorno model)
+        {
+            if (model == null) return new EditarUsuarioViewModel();
+
+            var viewmodel = new EditarUsuarioViewModel()
+            {
+                UsuarioId = model.UsuarioId,
+                Login = model.Login,
+                Nome = model.Nome,
+                Sobrenome = model.Sobrenome,
+                Email = model.Email,
+                Ativo = model.Ativo,
+            };
+
+            return viewmodel;
+        }
+
+        public UsuarioEnvio MapearModel()
+        {
+            return new UsuarioEnvio()
+            {
+                UsuarioId = this.UsuarioId,
+                Login = this.Login,
+                Senha = string.IsNullOrEmpty(this.Senha) ? "" : this.Senha,
+                Nome = this.Nome,
+                Sobrenome = this.Sobrenome,
+                Email = this.Email,
+            };
+        }
     }
 
     public class UsuarioGridViewModel

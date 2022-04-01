@@ -13,7 +13,7 @@ namespace tcc.webapi.Models.DTO
 
         public ServicoOrdemServico MapearModel()
         {
-            var model =  new ServicoOrdemServico()
+            var model = new ServicoOrdemServico()
             {
                 ServicoId = this.ServicoId,
                 Valor = this.Valor

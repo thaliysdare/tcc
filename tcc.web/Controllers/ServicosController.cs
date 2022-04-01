@@ -82,7 +82,7 @@ namespace tcc.web.Controllers
             try
             {
                 var servicoEnvio = viewModel.MapearModel();
-                _servicoService.Editar(servicoEnvio);
+                _servicoService.Editar(servicoEnvio.ServicoId.Value, servicoEnvio);
             }
             catch (Exception e)
             {

@@ -1,35 +1,37 @@
-﻿@model ServicoViewModel
+﻿@model EditarUsuarioViewModel
 @{
-    ViewData["Title"] = "Serviços";
+    ViewData["Title"] = "Usuários";
 }
 
 
 
 <div class="row">
     <div class="col-12 text-start">
-        <a asp-action="index" asp-controller="servicos" class="btn btn-sm btn-light icone icone-voltar" id="btnVoltar">Voltar aos serviços</a>
+        <a asp-action="index" asp-controller="usuarios" class="btn btn-sm btn-light icone icone-voltar" id="btnVoltar">Voltar aos usuarios</a>
     </div>
 </div>
 
 <hr class="mb-3 mt-3" />
 
 <div class="row mb-3">
-    <div class="col-3">
-        <label asp-for="DescricaoResumida" class="form-label"></label>
-        <input asp-for="DescricaoResumida" type="text" class="form-control form-control-sm" readonly/>
-        <span asp-validation-for="DescricaoResumida" class="text-danger"></span>
+    <div class="col-lg-3 col-sm-6 col-md-3">
+        <label asp-for="Login" class="form-label"></label>
+        <input asp-for="Login" type="text" class="form-control form-control-sm" disabled />
+        <span asp-validation-for="Login" class="text-danger"></span>
     </div>
-    <div class="col-2">
-        <label asp-for="Valor" class="form-label"></label>
-        <input asp-for="Valor" type="text" class="form-control form-control-sm" readonly/>
-        <span asp-validation-for="Valor" class="text-danger"></span>
+    <div class="col-lg-3 col-sm-6 col-md-3">
+        <label asp-for="Nome" class="form-label"></label>
+        <input asp-for="Nome" type="text" class="form-control form-control-sm" disabled />
+        <span asp-validation-for="Nome" class="text-danger"></span>
     </div>
-</div>
-
-<div class="row">
-    <div class="col-12">
-        <label asp-for="Descricao" class="form-label"></label>
-        <textarea asp-for="Descricao" type="text" class="form-control form-control-sm" rows="2" readonly> </textarea>
-        <span asp-validation-for="Descricao" class="text-danger"></span>
+    <div class="col-lg-3 col-sm-12 col-md-3">
+        <label asp-for="Sobrenome" class="form-label"></label>
+        <input asp-for="Sobrenome" type="text" class="form-control form-control-sm" disabled />
+        <span asp-validation-for="Sobrenome" class="text-danger"></span>
+    </div>
+    <div class="col-lg-3 col-sm-12 col-md-3">
+        <label asp-for="Email" class="form-label"></label>
+        <input asp-for="Email" type="email" class="form-control form-control-sm" disabled/>
+        <span asp-validation-for="Email" class="text-danger"></span>
     </div>
 </div>

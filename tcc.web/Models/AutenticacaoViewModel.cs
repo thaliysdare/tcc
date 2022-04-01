@@ -1,11 +1,10 @@
-﻿using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
+﻿using System.ComponentModel.DataAnnotations;
 using tcc.web.Models.API;
 
 namespace tcc.web.Models
 {
     public class AutenticacaoViewModel
-    { 
+    {
         [Required(ErrorMessage = "Favor informar um usuário")]
         [Display(Name = "Usuário")]
         public string Login { get; set; }

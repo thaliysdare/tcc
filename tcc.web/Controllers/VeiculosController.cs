@@ -90,7 +90,7 @@ namespace tcc.web.Controllers
             try
             {
                 var veiculoEnvio = viewModel.MapearModel();
-                _veiculoService.Editar(veiculoEnvio);
+                _veiculoService.Editar(veiculoEnvio.VeiculoId.Value, veiculoEnvio);
             }
             catch (Exception e)
             {

@@ -5,12 +5,11 @@ namespace tcc.web.Services.IService
 {
     public interface IUsuarioService
     {
-        UsuarioRetorno Editar(UsuarioEnvio envio);
+        void Editar(int id, UsuarioEnvio clienteEnvio);
         UsuarioRetorno Inserir(UsuarioEnvio envio);
         UsuarioRetorno Recuperar(int id);
         void Excluir(int id);
         List<UsuarioRetorno> RecuperarTodos();
-        List<UsuarioRetorno> RecuperarApenasAtivos();
         UsuarioRetorno ValidarAutenticacao(UsuarioAutenticacao usuario);
     }
 }

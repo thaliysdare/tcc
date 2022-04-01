@@ -9,27 +9,29 @@
     <div class="form-validacao"></div>
 
     <input type="hidden" asp-for="UsuarioId" />
+    <input type="hidden" asp-for="Login" />
 
     <div class="row">
         <div class="col-12 text-start">
             <button type="submit" class="btn btn-sm btn-light icone icone-salvar">Salvar usuário</button>
+            <a asp-action="excluir" asp-controller="usuarios" asp-route-id="@Model.UsuarioId" class="btn btn-sm btn-light icone icone-deletar">Excluir usuário</a>
         </div>
     </div>
 
     <hr class="mb-3 mt-3" />
 
     <div class="row mb-3">
-        <div class="col-3">
+        <div class="col-lg-3 col-sm-6 col-md-3">
             <label asp-for="Nome" class="form-label"></label>
             <input asp-for="Nome" type="text" class="form-control form-control-sm" />
             <span asp-validation-for="Nome" class="text-danger"></span>
         </div>
-        <div class="col-3">
+        <div class="col-lg-3 col-sm-6 col-md-3">
             <label asp-for="Sobrenome" class="form-label"></label>
             <input asp-for="Sobrenome" type="text" class="form-control form-control-sm" />
             <span asp-validation-for="Sobrenome" class="text-danger"></span>
         </div>
-        <div class="col-3">
+        <div class="col-lg-3 col-sm-12 col-md-3">
             <label asp-for="Email" class="form-label"></label>
             <input asp-for="Email" type="email" class="form-control form-control-sm" />
             <span asp-validation-for="Email" class="text-danger"></span>
@@ -46,12 +48,12 @@
     </div>
 
     <div class="row mb-3" id="senha">
-        <div class="col-3">
+        <div class="col-lg-3 col-sm-6 col-md-3">
             <label asp-for="Senha" class="form-label"></label>
             <input asp-for="Senha" type="password" class="form-control form-control-sm" />
             <span asp-validation-for="Senha" class="text-danger"></span>
         </div>
-        <div class="col-3">
+        <div class="col-lg-3 col-sm-6 col-md-3">
             <label asp-for="ConfirmaSenha" class="form-label"></label>
             <input asp-for="ConfirmaSenha" type="password" class="form-control form-control-sm" />
             <span asp-validation-for="ConfirmaSenha" class="text-danger"></span>
@@ -64,7 +66,7 @@
         $('#senha').hide();
 
         $('#AlterarSenha').off('change').on('change', function () {
-            if ($(this).val()) {
+            if (document.getElementById('AlterarSenha').checked) {
                 $('#senha').show();
             } else {
                 $('#senha').hide();

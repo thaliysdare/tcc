@@ -5,7 +5,7 @@ namespace tcc.web.Services.IService
 {
     public interface IServicoService
     {
-        ServicoRetorno Editar(ServicoEnvio envio);
+        void Editar(int id, ServicoEnvio clienteEnvio);
         ServicoRetorno Inserir(ServicoEnvio envio);
         ServicoRetorno Recuperar(int id);
         void Excluir(int id);

@@ -9,7 +9,6 @@ namespace tcc.webapi.Models.DTO
         [Required]
         public string Login { get; set; }
 
-        [Required]
         public string Senha { get; set; }
 
         [Required]

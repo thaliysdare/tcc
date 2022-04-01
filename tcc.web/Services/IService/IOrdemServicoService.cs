@@ -5,7 +5,7 @@ namespace tcc.web.Services.IService
 {
     public interface IOrdemServicoService
     {
-        OrdemServicoRetorno Editar(OrdemServicoEnvio envio);
+        void Editar(int id, OrdemServicoEnvio ordemServicoEnvio);
         OrdemServicoRetorno Inserir(OrdemServicoEnvio envio);
         OrdemServicoRetorno Recuperar(int id);
         void Excluir(int id);

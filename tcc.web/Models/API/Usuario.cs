@@ -5,6 +5,7 @@ namespace tcc.web.Models.API
 {
     public class UsuarioEnvio
     {
+        public int? UsuarioId { get; set; }
         public string Login { get; set; }
         public string Senha { get; set; }
         public string Nome { get; set; }

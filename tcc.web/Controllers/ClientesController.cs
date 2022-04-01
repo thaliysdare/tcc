@@ -100,7 +100,7 @@ namespace tcc.web.Controllers
             try
             {
                 var model = viewModel.MapearModel();
-                 _clienteService.Editar(viewModel.ClienteId.Value, model);
+                _clienteService.Editar(viewModel.ClienteId.Value, model);
 
                 return Json(PrepararJsonRetorno(GenericoJsonRetorno.PUT));
             }

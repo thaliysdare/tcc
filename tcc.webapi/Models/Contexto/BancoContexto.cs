@@ -13,6 +13,15 @@ namespace tcc.webapi.Models.Contexto
                 .UseLazyLoadingProxies()
                 .UseNpgsql("Host=ec2-34-205-46-149.compute-1.amazonaws.com;Port=5432;Database=d1m4s8jddocgp1;Username=qtlhpunflneudo;Password=53acc2a4205585d18ed31f44957c429a3b06dbeec407dd39f8e22736f810dc22;Pooling=true;SSL Mode=Require;TrustServerCertificate=True;");
 
+        protected override void OnModelCreating(ModelBuilder modelBuilder)
+        {
+            modelBuilder.Entity<Usuario>(x =>
+            {
+                x.HasIndex(e => e.Login).IsUnique();
+                x.HasIndex(e => e.Email).IsUnique();
+            });
+        }
+
         public virtual DbSet<Usuario> Usuario { get; set; }
         public virtual DbSet<Cliente> Cliente { get; set; }
         public virtual DbSet<Endereco> Endereco { get; set; }

@@ -62,8 +62,13 @@ namespace tcc.web.Controllers
         {
             try
             {
+                var usuario = HttpContext.Session.Get<UsuarioRetorno>("Usuario");
+                if (usuario != null) return usuario;
+
                 var sid = User.Claims.FirstOrDefault(x => x.Type == ClaimTypes.Sid);
-                return _usuarioService.Recuperar(Convert.ToInt32(sid.Value));
+                usuario = _usuarioService.Recuperar(Convert.ToInt32(sid.Value));
+                HttpContext.Session.Set("Usuario", usuario);
+                return usuario;
             }
             catch (Exception e)
             {

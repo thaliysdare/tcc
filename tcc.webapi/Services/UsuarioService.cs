@@ -16,6 +16,9 @@ namespace tcc.webapi.Services
 
         public Usuario Inserir(Usuario model)
         {
+            if (string.IsNullOrEmpty(model.Senha))
+                throw new System.Exception("Usuário precisa ter uma senha");
+
             var modelNovo = default(Usuario);
             using (var scope = new TransactionScope())
             {
@@ -33,7 +36,9 @@ namespace tcc.webapi.Services
 
             using (var scope = new TransactionScope())
             {
-                originalModel.Senha = model.Senha;
+                if (!string.IsNullOrEmpty(model.Senha))
+                    originalModel.Senha = model.Senha;
+
                 originalModel.Email = model.Email;
                 originalModel.Nome = model.Nome;
                 originalModel.Sobrenome = model.Sobrenome;

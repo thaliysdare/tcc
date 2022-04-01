@@ -17,34 +17,35 @@
     <hr class="mb-3 mt-3" />
 
     <div class="row mb-3">
-        <div class="col-3">
+        <div class="col-lg-3 col-sm-6 col-md-3">
             <label asp-for="Nome" class="form-label"></label>
             <input asp-for="Nome" type="text" class="form-control form-control-sm" />
             <span asp-validation-for="Nome" class="text-danger"></span>
         </div>
-        <div class="col-3">
+        <div class="col-lg-3 col-sm-6 col-md-3">
             <label asp-for="Sobrenome" class="form-label"></label>
             <input asp-for="Sobrenome" type="text" class="form-control form-control-sm" />
             <span asp-validation-for="Sobrenome" class="text-danger"></span>
         </div>
-        <div class="col-3">
+        <div class="col-lg-3 col-sm-12 col-md-3">
             <label asp-for="Email" class="form-label"></label>
             <input asp-for="Email" type="email" class="form-control form-control-sm" />
             <span asp-validation-for="Email" class="text-danger"></span>
         </div>
     </div>
-    <div class="row mb-3">
-        <div class="col-3">
+
+    <div class="row mb-3" id="senha">
+        <div class="col-lg-3 col-sm-12 col-md-3">
             <label asp-for="Login" class="form-label"></label>
             <input asp-for="Login" type="text" class="form-control form-control-sm" />
             <span asp-validation-for="Login" class="text-danger"></span>
         </div>
-        <div class="col-3">
+        <div class="col-lg-3 col-sm-12 col-md-3">
             <label asp-for="Senha" class="form-label"></label>
             <input asp-for="Senha" type="password" class="form-control form-control-sm" />
             <span asp-validation-for="Senha" class="text-danger"></span>
         </div>
-        <div class="col-3">
+        <div class="col-lg-3 col-sm-12 col-md-3">
             <label asp-for="ConfirmaSenha" class="form-label"></label>
             <input asp-for="ConfirmaSenha" type="password" class="form-control form-control-sm" />
             <span asp-validation-for="ConfirmaSenha" class="text-danger"></span>

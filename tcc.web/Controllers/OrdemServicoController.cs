@@ -3,11 +3,9 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Net;
 using tcc.web.Models;
 using tcc.web.Models.API;
 using tcc.web.Services.IService;
-using tcc.web.Utils;
 
 namespace tcc.web.Controllers
 {
@@ -117,9 +115,9 @@ namespace tcc.web.Controllers
             try
             {
                 var model = viewModel.MapearModel();
-                var ordemServico = _ordemServicoService.Editar(model);
+                _ordemServicoService.Editar(model.OrdemServicoId.Value, model);
 
-                return Json(PrepararJsonRetorno(GenericoJsonRetorno.PUT, ordemServico));
+                return Json(PrepararJsonRetorno(GenericoJsonRetorno.PUT, model));
             }
             catch (Exception e)
             {
@@ -172,9 +170,9 @@ namespace tcc.web.Controllers
             var viewModel = _servicoService.RecuperarApenasAtivos()
                                            .Select(x => OrdemServicoServicosViewModel.MapearViewModel(x))
                                            .ToList();
-            if(checkbox)
+            if (checkbox)
                 return PartialView("_ServicosCheckboxGrid", viewModel);
-            
+
             return PartialView("_ServicosGrid", viewModel);
         }
 
@@ -185,7 +183,7 @@ namespace tcc.web.Controllers
             var model = _ordemServicoService.Recuperar(id);
             var viewModel = model.ListaItensServicos.Select(x => OrdemServicoItensViewModel.MapearViewModel(x)).ToList();
 
-            if(model.Situacao == OrdemServicoSituacaoEnum.OSCancelada
+            if (model.Situacao == OrdemServicoSituacaoEnum.OSCancelada
                 || model.Situacao == OrdemServicoSituacaoEnum.OSFinalizada)
                 return PartialView("_ServicosOrdemServicoCanceladaGrid", viewModel);
 
@@ -252,7 +250,8 @@ namespace tcc.web.Controllers
                     Valor = servico.Valor
                 });
 
-                _ordemServicoService.Editar(viewModel.MapearModel());
+                var model = viewModel.MapearModel();
+                _ordemServicoService.Editar(model.OrdemServicoId.Value, model);
                 return Json(PrepararJsonRetorno(GenericoJsonRetorno.POST));
             }
             catch (Exception e)
@@ -278,8 +277,8 @@ namespace tcc.web.Controllers
                 else ordemServico.ListaItensServicos.Remove(serviocOrdemServico);
 
                 var viewModel = OrdemServicoViewModel.MapearViewModel(ordemServico);
-
-                _ordemServicoService.Editar(viewModel.MapearModel());
+                var model = viewModel.MapearModel();
+                _ordemServicoService.Editar(model.OrdemServicoId.Value, model);
                 return Json(PrepararJsonRetorno(GenericoJsonRetorno.POST));
             }
             catch (Exception e)

@@ -1,8 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 using System.Net.Http;
-using System.Text;
-using System.Text.Json;
 using tcc.web.Models.API;
 using tcc.web.Services.IService;
 
@@ -11,53 +9,41 @@ namespace tcc.web.Services
     public class ServicoService : IServicoService
     {
         public readonly HttpClient _tccApi;
+        public readonly GenericoService genericoService;
 
         public ServicoService(IHttpClientFactory httpClientFactory)
         {
-            _tccApi = httpClientFactory.CreateClient("tcc.api");
+            genericoService = new GenericoService(httpClientFactory);
         }
 
-
-        public ServicoRetorno Inserir(ServicoEnvio envio)
-        {
-            var jsonEnvio = JsonSerializer.Serialize(envio);
-            var content = new StringContent(jsonEnvio, Encoding.UTF8, "application/json");
-            var response = _tccApi.PostAsync($"servicos", content).Result;
-            response.EnsureSuccessStatusCode();
-
-            var json = response.Content.ReadAsStringAsync().Result;
-            return JsonSerializer.Deserialize<ServicoRetorno>(json);
-        }
-        public ServicoRetorno Editar(ServicoEnvio envio)
-        {
-            var jsonEnvio = JsonSerializer.Serialize(envio);
-            var content = new StringContent(jsonEnvio, Encoding.UTF8, "application/json");
-            var response = _tccApi.PutAsync($"servicos/{envio.ServicoId}", content).Result;
-            response.EnsureSuccessStatusCode();
-
-            var json = response.Content.ReadAsStringAsync().Result;
-            return JsonSerializer.Deserialize<ServicoRetorno>(json);
-        }
-        public ServicoRetorno Recuperar(int id)
-        {
-            var json = _tccApi.GetStringAsync($"servicos/{id}").Result;
-            return JsonSerializer.Deserialize<ServicoRetorno>(json);
-        }
         public List<ServicoRetorno> RecuperarTodos()
         {
-            var json = _tccApi.GetStringAsync($"servicos").Result;
-            return JsonSerializer.Deserialize<List<ServicoRetorno>>(json);
+            return genericoService.RecuperarTodos<ServicoRetorno>("servicos");
         }
-        public List<ServicoRetorno> RecuperarApenasAtivos()
+
+        public ServicoRetorno Recuperar(int id)
         {
-            var json = _tccApi.GetStringAsync($"servicos").Result;
-            return JsonSerializer.Deserialize<List<ServicoRetorno>>(json).Where(x => x.Ativo).ToList();
+            return genericoService.Recuperar<ServicoRetorno>("servicos", id);
+        }
+
+        public ServicoRetorno Inserir(ServicoEnvio clienteEnvio)
+        {
+            return genericoService.Inserir<ServicoRetorno>("servicos", clienteEnvio);
+        }
+
+        public void Editar(int id, ServicoEnvio clienteEnvio)
+        {
+            genericoService.Editar("servicos", id, clienteEnvio);
         }
 
         public void Excluir(int id)
         {
-            var response = _tccApi.DeleteAsync($"servicos/{id}").Result;
-            response.EnsureSuccessStatusCode();
+            genericoService.Excluir("servicos", id);
+        }
+
+        public List<ServicoRetorno> RecuperarApenasAtivos()
+        {
+            return RecuperarTodos().Where(x => x.Ativo).ToList();
         }
     }
 }
