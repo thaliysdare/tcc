@@ -21,7 +21,7 @@ namespace tcc.web.Controllers
             var viewModel = new ServicosViewModel()
             {
                 ListaServicos = _servicoService.RecuperarTodos()
-                                               .OrderByDescending(x => x.Ativo)
+                                               .OrderByDescending(x => x.ServicoId)
                                                .Select(x => ServicoGridViewModel.MapearViewModel(x))
                                                .ToList()
             };
@@ -40,22 +40,25 @@ namespace tcc.web.Controllers
         [Route("cadastrar")]
         public IActionResult Cadastrar(ServicoViewModel viewModel)
         {
-            #region[Validação]
-            #endregion
 
             if (!ModelState.IsValid) return View(viewModel);
+
+
+            if (!ModelState.IsValid)
+                return Json(PrepararJsonRetornoErro());
 
             try
             {
                 var servicoEnvio = viewModel.MapearModel();
                 _servicoService.Inserir(servicoEnvio);
+
+                return Json(PrepararJsonRetorno(GenericoJsonRetorno.POST));
             }
             catch (Exception e)
             {
                 ModelState.AddModelError("ErroServidor", e.Message);
-                return View(viewModel);
+                return Json(PrepararJsonRetornoErro());
             }
-            return RedirectToAction(nameof(Index));
         }
 
         [HttpGet]
@@ -70,7 +73,7 @@ namespace tcc.web.Controllers
             return View("Editar", viewModel);
         }
 
-        [HttpPost]
+        [HttpPut]
         [Route("editar")]
         public IActionResult Editar(ServicoViewModel viewModel)
         {
@@ -79,17 +82,22 @@ namespace tcc.web.Controllers
 
             if (!ModelState.IsValid) return View(viewModel);
 
+
+            if (!ModelState.IsValid)
+                return Json(PrepararJsonRetornoErro());
+
             try
             {
-                var servicoEnvio = viewModel.MapearModel();
-                _servicoService.Editar(servicoEnvio.ServicoId.Value, servicoEnvio);
+                var model = viewModel.MapearModel();
+                _servicoService.Editar(model.ServicoId.Value, model);
+
+                return Json(PrepararJsonRetorno(GenericoJsonRetorno.PUT));
             }
             catch (Exception e)
             {
                 ModelState.AddModelError("ErroServidor", e.Message);
-                return View(viewModel);
+                return Json(PrepararJsonRetornoErro());
             }
-            return RedirectToAction(nameof(Index));
         }
 
         #region[Excluir]
