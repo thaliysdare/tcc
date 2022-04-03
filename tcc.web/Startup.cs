@@ -1,10 +1,18 @@
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Builder;
+using Microsoft.AspNetCore.Diagnostics.HealthChecks;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Diagnostics.HealthChecks;
 using Microsoft.Extensions.Hosting;
+using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
 using System;
+using System.Linq;
+using System.Threading.Tasks;
+using tcc.web.HealthCheck;
 using tcc.web.Services;
 using tcc.web.Services.IService;
 
@@ -43,7 +51,6 @@ namespace tcc.web
                 options.Cookie.IsEssential = true;
             });
 
-
             services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
                     .AddCookie(options =>
                     {
@@ -52,6 +59,11 @@ namespace tcc.web
                         options.AccessDeniedPath = "/autenticacao/acessonegado/";
                         options.LoginPath = "/autenticacao/entrar";
                     });
+
+            services.AddHealthChecks()
+                    .AddCheck<SiteCheck>("status-site")
+                    .AddCheck<APICheck>("status-api")
+                    .AddCheck<BancoCheck>("status-banco");
 
             #region[Injeção]
             services.AddScoped<IClienteService, ClienteService>();
@@ -88,10 +100,32 @@ namespace tcc.web
 
             app.UseEndpoints(endpoints =>
             {
+                endpoints.MapHealthChecks("/healthcheck", new HealthCheckOptions()
+                {
+                    ResponseWriter = WriteResponse
+                });
+
                 endpoints.MapControllerRoute(
                     name: "default",
                     pattern: "{controller=Home}/{action=Index}/{id?}");
+
             });
+        }
+        private static Task WriteResponse(HttpContext context, HealthReport result)
+        {
+            context.Response.ContentType = "application/json";
+
+            var json = new JObject(
+                new JProperty("status", result.Status.ToString()),
+                new JProperty("results", new JObject(result.Entries.Select(pair =>
+                    new JProperty(pair.Key, new JObject(
+                        new JProperty("status", pair.Value.Status.ToString()),
+                        new JProperty("description", pair.Value.Description),
+                        new JProperty("data", new JObject(pair.Value.Data.Select(
+                            p => new JProperty(p.Key, p.Value))))))))));
+
+            return context.Response.WriteAsync(
+                json.ToString(Formatting.Indented));
         }
     }
 }
