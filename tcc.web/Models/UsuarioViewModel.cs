@@ -16,6 +16,11 @@ namespace tcc.web.Models
 
     public class UsuarioViewModel
     {
+        public UsuarioViewModel()
+        {
+            ListaFuncionalidadeViewModel = new List<FuncionalidadeViewModel>();
+        }
+
         public int? UsuarioId { get; set; }
 
         [Required(ErrorMessage = "Favor informar um usuário")]
@@ -46,6 +51,8 @@ namespace tcc.web.Models
         public bool AlterarSenha { get; set; } = false;
 
         public bool Ativo { get; set; }
+
+        public List<FuncionalidadeViewModel> ListaFuncionalidadeViewModel { get; set; }
 
         public static UsuarioViewModel MapearViewModel(UsuarioRetorno model)
         {
@@ -106,6 +113,7 @@ namespace tcc.web.Models
         public bool AlterarSenha { get; set; } = false;
 
         public bool Ativo { get; set; }
+        public List<FuncionalidadeViewModel> ListaFuncionalidadeViewModel { get; set; }
 
         public static EditarUsuarioViewModel MapearViewModel(UsuarioRetorno model)
         {
@@ -157,6 +165,36 @@ namespace tcc.web.Models
                 Situacao = model.Ativo ? "Ativo" : "Inativo"
             };
         }
+    }
+
+    public class FuncionalidadeViewModel
+    {
+        public int? FuncionalidadeId { get; set; }
+
+        [Required(ErrorMessage = "Favor informar um código")]
+        [Display(Name = "Código")]
+        public string Codigo { get; set; }
+
+        [Required(ErrorMessage = "Favor informar a descrição")]
+        [Display(Name = "Descrição")]
+        public string Descricao { get; set; }
+
+        public bool PertenceUsuario { get; set; } = false;
+
+        public static FuncionalidadeViewModel MapearViewModel(FuncionalidadeRetorno model)
+        {
+            if (model == null) return new FuncionalidadeViewModel();
+
+            var viewmodel = new FuncionalidadeViewModel()
+            {
+                FuncionalidadeId = model.FuncionalidadeId,
+                Codigo = model.Codigo,
+                Descricao = model.Descricao,
+            };
+
+            return viewmodel;
+        }
+
     }
 
 }

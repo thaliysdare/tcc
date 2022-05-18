@@ -33,6 +33,8 @@ namespace tcc.web
             services.AddControllersWithViews()
                     .AddNewtonsoftJson(opt => { opt.UseCamelCasing(false); });
 
+            services.AddHttpContextAccessor();
+
             services.AddRouting(opt => opt.LowercaseUrls = true);
             services.AddHttpClient("tcc.api", httpClient =>
             {
@@ -71,6 +73,7 @@ namespace tcc.web
             services.AddScoped<IServicoService, ServicoService>();
             services.AddScoped<IOrdemServicoService, OrdemServicoService>();
             services.AddScoped<IUsuarioService, UsuarioService>();
+            services.AddScoped<IFuncionalidadeService, FuncionalidadeService>();
             #endregion
         }
 

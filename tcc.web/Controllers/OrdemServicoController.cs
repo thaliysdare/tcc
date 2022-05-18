@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using System;
 using System.Collections.Generic;
@@ -6,10 +7,12 @@ using System.Linq;
 using tcc.web.Models;
 using tcc.web.Models.API;
 using tcc.web.Services.IService;
+using tcc.web.Utils;
 
 namespace tcc.web.Controllers
 {
     [Route("[controller]")]
+    [Authorize]
     public class OrdemServicoController : GenericoController
     {
         private readonly IOrdemServicoService _ordemServicoService;

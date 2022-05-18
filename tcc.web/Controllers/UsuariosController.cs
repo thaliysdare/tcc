@@ -1,15 +1,22 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Linq;
 using tcc.web.Models;
 using tcc.web.Services.IService;
+using tcc.web.Utils;
 
 namespace tcc.web.Controllers
 {
     [Route("[controller]")]
+    [Authorize]
     public class UsuariosController : GenericoController
     {
-        public UsuariosController(IUsuarioService usuarioService) : base(usuarioService) { }
+        private readonly IFuncionalidadeService _funcionalidadeService;
+        public UsuariosController(IUsuarioService usuarioService, IFuncionalidadeService funcionalidadeService) : base(usuarioService)
+        {
+            _funcionalidadeService = funcionalidadeService;
+        }
 
         [HttpGet]
         public IActionResult Index()
@@ -30,6 +37,7 @@ namespace tcc.web.Controllers
         public IActionResult CarregarCadastrar()
         {
             var viewModel = new UsuarioViewModel();
+            viewModel.ListaFuncionalidadeViewModel = _funcionalidadeService.RecuperarTodos().Select(x => FuncionalidadeViewModel.MapearViewModel(x)).ToList();
             return View("Cadastrar", viewModel);
         }
 
@@ -63,6 +71,8 @@ namespace tcc.web.Controllers
         {
             var model = _usuarioService.Recuperar(id);
             var viewModel = EditarUsuarioViewModel.MapearViewModel(model);
+            viewModel.ListaFuncionalidadeViewModel = _funcionalidadeService.RecuperarTodos().Select(x => FuncionalidadeViewModel.MapearViewModel(x)).ToList();
+            viewModel.ListaFuncionalidadeViewModel.ForEach(x => x.PertenceUsuario = model.ListaPermissoes.Contains(x.Codigo));
 
             if (!model.Ativo)
                 return View("Inativo", viewModel);

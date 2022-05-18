@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using System.Linq;
 using tcc.webapi.Enums;
 
 namespace tcc.webapi.Models.DTO
@@ -56,6 +57,7 @@ namespace tcc.webapi.Models.DTO
                 Sobrenome = model.Sobrenome,
                 Email = model.Email,
                 Ativo = model.IdcStatusUsuario == StatusUsuarioEnum.Ativo,
+                ListaPermissoes = model.Funcionalidades.Select(x => x.Codigo).ToList()
             };
         }
     }

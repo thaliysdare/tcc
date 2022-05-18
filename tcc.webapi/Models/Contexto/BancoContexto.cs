@@ -20,6 +20,11 @@ namespace tcc.webapi.Models.Contexto
                 x.HasIndex(e => e.Login).IsUnique();
                 x.HasIndex(e => e.Email).IsUnique();
             });
+
+            modelBuilder.Entity<Funcionalidade>(x =>
+            {
+                x.HasIndex(e => e.Codigo).IsUnique();
+            });
         }
 
         public virtual DbSet<Usuario> Usuario { get; set; }
@@ -31,5 +36,7 @@ namespace tcc.webapi.Models.Contexto
         public virtual DbSet<ServicoOrcamento> ServicoOrcamento { get; set; }
         public virtual DbSet<ServicoOrdemServico> ServicoOrdemServico { get; set; }
         public virtual DbSet<Veiculo> Veiculo { get; set; }
+        public virtual DbSet<Funcionalidade> Funcionalidade { get; set; }
+        public virtual DbSet<UsuarioFuncionalidade> UsuarioFuncionalidade { get; set; }
     }
 }

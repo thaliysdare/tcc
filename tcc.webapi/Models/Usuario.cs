@@ -1,4 +1,5 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using tcc.webapi.Enums;
 
@@ -26,5 +27,7 @@ namespace tcc.webapi.Models
 
         [Required]
         public StatusUsuarioEnum IdcStatusUsuario { get; set; }
+
+        public virtual ICollection<Funcionalidade> Funcionalidades { get; set; }
     }
 }

@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Linq;
 using System.Net.Http;
 using tcc.web.Models.API;
 using tcc.web.Services.IService;
@@ -43,6 +44,12 @@ namespace tcc.web.Services
         public void Excluir(int id)
         {
             genericoService.Excluir("usuarios", id);
+        }
+
+        public bool VerificarPossuiFuncionalidade(List<string> funcionalidades, int id)
+        {
+            var usuario = Recuperar(id);
+            return funcionalidades.All(x => usuario.ListaPermissoes.Contains(x));
         }
 
     }

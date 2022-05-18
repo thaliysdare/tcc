@@ -11,7 +11,6 @@ using tcc.web.Utils;
 
 namespace tcc.web.Controllers
 {
-    [Authorize]
     public class GenericoController : Controller
     {
         public readonly IUsuarioService _usuarioService;

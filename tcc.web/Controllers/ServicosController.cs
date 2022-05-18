@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Linq;
 using tcc.web.Models;
@@ -7,6 +8,7 @@ using tcc.web.Services.IService;
 namespace tcc.web.Controllers
 {
     [Route("[controller]")]
+    [Authorize]
     public class ServicosController : GenericoController
     {
         private readonly IServicoService _servicoService;

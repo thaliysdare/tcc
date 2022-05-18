@@ -8,12 +8,14 @@ using System.Security.Claims;
 using System.Threading.Tasks;
 using tcc.web.Models;
 using tcc.web.Services.IService;
+using tcc.web.Utils;
 
 namespace tcc.web.Controllers
 {
     // https://docs.microsoft.com/pt-br/aspnet/core/security/authentication/cookie?view=aspnetcore-6.0
 
     [Route("[controller]")]
+    [Authorize]
     public class AutenticacaoController : GenericoController
     {
         public AutenticacaoController(IUsuarioService usuarioService) : base(usuarioService) { }
