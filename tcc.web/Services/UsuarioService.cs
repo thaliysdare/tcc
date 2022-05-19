@@ -46,11 +46,5 @@ namespace tcc.web.Services
             genericoService.Excluir("usuarios", id);
         }
 
-        public bool VerificarPossuiFuncionalidade(List<string> funcionalidades, int id)
-        {
-            var usuario = Recuperar(id);
-            return funcionalidades.All(x => usuario.ListaPermissoes.Contains(x));
-        }
-
     }
 }

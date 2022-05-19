@@ -11,6 +11,7 @@ namespace tcc.web.Models.API
         public string Nome { get; set; }
         public string Sobrenome { get; set; }
         public string Email { get; set; }
+        public List<int> ListaFuncionalidadeIds { get; set; }
 
     }
 
@@ -29,7 +30,7 @@ namespace tcc.web.Models.API
         public string Sobrenome { get; set; }
         public string Email { get; set; }
         public bool Ativo { get; set; }
-        public List<string> ListaPermissoes { get; set; }
+        public List<string> ListaFuncionalidade { get; set; }
 
         [JsonIgnore]
         public string NomeCompleto { get => $"{Nome} {Sobrenome}"; }

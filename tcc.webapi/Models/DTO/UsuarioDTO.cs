@@ -21,9 +21,11 @@ namespace tcc.webapi.Models.DTO
         [Required]
         public string Email { get; set; }
 
+        public List<int> ListaFuncionalidadeIds { get; set; }
+
         public Usuario MapearModel()
         {
-            return new Usuario()
+            var usuario = new Usuario()
             {
                 Login = this.Login,
                 Senha = this.Senha,
@@ -31,6 +33,11 @@ namespace tcc.webapi.Models.DTO
                 Sobrenome = this.Sobrenome,
                 Email = this.Email,
             };
+
+            if (ListaFuncionalidadeIds != null && ListaFuncionalidadeIds.Count > 0)
+                usuario.UsuarioFuncionalidade = this.ListaFuncionalidadeIds.Select(x => new UsuarioFuncionalidade() { FuncionalidadeId = x }).ToList();
+
+            return usuario;
         }
     }
 
@@ -43,12 +50,12 @@ namespace tcc.webapi.Models.DTO
         public string Sobrenome { get; set; }
         public string Email { get; set; }
         public bool Ativo { get; set; }
-        public List<string> ListaPermissoes { get; set; }
+        public List<string> ListaFuncionalidade { get; set; }
 
         public static UsuarioRetornoDTO MapearDTO(Usuario model)
         {
             if (model == null) return null;
-            return new UsuarioRetornoDTO()
+            var retorno = new UsuarioRetornoDTO()
             {
                 UsuarioId = model.UsuarioId,
                 Login = model.Login,
@@ -57,8 +64,13 @@ namespace tcc.webapi.Models.DTO
                 Sobrenome = model.Sobrenome,
                 Email = model.Email,
                 Ativo = model.IdcStatusUsuario == StatusUsuarioEnum.Ativo,
-                ListaPermissoes = model.Funcionalidades.Select(x => x.Codigo).ToList()
             };
+
+            if (model.UsuarioFuncionalidade != null && model.UsuarioFuncionalidade.All(x => x.Funcionalidade != null))
+                retorno.ListaFuncionalidade = model.UsuarioFuncionalidade.Select(x => x.Funcionalidade.Codigo).ToList();
+
+            return retorno;
+
         }
     }
 

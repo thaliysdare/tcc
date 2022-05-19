@@ -28,7 +28,6 @@
         <div class="toast align-items-center text-white bg-primary border-0" role="alert" aria-live="assertive" aria-atomic="true" id="containerAlerta">
             <div class="d-flex">
                 <div class="toast-body" id="containerAlertaText">
-
                 </div>
                 <button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast" aria-label="Close"></button>
             </div>
@@ -51,15 +50,21 @@
                         <li class="nav-item">
                             <a class="nav-link text-dark" asp-area="" asp-controller="ordemservico" asp-action="index">Ordem de serviços</a>
                         </li>
-                        <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="clientes" asp-action="index">Clientes</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="servicos" asp-action="index">Serviços</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="usuarios" asp-action="index">Usuários</a>
-                        </li>
+                        @if (User.IsInRole("NV2"))
+                        {
+                            <li class="nav-item">
+                                <a class="nav-link text-dark" asp-area="" asp-controller="clientes" asp-action="index">Clientes</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link text-dark" asp-area="" asp-controller="servicos" asp-action="index">Serviços</a>
+                            </li>
+                        }
+                        @if (User.IsInRole("NV3"))
+                        {
+                            <li class="nav-item">
+                                <a class="nav-link text-dark" asp-area="" asp-controller="usuarios" asp-action="index">Usuários</a>
+                            </li>
+                        }
                         <li class="nav-item">
                             <a class="nav-link text-dark" asp-area="" asp-controller="autenticacao" asp-action="sair">Sair</a>
                         </li>

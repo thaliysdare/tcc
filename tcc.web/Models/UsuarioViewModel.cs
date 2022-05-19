@@ -114,6 +114,7 @@ namespace tcc.web.Models
 
         public bool Ativo { get; set; }
         public List<FuncionalidadeViewModel> ListaFuncionalidadeViewModel { get; set; }
+        public List<int> ListaFuncionalidadeIds { get; set; }
 
         public static EditarUsuarioViewModel MapearViewModel(UsuarioRetorno model)
         {
@@ -142,6 +143,7 @@ namespace tcc.web.Models
                 Nome = this.Nome,
                 Sobrenome = this.Sobrenome,
                 Email = this.Email,
+                ListaFuncionalidadeIds = this.ListaFuncionalidadeIds
             };
         }
     }

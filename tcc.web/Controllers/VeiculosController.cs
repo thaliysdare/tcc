@@ -8,7 +8,7 @@ using tcc.web.Services.IService;
 namespace tcc.web.Controllers
 {
     [Route("[controller]")]
-    [Authorize]
+    [Authorize(Roles = "NV2")]
     public class VeiculosController : GenericoController
     {
         private readonly IVeiculoService _veiculoService;

@@ -49,6 +49,7 @@ namespace tcc.webapi
             services.AddScoped<IServicoOrdemServicoRepository, ServicoOrdemServicoRepository>();
             services.AddScoped<IUsuarioRepository, UsuarioRepository>();
             services.AddScoped<IFuncionalidadeRepository, FuncionalidadeRepository>();
+            services.AddScoped<IUsuarioFuncionalidadeRepository, UsuarioFuncionalidadeRepository>();
             #endregion
 
             #region[Serviços]

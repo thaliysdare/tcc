@@ -15,12 +15,15 @@
             <div class="btn-group-sm">
                 <button type="submit" class="btn btn-sm btn-light icone icone-salvar">Salvar cliente</button>
                 <a class="btn btn-sm btn-light icone icone-novo" data-abrir-modal="True" data-abrir-modal-url="/veiculos/cadastrar/@Model.ClienteId?modal=true">Novo veiculo</a>
-                <a asp-action="excluir" asp-controller="clientes" asp-route-id="@Model.ClienteId" class="btn btn-sm btn-light icone icone-deletar">Excluir cliente</a>
+                @if (User.IsInRole("NV3"))
+                {
+                    <a asp-action="excluir" asp-controller="clientes" asp-route-id="@Model.ClienteId" class="btn btn-sm btn-light icone icone-deletar">Excluir cliente</a>
+                }
             </div>
         </div>
     </div>
 
-    <hr class="mb-3 mt-3"/>
+    <hr class="mb-3 mt-3" />
 
     <div class="row mb-3">
         <div class="col-lg-3 col-sm-6 col-md-3">

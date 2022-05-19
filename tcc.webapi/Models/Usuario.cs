@@ -28,6 +28,6 @@ namespace tcc.webapi.Models
         [Required]
         public StatusUsuarioEnum IdcStatusUsuario { get; set; }
 
-        public virtual ICollection<Funcionalidade> Funcionalidades { get; set; }
+        public virtual ICollection<UsuarioFuncionalidade> UsuarioFuncionalidade { get; set; }
     }
 }

@@ -8,14 +8,17 @@
         background-color: var(--bs-primary);
         color: var(--bs-white);
     }
+
     #tbOS tbody tr td[data-situacao="3"] span {
         background-color: var(--bs-warning);
         color: var(--bs-white);
     }
+
     #tbOS tbody tr td[data-situacao="4"] span {
         background-color: var(--bs-success);
         color: var(--bs-white);
     }
+
     #tbOS tbody tr td[data-situacao="5"] span {
         background-color: var(--bs-danger);
         color: var(--bs-white);
@@ -27,7 +30,10 @@
         <h5>Listagem de ordem de serviço</h5>
     </div>
     <div class="col-6 text-end">
-        <a asp-area="" asp-controller="ordemservico" asp-action="carregarcadastrar" class="btn btn-sm btn-light icone icone-novo ms-auto">Nova OS</a>
+        @if (User.IsInRole("NV2"))
+        {
+            <a asp-area="" asp-controller="ordemservico" asp-action="carregarcadastrar" class="btn btn-sm btn-light icone icone-novo ms-auto">Nova OS</a>
+        }
     </div>
 </div>
 

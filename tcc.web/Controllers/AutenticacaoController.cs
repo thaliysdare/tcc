@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Security.Claims;
 using System.Threading.Tasks;
 using tcc.web.Models;
@@ -49,12 +50,12 @@ namespace tcc.web.Controllers
                     new Claim("FullName", usuario.NomeCompleto),
                 };
 
-                //if (usuario.ListaPermissoes == null || !usuario.ListaPermissoes.Any()) throw new Exception("Nenhuma permissão atribuida ao usuário");
+                if (usuario.ListaFuncionalidade == null || !usuario.ListaFuncionalidade.Any()) throw new Exception("Nenhuma permissão atribuida ao usuário");
 
-                //foreach (var item in usuario.ListaPermissoes)
-                //{
-                //    claims.Add(new Claim(ClaimTypes.Role, item));
-                //}
+                foreach (var item in usuario.ListaFuncionalidade)
+                {
+                    claims.Add(new Claim(ClaimTypes.Role, item));
+                }
 
                 var claimsIdentity = new ClaimsIdentity(claims, CookieAuthenticationDefaults.AuthenticationScheme);
 
@@ -86,6 +87,13 @@ namespace tcc.web.Controllers
             HttpContext.Session.Clear();
             await HttpContext.SignOutAsync();
             return RedirectToAction("entrar", "autenticacao");
+        }
+
+        [Route("acessonegado")]
+        [HttpGet]
+        public IActionResult AcessoNegado()
+        {
+            return View();
         }
     }
 }

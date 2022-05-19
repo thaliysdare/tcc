@@ -8,7 +8,7 @@ using tcc.web.Services.IService;
 namespace tcc.web.Controllers
 {
     [Route("[controller]")]
-    [Authorize]
+    [Authorize(Roles = "NV2")]
     public class ServicosController : GenericoController
     {
         private readonly IServicoService _servicoService;
@@ -105,6 +105,7 @@ namespace tcc.web.Controllers
         #region[Excluir]
         [HttpGet]
         [Route("excluir/{id}")]
+        [Authorize(Roles = "NV3")]
         public IActionResult Excluir(int id)
         {
             try

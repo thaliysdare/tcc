@@ -9,7 +9,7 @@ using tcc.web.Utils;
 namespace tcc.web.Controllers
 {
     [Route("[controller]")]
-    [Authorize]
+    [Authorize(Roles = "NV3")]
     public class UsuariosController : GenericoController
     {
         private readonly IFuncionalidadeService _funcionalidadeService;
@@ -37,7 +37,7 @@ namespace tcc.web.Controllers
         public IActionResult CarregarCadastrar()
         {
             var viewModel = new UsuarioViewModel();
-            viewModel.ListaFuncionalidadeViewModel = _funcionalidadeService.RecuperarTodos().Select(x => FuncionalidadeViewModel.MapearViewModel(x)).ToList();
+            viewModel.ListaFuncionalidadeViewModel = _funcionalidadeService.RecuperarTodos().OrderBy(x => x.FuncionalidadeId).Select(x => FuncionalidadeViewModel.MapearViewModel(x)).ToList();
             return View("Cadastrar", viewModel);
         }
 
@@ -71,8 +71,10 @@ namespace tcc.web.Controllers
         {
             var model = _usuarioService.Recuperar(id);
             var viewModel = EditarUsuarioViewModel.MapearViewModel(model);
-            viewModel.ListaFuncionalidadeViewModel = _funcionalidadeService.RecuperarTodos().Select(x => FuncionalidadeViewModel.MapearViewModel(x)).ToList();
-            viewModel.ListaFuncionalidadeViewModel.ForEach(x => x.PertenceUsuario = model.ListaPermissoes.Contains(x.Codigo));
+            viewModel.ListaFuncionalidadeViewModel = _funcionalidadeService.RecuperarTodos().OrderBy(x => x.FuncionalidadeId).Select(x => FuncionalidadeViewModel.MapearViewModel(x)).ToList();
+
+            if (model.ListaFuncionalidade != null && model.ListaFuncionalidade.Count > 0)
+                viewModel.ListaFuncionalidadeViewModel.ForEach(x => x.PertenceUsuario = model.ListaFuncionalidade.Contains(x.Codigo));
 
             if (!model.Ativo)
                 return View("Inativo", viewModel);

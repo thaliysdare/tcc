@@ -14,10 +14,22 @@
             {
                 <tr>
                     <td>@item.DescricaoResumida</td>
-                    <td><input type="number" name="Valor" value="@item.Valor" data-id="@item.ServicoOrdemServicoId" /></td>
+                    <td>
+                        @if (User.IsInRole("NV3"))
+                        {
+                            <input type="number" name="Valor" value="@item.Valor" data-id="@item.ServicoOrdemServicoId" />
+                        }
+                        else
+                        {
+                            <span>@item.Valor</span>
+                        }
+                    </td>
                     <td>
                         <i class="fa fa-minus-circle remover-servico-os" aria-hidden="true" data-id="@item.ServicoOrdemServicoId"></i>
-                        <i class="fa fa-check-circle atualizar-servico-os" aria-hidden="true" data-id="@item.ServicoOrdemServicoId"></i>
+                        @if (User.IsInRole("NV3"))
+                        {
+                            <i class="fa fa-check-circle atualizar-servico-os" aria-hidden="true" data-id="@item.ServicoOrdemServicoId"></i>
+                        }
                     </td>
                 </tr>
             }

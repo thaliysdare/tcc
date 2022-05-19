@@ -1,4 +1,5 @@
-﻿using System.Transactions;
+﻿using System.Linq;
+using System.Transactions;
 using tcc.webapi.Models;
 using tcc.webapi.Repositories.IRepositories;
 using tcc.webapi.Services.IServices;
@@ -8,10 +9,12 @@ namespace tcc.webapi.Services
     public class UsuarioService : IUsuarioService
     {
         private readonly IUsuarioRepository _usuarioRepository;
+        private readonly IUsuarioFuncionalidadeRepository _usuarioFuncionalidadeRepository;
 
-        public UsuarioService(IUsuarioRepository usuarioRepository)
+        public UsuarioService(IUsuarioRepository usuarioRepository, IUsuarioFuncionalidadeRepository usuarioFuncionalidadeRepository)
         {
             _usuarioRepository = usuarioRepository;
+            _usuarioFuncionalidadeRepository = usuarioFuncionalidadeRepository;
         }
 
         public Usuario Inserir(Usuario model)
@@ -24,6 +27,8 @@ namespace tcc.webapi.Services
             {
                 model.IdcStatusUsuario = Enums.StatusUsuarioEnum.Ativo;
                 modelNovo = _usuarioRepository.InserirERecuperar(model);
+
+
                 scope.Complete();
             }
             return modelNovo;
@@ -42,8 +47,28 @@ namespace tcc.webapi.Services
                 originalModel.Email = model.Email;
                 originalModel.Nome = model.Nome;
                 originalModel.Sobrenome = model.Sobrenome;
-
                 _usuarioRepository.Editar(originalModel);
+
+                if (model.UsuarioFuncionalidade != null && model.UsuarioFuncionalidade.Count > 0)
+                {
+                    var listaFuncionalidadeIds = model.UsuarioFuncionalidade.Select(x => x.FuncionalidadeId).ToList();
+
+                    var listaFuncionalidadesAExcluir = originalModel.UsuarioFuncionalidade.Where(x => !listaFuncionalidadeIds.Contains(x.FuncionalidadeId)).ToList();
+                    var listaFuncionalidadesAIncluir = listaFuncionalidadeIds.Where(x => !originalModel.UsuarioFuncionalidade.Any(y => y.FuncionalidadeId == x)).ToList();
+
+                    foreach (var item in listaFuncionalidadesAExcluir)
+                        _usuarioFuncionalidadeRepository.Excluir(item);
+
+                    foreach (var item in listaFuncionalidadesAIncluir)
+                    {
+                        _usuarioFuncionalidadeRepository.Inserir(new UsuarioFuncionalidade()
+                        {
+                            FuncionalidadeId = item,
+                            UsuarioId = originalModel.UsuarioId
+                        });
+                    }
+                }
+                
                 scope.Complete();
             }
         }

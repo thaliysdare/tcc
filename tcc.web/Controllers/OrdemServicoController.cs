@@ -49,6 +49,7 @@ namespace tcc.web.Controllers
         #region[Cadastrar]
         [HttpGet]
         [Route("cadastrar")]
+        [Authorize(Roles = "NV2")]
         public IActionResult CarregarCadastrar()
         {
             var usuario = RecuperarUsuarioLogado();
@@ -65,6 +66,7 @@ namespace tcc.web.Controllers
 
         [HttpPost]
         [Route("cadastrar")]
+        [Authorize(Roles = "NV2")]
         public JsonResult Cadastrar([FromBody] OrdemServicoViewModel viewModel)
         {
             if (!ModelState.IsValid)
@@ -96,6 +98,7 @@ namespace tcc.web.Controllers
         #region[Editar]
         [HttpGet]
         [Route("editar/{id}")]
+        [Authorize(Roles = "NV1")]
         public IActionResult CarregarEditar(int id)
         {
             var model = _ordemServicoService.Recuperar(id);
@@ -110,6 +113,7 @@ namespace tcc.web.Controllers
 
         [HttpPut]
         [Route("editar")]
+        [Authorize(Roles = "NV1")]
         public JsonResult Editar([FromBody] OrdemServicoViewModel viewModel)
         {
             if (!ModelState.IsValid)
