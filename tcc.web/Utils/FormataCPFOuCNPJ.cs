@@ -15,12 +15,14 @@ namespace tcc.web.Utils
         public static string FormatarCNPJ(this string valor)
         {
             if (string.IsNullOrEmpty(valor)) return string.Empty;
+            valor = valor.Replace(".", "").Replace("-", "").Replace("/", "");
             return Convert.ToUInt64(valor).ToString(@"00\.000\.000\/0000\-00");
         }
 
         public static string FormatarCPF(this string valor)
         {
             if (string.IsNullOrEmpty(valor)) return string.Empty;
+            valor = valor.Replace(".", "").Replace("-", "").Replace("/", "");
             return Convert.ToUInt64(valor).ToString(@"000\.000\.000\-00");
         }
 
