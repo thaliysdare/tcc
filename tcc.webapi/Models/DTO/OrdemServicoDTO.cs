@@ -99,4 +99,12 @@ namespace tcc.webapi.Models.DTO
             return ordemServicoDTO;
         }
     }
+
+    public class OrdemServicoEnvioPeriodoDTO
+    {
+        [Required]
+        public DateTime DataInicial { get; set; }
+        [Required]
+        public DateTime DataFinal { get; set; }
+    }
 }

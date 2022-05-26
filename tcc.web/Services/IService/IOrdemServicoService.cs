@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using tcc.web.Models.API;
 
 namespace tcc.web.Services.IService
@@ -10,5 +11,7 @@ namespace tcc.web.Services.IService
         OrdemServicoRetorno Recuperar(int id);
         void Excluir(int id);
         List<OrdemServicoRetorno> RecuperarTodos();
+        List<OrdemServicoRetorno> RecuperarTodosFinalizadosPorPeriodo(DateTime dataInicial, DateTime dataFinal);
+        List<OrdemServicoRetorno> RecuperarTodosCanceladosPorPeriodo(DateTime dataInicial, DateTime dataFinal);
     }
 }

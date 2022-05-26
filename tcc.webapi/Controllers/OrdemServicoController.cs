@@ -39,6 +39,42 @@ namespace tcc.webapi.Controllers
             }
         }
 
+        [HttpPost]
+        [Route("finalizados/periodo")]
+        public ActionResult<OrdemServicoRetornoDTO> GetTodosFinalizadosPorPeriodo([FromBody] OrdemServicoEnvioPeriodoDTO ordemServicoEnvioPeriodoDTO)
+        {
+            try
+            {
+                var retorno = _ordemServicoRepository.RecuperarTodosFinalizadosPorPeriodo(ordemServicoEnvioPeriodoDTO);
+                if (!retorno.Any()) return NotFound();
+
+                var retornoDTO = retorno.Select(x => OrdemServicoRetornoDTO.MapearDTO(x)).ToList();
+                return Ok(retornoDTO);
+            }
+            catch (Exception e)
+            {
+                return Problem(e.Message, null, (int)HttpStatusCode.InternalServerError);
+            }
+        }
+
+        [HttpPost]
+        [Route("cancelados/periodo")]
+        public ActionResult<OrdemServicoRetornoDTO> GetTodosCanceladosPorPeriodo([FromBody] OrdemServicoEnvioPeriodoDTO ordemServicoEnvioPeriodoDTO)
+        {
+            try
+            {
+                var retorno = _ordemServicoRepository.RecuperarTodosCanceladosPorPeriodo(ordemServicoEnvioPeriodoDTO);
+                if (!retorno.Any()) return NotFound();
+
+                var retornoDTO = retorno.Select(x => OrdemServicoRetornoDTO.MapearDTO(x)).ToList();
+                return Ok(retornoDTO);
+            }
+            catch (Exception e)
+            {
+                return Problem(e.Message, null, (int)HttpStatusCode.InternalServerError);
+            }
+        }
+
         [HttpGet]
         [Route("{id}")]
         public ActionResult<OrdemServicoRetornoDTO> Get([FromRoute] int id)
@@ -93,94 +129,5 @@ namespace tcc.webapi.Controllers
             }
         }
 
-        [HttpPut]
-        [Route("iniciar-os/{id}")]
-        public ActionResult<OrdemServicoRetornoDTO> Iniciar([FromRoute] int id)
-        {
-            try
-            {
-                var model = _ordemServicoRepository.RecuperarPorId(id);
-                if (model == null) return NotFound();
-
-                _ordemServicoService.Iniciar(id);
-                return Ok();
-            }
-            catch (Exception e)
-            {
-                return Problem(e.Message, null, (int)HttpStatusCode.InternalServerError);
-            }
-        }
-
-        [HttpPut]
-        [Route("reiniciar-os/{id}")]
-        public ActionResult<OrdemServicoRetornoDTO> Reiniciar([FromRoute] int id)
-        {
-            try
-            {
-                var model = _ordemServicoRepository.RecuperarPorId(id);
-                if (model == null) return NotFound();
-
-                _ordemServicoService.Reiniciar(id);
-                return Ok();
-            }
-            catch (Exception e)
-            {
-                return Problem(e.Message, null, (int)HttpStatusCode.InternalServerError);
-            }
-        }
-
-        [HttpPut]
-        [Route("paralizar-os/{id}")]
-        public ActionResult<OrdemServicoRetornoDTO> Paralizar([FromRoute] int id, [FromBody] string motivo)
-        {
-            try
-            {
-                var model = _ordemServicoRepository.RecuperarPorId(id);
-                if (model == null) return NotFound();
-
-                _ordemServicoService.Paralizar(id, motivo);
-                return Ok();
-            }
-            catch (Exception e)
-            {
-                return Problem(e.Message, null, (int)HttpStatusCode.InternalServerError);
-            }
-        }
-
-        [HttpPut]
-        [Route("finalizar-os/{id}")]
-        public ActionResult<OrdemServicoRetornoDTO> Finalizar([FromRoute] int id)
-        {
-            try
-            {
-                var model = _ordemServicoRepository.RecuperarPorId(id);
-                if (model == null) return NotFound();
-
-                _ordemServicoService.Finalizar(id);
-                return Ok();
-            }
-            catch (Exception e)
-            {
-                return Problem(e.Message, null, (int)HttpStatusCode.InternalServerError);
-            }
-        }
-
-        [HttpDelete]
-        [Route("{id}")]
-        public ActionResult Delete([FromRoute] int id)
-        {
-            try
-            {
-                var model = _ordemServicoRepository.RecuperarPorId(id);
-                if (model == null) return NotFound();
-
-                _ordemServicoService.Cancelar(id);
-                return Ok();
-            }
-            catch (Exception e)
-            {
-                return Problem(e.Message, null, (int)HttpStatusCode.InternalServerError);
-            }
-        }
     }
 }

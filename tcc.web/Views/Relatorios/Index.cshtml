@@ -1,0 +1,51 @@
+﻿@model RelatorioViewModel
+@{
+    ViewData["Title"] = "Relatório de caixa";
+    //Model.DataInicial = new DateTime(2022, 4, 1);
+}
+
+
+<form id="formRelatorio" method="get">
+
+    <div class="form-validacao"></div>
+
+    <div class="row">
+        <div class="col-12 text-start">
+            <button type="submit" class="btn btn-sm btn-light icone icone-grafico-linha">Gerar relatório</button>
+        </div>
+    </div>
+
+    <hr class="mb-3 mt-3" />
+
+    <div class="row mb-3">
+        <div class="col-lg-3 col-sm-12 col-md-3">
+            <label asp-for="DataInicial" class="form-label"></label>
+            <input type="date" asp-for="DataInicial" class="form-control form-control-sm" />
+        </div>
+
+        <div class="col-lg-3 col-sm-12 col-md-3">
+            <label asp-for="DataFinal" class="form-label"></label>
+            <input type="date" asp-for="DataFinal" class="form-control form-control-sm" />
+        </div>
+    </div>
+
+</form>
+
+<div id="relatorios" class="mt-5">
+    <partial name="_Conteudo.cshtml" />
+</div>
+
+<script>
+    $('#formRelatorio').off('submit').on('submit', function (e) {
+        e.preventDefault();
+
+        $("#formRelatorio").validate();
+        if (!$('#formRelatorio').valid()) return;
+
+        carregarRelatorioBarra();
+
+        carregarRelatorioCard();
+
+        carregarRelatorioBarraTop();
+    });
+</script>

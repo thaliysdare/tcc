@@ -16,11 +16,23 @@ namespace tcc.web.Services
             _tccApi = httpClientFactory.CreateClient("tcc.api");
         }
 
-        public List<T> RecuperarTodos<T>(string endpoint)
+        public List<T> RecuperarTodos<T>(string endpoint, object envio = null)
         {
-            var response = _tccApi.GetAsync(endpoint).Result;
-            var json = response.Content.ReadAsStringAsync().Result;
+            HttpResponseMessage response;
+            string json;
 
+            if (envio != null)
+            {
+                json = JsonSerializer.Serialize(envio);
+                var content = new StringContent(json, Encoding.UTF8, "application/json");
+                response = _tccApi.PostAsync(endpoint, content).Result;
+            }
+            else
+            {
+                response = _tccApi.GetAsync(endpoint).Result;
+            }
+
+            json = response.Content.ReadAsStringAsync().Result;
             if (!response.IsSuccessStatusCode)
             {
                 var erro = JsonSerializer.Deserialize<Erro>(json);

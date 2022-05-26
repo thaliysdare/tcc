@@ -1,0 +1,73 @@
+﻿@model RelatorioViewModel
+
+<div class="row">
+    <div class="col-md-6 col-sm-12 col-lg-6">
+        <div class="card text-center p-2 h-100 d-none" id="cardOSSucesso">
+            <h2></h2>
+            <h3></h3>
+            <small></small>
+        </div>
+    </div>
+    <div class="col-md-6 col-sm-12 col-lg-6">
+        <div class="card text-center p-2 h-100 d-none" id="cardOSCanceladas">
+            <h2></h2>
+            <h3></h3>
+            <small></small>
+        </div>
+    </div>
+</div>
+
+<div class="row mt-3 justify-content-md-center">
+    <div class="col-md-6 col-sm-12 col-lg-6">
+        <div class="card text-center p-2 h-100 d-none" id="cardOSGeradas">
+            <h2></h2>
+            <h3></h3>
+            <small></small>
+        </div>
+    </div>
+</div>
+
+
+<script>
+    const configurarGraficoCard = (dados) => {
+        const osGeradas = dados.listaOSGeradasPeriodo;
+        for(let os of osGeradas){
+            let card = document.querySelector(`#${os.idCard}`);
+            let qtd = card.querySelector('h2');
+            let valor = card.querySelector('h3');
+            let descricao = card.querySelector('small');
+
+            qtd.innerText = os.qtdOS;
+            valor.innerText = `R$ ${os.valor}`;
+            descricao.innerText = os.descricao;
+
+            card.classList.remove('d-none');
+
+            card.classList.add(os.corCard);
+            qtd.classList.add(os.corTexto);
+            valor.classList.add(os.corTexto);
+            descricao.classList.add(os.corTexto);
+        }
+    };
+
+    const carregarRelatorioCard = () => {
+        carregando(true);
+
+        let form = new FormData($('#formRelatorio')[0]);
+        $.ajax({
+            url: 'relatorios/periodo/card',
+            data: form,
+            processData: false,
+            contentType: false,
+            cache: false,
+            enctype: 'multipart/form-data',
+            type: "POST",
+        }).done(function (retorno) {
+            configurarGraficoCard(retorno.dados);
+        }).fail(function (error) {
+            processarErros('formRelatorio', error.responseJSON.erros);
+        }).always(function () {
+            carregando(false);
+        });
+    };
+</script>

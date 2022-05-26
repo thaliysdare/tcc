@@ -80,6 +80,10 @@ table tbody tr td a {
     content: "\f060";
 }
 
+.icone-grafico-linha::before {
+    content: "\f201";
+}
+
 
 /* Datatables
 -------------------------------------------------- */

@@ -60,7 +60,10 @@ namespace tcc.webapi.Services
                 originalModel.DataSaida = model.DataSaida;
                 originalModel.KMAtual = model.KMAtual;
                 originalModel.Observacao = model.Observacao;
+
                 originalModel.IdcStatusOrdemServico = model.IdcStatusOrdemServico;
+                if (originalModel.IdcStatusOrdemServico == Enums.StatusOrdemServicoEnum.OSFinalizada)
+                    originalModel.DataSaida = DateTime.Now;
 
                 var listaAIncluir = listaItens.Where(x => !x.ServicoOrdemServicoId.HasValue).ToList();
                 var listaAVerificar = listaItens.Where(x => x.ServicoOrdemServicoId.HasValue).ToList();
@@ -94,72 +97,8 @@ namespace tcc.webapi.Services
                 }
 
                 originalModel.ValorOrdemServico = originalModel.ServicoOrdemServico.Sum(x => x.Valor);
-                _ordemServicoRepository.Editar(originalModel);
-                scope.Complete();
-            }
-        }
-
-        public void Iniciar(int id)
-        {
-            using (var scope = new TransactionScope())
-            {
-                var originalModel = _ordemServicoRepository.RecuperarPorId(id);
-                originalModel.IdcStatusOrdemServico = Enums.StatusOrdemServicoEnum.OSEmAndamento;
-                _ordemServicoRepository.Editar(originalModel);
-                scope.Complete();
-            }
-        }
-
-        public void Reiniciar(int id)
-        {
-            using (var scope = new TransactionScope())
-            {
-                var originalModel = _ordemServicoRepository.RecuperarPorId(id);
-                originalModel.IdcStatusOrdemServico = Enums.StatusOrdemServicoEnum.OSEmAndamento;
-
-                var pini = originalModel.Observacao.IndexOf("[**");
-                var pfim = originalModel.Observacao.IndexOf("**]") + 3;
-                originalModel.Observacao = originalModel.Observacao.Substring(pini, 3) + " " + originalModel.Observacao.Substring(pfim);
 
                 _ordemServicoRepository.Editar(originalModel);
-                scope.Complete();
-            }
-        }
-
-        public void Paralizar(int id, string motivo)
-        {
-            using (var scope = new TransactionScope())
-            {
-                motivo = $"[**{motivo}**]";
-                var originalModel = _ordemServicoRepository.RecuperarPorId(id);
-                originalModel.IdcStatusOrdemServico = Enums.StatusOrdemServicoEnum.OSParalizada;
-                originalModel.Observacao = motivo + "\n" + originalModel.Observacao;
-
-                _ordemServicoRepository.Editar(originalModel);
-                scope.Complete();
-            }
-        }
-
-        public void Cancelar(int id)
-        {
-            using (var scope = new TransactionScope())
-            {
-                var originalModel = _ordemServicoRepository.RecuperarPorId(id);
-                originalModel.IdcStatusOrdemServico = Enums.StatusOrdemServicoEnum.OSCancelada;
-                _ordemServicoRepository.Editar(originalModel);
-
-                scope.Complete();
-            }
-        }
-
-        public void Finalizar(int id)
-        {
-            using (var scope = new TransactionScope())
-            {
-                var originalModel = _ordemServicoRepository.RecuperarPorId(id);
-                originalModel.IdcStatusOrdemServico = Enums.StatusOrdemServicoEnum.OSFinalizada;
-                _ordemServicoRepository.Editar(originalModel);
-
                 scope.Complete();
             }
         }

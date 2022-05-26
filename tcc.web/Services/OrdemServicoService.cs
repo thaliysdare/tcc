@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Net.Http;
 using tcc.web.Models.API;
 using tcc.web.Services.IService;
@@ -18,6 +19,24 @@ namespace tcc.web.Services
         public List<OrdemServicoRetorno> RecuperarTodos()
         {
             return genericoService.RecuperarTodos<OrdemServicoRetorno>("ordemservico");
+        }
+
+        public List<OrdemServicoRetorno> RecuperarTodosFinalizadosPorPeriodo(DateTime dataInicial, DateTime dataFinal)
+        {
+            return genericoService.RecuperarTodos<OrdemServicoRetorno>("ordemservico/finalizados/periodo", new
+            {
+                dataInicial,
+                dataFinal
+            });
+        }
+
+        public List<OrdemServicoRetorno> RecuperarTodosCanceladosPorPeriodo(DateTime dataInicial, DateTime dataFinal)
+        {
+            return genericoService.RecuperarTodos<OrdemServicoRetorno>("ordemservico/cancelados/periodo", new
+            {
+                dataInicial,
+                dataFinal
+            });
         }
 
         public OrdemServicoRetorno Recuperar(int id)
