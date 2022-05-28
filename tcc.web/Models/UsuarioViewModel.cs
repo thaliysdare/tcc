@@ -173,6 +173,8 @@ namespace tcc.web.Models
     {
         public int? FuncionalidadeId { get; set; }
 
+        public int Nivel { get; set; }
+
         [Required(ErrorMessage = "Favor informar um código")]
         [Display(Name = "Código")]
         public string Codigo { get; set; }

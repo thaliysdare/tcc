@@ -134,6 +134,18 @@ namespace tcc.web.Controllers
         }
         #endregion
 
+        #region[Imprimir]
+        [HttpGet]
+        [Route("imprimir/{id}")]
+        [Authorize(Roles = "NV1")]
+        public IActionResult CarregarImprimir(int id)
+        {
+            var model = _ordemServicoService.Recuperar(id);
+            var viewModel = OrdemServicoViewModel.MapearViewModel(model);
+            return View("Imprimir", viewModel);
+        }
+        #endregion
+
         #region[PartialView]
         [HttpGet]
         [Route("clientes")]
@@ -185,13 +197,15 @@ namespace tcc.web.Controllers
 
         [HttpGet]
         [Route("servicos-os/{id}")]
-        public PartialViewResult RecarregarServicosOS(int id)
+        [Route("servicos-os/{id}/{imprimir}")]
+        public PartialViewResult RecarregarServicosOS(int id, bool? imprimir = null)
         {
             var model = _ordemServicoService.Recuperar(id);
             var viewModel = model.ListaItensServicos.Select(x => OrdemServicoItensViewModel.MapearViewModel(x)).ToList();
 
             if (model.Situacao == OrdemServicoSituacaoEnum.OSCancelada
-                || model.Situacao == OrdemServicoSituacaoEnum.OSFinalizada)
+                || model.Situacao == OrdemServicoSituacaoEnum.OSFinalizada
+                || (imprimir.HasValue && imprimir.Value))
                 return PartialView("_ServicosOrdemServicoCanceladaGrid", viewModel);
 
             return PartialView("_ServicosOrdemServicoGrid", viewModel);

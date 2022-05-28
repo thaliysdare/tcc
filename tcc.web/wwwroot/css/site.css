@@ -84,6 +84,10 @@ table tbody tr td a {
     content: "\f201";
 }
 
+.icone-imprimir::before {
+    content: "\f02f";
+}
+
 
 /* Datatables
 -------------------------------------------------- */

@@ -1,0 +1,65 @@
+﻿<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>@ViewData["Title"]</title>
+
+    <link rel="stylesheet" href="~/lib/bootstrap/css/bootstrap.css" />
+    <link rel="stylesheet" href="~/lib/fontawesome/css/font-awesome.min.css">
+    <link rel="stylesheet" href="~/lib/DataTables/datatables.css" />
+    <link rel="stylesheet" href="~/lib/select2/css/select2.min.css" />
+
+    <link rel="stylesheet" href="~/css/site.css" />
+    <style>
+    </style>
+
+    <script src="~/lib/jquery/dist/jquery.js"></script>
+    <script src="~/js/site-inicio.js" asp-append-version="true"></script>
+</head>
+<body>
+
+    <div class="load" id="loadGenerico">
+        <i class="fa fa-spinner fa-pulse fa-3x fa-fw"></i>
+        <span class="sr-only">Carregando...</span>
+    </div>
+
+    <div class="position-fixed bottom-0 end-0 p-3" style="z-index: 11">
+        <div class="toast align-items-center text-white bg-primary border-0" role="alert" aria-live="assertive" aria-atomic="true" id="containerAlerta">
+            <div class="d-flex">
+                <div class="toast-body" id="containerAlertaText">
+                </div>
+                <button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast" aria-label="Close"></button>
+            </div>
+        </div>
+    </div>
+
+    <div id="modalGenerico"></div>
+
+
+    <nav class="navbar navbar-expand-lg navbar-light">
+        <div class="container">
+            <span class="navbar-brand">Oficina</span>            
+            <span class="text-muted text-opacity-50 float-end">@ViewData["TipoImpressao"]</span>            
+        </div>
+    </nav>
+
+    <div class="container">
+        <main role="main" class="pb-3 mt-5">
+            @RenderBody()
+        </main>
+    </div>
+
+    <script src="~/lib/bootstrap/js/bootstrap.js"></script>
+    <script src="~/lib/DataTables/datatables.js"></script>
+    <script src="~/lib/select2/js/select2.min.js"></script>
+    <script src="~/lib/jquery-validation/dist/jquery.validate.js"></script>
+    <script src="~/lib/jquery-validation-unobtrusive/jquery.validate.unobtrusive.js"></script>
+
+    <script src="~/js/mensagem.js" asp-append-version="true"></script>
+    <script src="~/js/modal.js" asp-append-version="true"></script>
+    <script src="~/js/site-fim.js" asp-append-version="true"></script>
+
+    @await RenderSectionAsync("Scripts", required: false)
+</body>
+</html>

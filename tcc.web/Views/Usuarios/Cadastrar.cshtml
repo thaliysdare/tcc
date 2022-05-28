@@ -54,7 +54,7 @@
 
     <h6>Funcionalidades</h6>
     <div class="table-responsive">
-        <table class="table table-sm table-bordered text-truncate">
+        <table class="table table-sm table-bordered text-truncate" id="tbFuncionalidades">
             <thead>
                 <tr>
                     <th>Código</th>
@@ -68,7 +68,7 @@
                     <tr>
                         <td>@item.Codigo</td>
                         <td>@item.Descricao</td>
-                        <td><input type="checkbox" name="funcionalidadeId" id="funcionalidade"/></td>
+                        <td><input type="checkbox" name="funcionalidadeId" id="@item.Codigo" data-nivel="@item.Nivel"/></td>
                     </tr>
                 }
             </tbody>
@@ -85,6 +85,10 @@
 
         carregando(true);
 
+        $("#tbFuncionalidades input").each(function(i, v) {
+            $(v).prop("disabled", false);
+        });
+
         let form = new FormData($(this)[0]);
         $.ajax({
             url: $(this).attr('action'),
@@ -100,6 +104,25 @@
             processarErros('formCadUsuario', error.responseJSON.erros);
         }).always(function () {
             carregando(false);
+        });
+    });
+
+    $(document).ready(function() {
+        $("#tbFuncionalidades input").change(function() {
+            let nivel = $(this).data('nivel');
+            let checked = this.checked;
+            $("#tbFuncionalidades input").each(function(i, v) {
+                let novoNivel = $(v).data('nivel');
+                if(novoNivel < nivel){
+                    if(checked) {
+                        $(v).prop("checked", true);
+                        $(v).prop("disabled", true);
+                    }else{
+                        $(v).prop("checked", false);
+                        $(v).prop("disabled", false);
+                    }
+                }
+            });
         });
     });
 </script>

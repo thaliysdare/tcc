@@ -38,6 +38,13 @@ namespace tcc.web.Controllers
         {
             var viewModel = new UsuarioViewModel();
             viewModel.ListaFuncionalidadeViewModel = _funcionalidadeService.RecuperarTodos().OrderBy(x => x.FuncionalidadeId).Select(x => FuncionalidadeViewModel.MapearViewModel(x)).ToList();
+
+            var i = 1;
+            viewModel.ListaFuncionalidadeViewModel.ForEach(x =>
+            {
+                x.Nivel = i;
+                i++;
+            });
             return View("Cadastrar", viewModel);
         }
 
@@ -75,6 +82,13 @@ namespace tcc.web.Controllers
 
             if (model.ListaFuncionalidade != null && model.ListaFuncionalidade.Count > 0)
                 viewModel.ListaFuncionalidadeViewModel.ForEach(x => x.PertenceUsuario = model.ListaFuncionalidade.Contains(x.Codigo));
+
+            var i = 1;
+            viewModel.ListaFuncionalidadeViewModel.ForEach(x =>
+            {
+                x.Nivel = i;
+                i++;
+            });
 
             if (!model.Ativo)
                 return View("Inativo", viewModel);

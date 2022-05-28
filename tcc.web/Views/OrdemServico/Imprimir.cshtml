@@ -1,19 +1,9 @@
-﻿@using tcc.web.Models.API
-@model OrdemServicoViewModel
+﻿@model OrdemServicoViewModel
 @{
-    ViewData["Title"] = "Ordem serviço";
+    Layout = "_LayoutImpressao";
+    ViewData["Title"] = "ordem-servico-" + @Model.OrdemServicoId;
+    ViewData["TipoImpressao"] = "Ordem de serviço - Situação: " + Model.SituacaoDescricao;
 }
-
-<div class="row">
-    <div class="col-12">
-        <a asp-action="index" asp-controller="ordemservico" class="btn btn-sm btn-light icone icone-voltar">Voltar a listagem de OS</a>
-        @if (Model.Situacao == (int)OrdemServicoSituacaoEnum.OSFinalizada)
-        {
-            <a asp-action="imprimir" asp-controller="ordemservico" asp-route-id="@Model.OrdemServicoId" class="btn btn-sm btn-light icone icone-imprimir" target="_blank">Imprimir</a>
-        }
-    </div>
-</div>
-<hr class="mb-3 mt-3" />
 
 <div class="row mb-3">
     <div class="col-lg-1 col-sm-2 col-md-1">
@@ -75,7 +65,11 @@
 </div>
 
 <script>
-    carregarAjax(`/ordemservico/servicos-os/${@Model.OrdemServicoId}`, 'tbItens');
+    const imprimir = () => {
+        window.print();
+    };
+
+    carregarAjax(`/ordemservico/servicos-os/${@Model.OrdemServicoId}/true`, 'tbItens', imprimir);
 </script>
 
 
