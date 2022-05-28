@@ -13,5 +13,8 @@ namespace tcc.webapi.Models
 
         [Required]
         public string Descricao { get; set; }
+
+        [Required]
+        public int Nivel { get; set; }
     }
 }
