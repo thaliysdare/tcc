@@ -1,8 +1,10 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using tcc.web.Models;
+using tcc.web.Models.API;
 using tcc.web.Services.IService;
 
 namespace tcc.web.Controllers
@@ -33,24 +35,29 @@ namespace tcc.web.Controllers
         }
 
         [HttpPost]
+        [Route("periodo/barra/todos/{todos}")]
         [Route("periodo/barra/{qtdLimite}")]
         [Route("periodo/barra")]
-        public JsonResult CarregarRelatorioBarraPeriodo(RelatorioViewModel viewModel, int? qtdLimite = null)
+        public JsonResult CarregarRelatorioBarraPeriodo(RelatorioViewModel viewModel, int? qtdLimite = null, bool? todos = false)
         {
             if (!ModelState.IsValid)
                 return Json(PrepararJsonRetornoErro());
 
-            viewModel.ListaServicosExecutadosPeriodo = _ordemServicoService.RecuperarTodosFinalizadosPorPeriodo(viewModel.DataInicial, viewModel.DataFinal)
-                                                                           .SelectMany(x => x.ListaItensServicos)
-                                                                           .GroupBy(x => x.ServicoId)
-                                                                           .Select(x => new ServicosExecutadosPeriodoVieWModel()
-                                                                           {
-                                                                               QtdVezes = x.Count(),
-                                                                               DescricaoServico = x.FirstOrDefault().Servico.Descricao,
-                                                                               MediaValor = x.Average(y => y.Valor)
-                                                                           }).ToList();
+            var listaOS = default(List<OrdemServicoRetorno>);
+            if(todos.HasValue && todos.Value)
+                listaOS = _ordemServicoService.RecuperarTodosPorPeriodo(viewModel.DataInicial, viewModel.DataFinal);
+            else listaOS = _ordemServicoService.RecuperarTodosFinalizadosPorPeriodo(viewModel.DataInicial, viewModel.DataFinal);
 
-            if(qtdLimite != null)
+            viewModel.ListaServicosExecutadosPeriodo = listaOS.SelectMany(x => x.ListaItensServicos)
+                                                              .GroupBy(x => x.ServicoId)
+                                                              .Select(x => new ServicosExecutadosPeriodoVieWModel()
+                                                              {
+                                                                  QtdVezes = x.Count(),
+                                                                  DescricaoServico = x.FirstOrDefault().Servico.Descricao,
+                                                                  MediaValor = x.Average(y => y.Valor)
+                                                              }).ToList();
+
+            if (qtdLimite != null)
             {
                 viewModel.ListaServicosExecutadosPeriodo = viewModel.ListaServicosExecutadosPeriodo.OrderByDescending(x => x.QtdVezes).Take(qtdLimite.Value).ToList();
             }
@@ -98,10 +105,11 @@ namespace tcc.web.Controllers
                 IdCard = "cardOSCanceladas"
             });
 
+            var totalOS = _ordemServicoService.RecuperarTodosPorPeriodo(viewModel.DataInicial, viewModel.DataFinal);
             viewModel.ListaOSGeradasPeriodo.Add(new OSGeradasPeriodoViewModel()
             {
-                QtdOS = (totalOSSucesso.Count() + totalOSCanceladas.Count()).ToString(),
-                Valor = (totalOSSucesso.Sum(x => x.ValorOrdemServico) + totalOSCanceladas.Sum(x => x.ValorOrdemServico)).ToString(),
+                QtdOS = totalOS.Count().ToString(),
+                Valor = totalOS.Sum(x => x.ValorOrdemServico).ToString(),
                 Descricao = "Total OS geradas no período",
                 CorCard = "bg-light",
                 CorTexto = "text-black",

@@ -40,6 +40,24 @@ namespace tcc.webapi.Controllers
         }
 
         [HttpPost]
+        [Route("todos/periodo")]
+        public ActionResult<OrdemServicoRetornoDTO> GetTodosPorPeriodo([FromBody] OrdemServicoEnvioPeriodoDTO ordemServicoEnvioPeriodoDTO)
+        {
+            try
+            {
+                var retorno = _ordemServicoRepository.RecuperarTodosPorPeriodo(ordemServicoEnvioPeriodoDTO);
+                if (!retorno.Any()) return NotFound();
+
+                var retornoDTO = retorno.Select(x => OrdemServicoRetornoDTO.MapearDTO(x)).ToList();
+                return Ok(retornoDTO);
+            }
+            catch (Exception e)
+            {
+                return Problem(e.Message, null, (int)HttpStatusCode.InternalServerError);
+            }
+        }
+
+        [HttpPost]
         [Route("finalizados/periodo")]
         public ActionResult<OrdemServicoRetornoDTO> GetTodosFinalizadosPorPeriodo([FromBody] OrdemServicoEnvioPeriodoDTO ordemServicoEnvioPeriodoDTO)
         {

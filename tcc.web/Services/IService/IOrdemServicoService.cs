@@ -13,5 +13,6 @@ namespace tcc.web.Services.IService
         List<OrdemServicoRetorno> RecuperarTodos();
         List<OrdemServicoRetorno> RecuperarTodosFinalizadosPorPeriodo(DateTime dataInicial, DateTime dataFinal);
         List<OrdemServicoRetorno> RecuperarTodosCanceladosPorPeriodo(DateTime dataInicial, DateTime dataFinal);
+        List<OrdemServicoRetorno> RecuperarTodosPorPeriodo(DateTime dataInicial, DateTime dataFinal);
     }
 }

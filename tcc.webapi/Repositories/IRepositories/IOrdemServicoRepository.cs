@@ -8,5 +8,6 @@ namespace tcc.webapi.Repositories.IRepositories
     {
         List<OrdemServico> RecuperarTodosCanceladosPorPeriodo(OrdemServicoEnvioPeriodoDTO ordemServicoEnvioPeriodoDTO);
         List<OrdemServico> RecuperarTodosFinalizadosPorPeriodo(OrdemServicoEnvioPeriodoDTO ordemServicoEnvioPeriodoDTO);
+        List<OrdemServico> RecuperarTodosPorPeriodo(OrdemServicoEnvioPeriodoDTO ordemServicoEnvioPeriodoDTO);
     }
 }

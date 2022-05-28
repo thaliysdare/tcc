@@ -20,6 +20,15 @@ namespace tcc.web.Services
         {
             return genericoService.RecuperarTodos<OrdemServicoRetorno>("ordemservico");
         }
+        
+        public List<OrdemServicoRetorno> RecuperarTodosPorPeriodo(DateTime dataInicial, DateTime dataFinal)
+        {
+            return genericoService.RecuperarTodos<OrdemServicoRetorno>("ordemservico/todos/periodo", new
+            {
+                dataInicial,
+                dataFinal
+            });
+        }
 
         public List<OrdemServicoRetorno> RecuperarTodosFinalizadosPorPeriodo(DateTime dataInicial, DateTime dataFinal)
         {

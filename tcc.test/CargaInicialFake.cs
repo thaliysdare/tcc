@@ -25,6 +25,7 @@ namespace tcc.test
         private readonly IServicoRepository _servicoRepository;
         private readonly IUsuarioService _usuarioService;
         private readonly IFuncionalidadeRepository _funcionalidadeRepository;
+        private readonly IServicoService _servicoService;
 
         public CargaInicialFake()
         {
@@ -33,17 +34,21 @@ namespace tcc.test
 
             service.AddTransient<IClienteService, ClienteService>();
             service.AddTransient<IUsuarioService, UsuarioService>();
+            service.AddTransient<IServicoService, ServicoService>();
 
             service.AddTransient<IClienteRepository, ClienteRepository>();
             service.AddTransient<IEnderecoRepository, EnderecoRepository>();
             service.AddTransient<IVeiculoRepository, VeiculoRepository>();
             service.AddTransient<IServicoRepository, ServicoRepository>();
             service.AddTransient<IFuncionalidadeRepository, FuncionalidadeRepository>();
+            service.AddTransient<IUsuarioRepository, UsuarioRepository>();
+            service.AddTransient<IUsuarioFuncionalidadeRepository, UsuarioFuncionalidadeRepository>();
 
             var provider = service.BuildServiceProvider();
 
             _clienteService = provider.GetService<IClienteService>();
             _usuarioService = provider.GetService<IUsuarioService>();
+            _servicoService = provider.GetService<IServicoService>();
 
             _clienteRepository = provider.GetService<IClienteRepository>();
             _enderecoRepository = provider.GetService<IEnderecoRepository>();
@@ -193,7 +198,7 @@ namespace tcc.test
 
             foreach (var item in listaServicos)
             {
-                _servicoRepository.Inserir(item);
+                _servicoService.Inserir(item);
             }
         }
 
@@ -235,8 +240,8 @@ namespace tcc.test
                     veiculos[i]
                 };
 
-                //var novoCliente = _clienteService.InserirCliente(cliente);
-                //_clienteService.InserirVeiculo(novoCliente.ClienteId, cliente.Veiculo.FirstOrDefault());
+                var novoCliente = _clienteService.InserirCliente(cliente);
+                _clienteService.InserirVeiculo(novoCliente.ClienteId, cliente.Veiculo.FirstOrDefault());
                 i++;
             }
         }
@@ -245,5 +250,17 @@ namespace tcc.test
         public void CargaOS()
         {
         }
+
+        [TestMethod]
+        public void AlteracaoCarga()
+        {
+            var listaServicos = _servicoRepository.RecuperarTodos().ToList();
+            foreach (var servico in listaServicos)
+            {
+                servico.IdcStatusServico = webapi.Enums.StatusServicoEnum.Ativo;
+                _servicoRepository.Editar(servico);
+            }
+        }
+
     }
 }

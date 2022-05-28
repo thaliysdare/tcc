@@ -1,0 +1,68 @@
+﻿@model RelatorioViewModel
+
+<div style="height:250px;">
+    <canvas id="graficoBarraProjecao"></canvas>
+</div>
+
+<script>
+    const configurarGraficoBarraProjecao = (dados) => {
+        const servicos = dados.listaServicosExecutadosPeriodo;
+
+        const data = {
+            labels: servicos.map((x) => x.descricaoServico),
+            datasets: [{
+                label: 'Serviços executados + Executando no período',
+                backgroundColor: 'rgba(13, 202, 240, 0.2)',
+                borderColor: 'rgba(13, 202, 240, 0.2)',
+                borderWidth: 1,
+                barPercentage: 0.5,
+                data: servicos.map((x) => x.qtdVezes),
+            }]
+        };
+
+        const config = {
+            type: 'bar',
+            data: data,
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                scales:{
+                    y:{
+                        ticks:{
+                            stepSize:1,
+                            beginAtZero:true
+                        }
+                    }
+                },
+                events: ['mousemove', 'mouseout']
+            }
+        };
+
+        let canvas = document.getElementById('graficoBarraProjecao');
+        const chart = Chart.getChart(canvas);
+        if(chart != undefined) chart.destroy();
+
+        const myChart = new Chart(canvas, config);
+    };
+
+    const carregarRelatorioBarraProjecao = () => {
+        carregando(true);
+
+        let form = new FormData($('#formRelatorio')[0]);
+        $.ajax({
+            url: 'relatorios/periodo/barra/todos/true',
+            data: form,
+            processData: false,
+            contentType: false,
+            cache: false,
+            enctype: 'multipart/form-data',
+            type: "POST",
+        }).done(function (retorno) {
+            configurarGraficoBarraProjecao(retorno.dados);
+        }).fail(function (error) {
+            processarErros('formRelatorio', error.responseJSON.erros);
+        }).always(function () {
+            carregando(false);
+        });
+    };
+</script>
