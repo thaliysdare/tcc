@@ -12,10 +12,15 @@ namespace tcc.web.Controllers
     public class RelatoriosController : GenericoController
     {
         private readonly IOrdemServicoService _ordemServicoService;
+        private readonly IOrcamentoService _orcamentoService;
 
-        public RelatoriosController(IOrdemServicoService ordemServicoService, IUsuarioService usuarioService) : base(usuarioService)
+        public RelatoriosController(IOrdemServicoService ordemServicoService,
+                                    IUsuarioService usuarioService, 
+                                    IOrcamentoService orcamentoService) : base(usuarioService)
         {
             this._ordemServicoService = ordemServicoService;
+            this._orcamentoService = orcamentoService;
+
         }
 
         [HttpGet]
@@ -65,10 +70,21 @@ namespace tcc.web.Controllers
             {
                 QtdOS = totalOSSucesso.Count().ToString(),
                 Valor = totalOSSucesso.Sum(x => x.ValorOrdemServico).ToString(),
-                Descricao = "Total OS fechadas com sucesso no perído",
+                Descricao = "Total OS fechadas com sucesso no período",
                 CorCard = "bg-success",
                 CorTexto = "text-white",
                 IdCard = "cardOSSucesso"
+            });
+
+            var totalOrcamentoSemOS = _orcamentoService.RecuperarTodosSemOSPorPeriodo(viewModel.DataInicial, viewModel.DataFinal);
+            viewModel.ListaOSGeradasPeriodo.Add(new OSGeradasPeriodoViewModel()
+            {
+                QtdOS = totalOrcamentoSemOS.Count().ToString(),
+                Valor = totalOrcamentoSemOS.Sum(x => x.ValorOrcamento).ToString(),
+                Descricao = "Total orçamentos ainda sem OS gerado no período",
+                CorCard = "bg-warning",
+                CorTexto = "text-white",
+                IdCard = "cardOrcamentoSemOS"
             });
 
             var totalOSCanceladas = _ordemServicoService.RecuperarTodosCanceladosPorPeriodo(viewModel.DataInicial, viewModel.DataFinal);
@@ -76,7 +92,7 @@ namespace tcc.web.Controllers
             {
                 QtdOS = totalOSCanceladas.Count().ToString(),
                 Valor = totalOSCanceladas.Sum(x => x.ValorOrdemServico).ToString(),
-                Descricao = "Total OS canceladas no perído",
+                Descricao = "Total OS canceladas no período",
                 CorCard = "bg-danger",
                 CorTexto = "text-white",
                 IdCard = "cardOSCanceladas"
@@ -86,7 +102,7 @@ namespace tcc.web.Controllers
             {
                 QtdOS = (totalOSSucesso.Count() + totalOSCanceladas.Count()).ToString(),
                 Valor = (totalOSSucesso.Sum(x => x.ValorOrdemServico) + totalOSCanceladas.Sum(x => x.ValorOrdemServico)).ToString(),
-                Descricao = "Total OS geradas no perído",
+                Descricao = "Total OS geradas no período",
                 CorCard = "bg-light",
                 CorTexto = "text-black",
                 IdCard = "cardOSGeradas"

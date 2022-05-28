@@ -1,0 +1,42 @@
+﻿@model List<OrcamentoServicosViewModel>
+
+<div class="table-responsive mt-5">
+    <table class="dataTable table table-sm table-bordered text-truncate">
+        <thead>
+            <tr>
+                <th>Ação</th>
+                <th>Descrição resumida</th>
+                <th>Valor</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model)
+            {
+                <tr>
+                    <td><input type="checkbox" name="ServicoId" value="@item.ServicoId" onclick="registrarServico(this)"/></td>
+                    <td>@item.DescricaoResumida</td>
+                    <td>@item.Valor</td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>
+
+<script>
+    const registrarServico = (input) => {
+        let servicoId = input.value;
+        let selecionado = input.checked;
+
+        let servicosEscolhidos = JSON.parse(localStorage.getItem('servicos-escolhidos'));
+        if (!servicosEscolhidos) servicosEscolhidos = new Array();
+
+        let pos = servicosEscolhidos.indexOf(servicoId);
+        if (pos < 0 && selecionado) {
+            servicosEscolhidos.push(servicoId);
+        } else if (pos >= 0) {
+            servicosEscolhidos.splice(pos, 1);
+        }
+        localStorage.setItem('servicos-escolhidos', JSON.stringify(servicosEscolhidos));
+    };
+</script>
+

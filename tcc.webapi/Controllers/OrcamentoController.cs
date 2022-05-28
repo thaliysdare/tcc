@@ -39,6 +39,42 @@ namespace tcc.webapi.Controllers
             }
         }
 
+        [HttpPost]
+        [Route("osgerada/periodo")]
+        public ActionResult<OrdemServicoRetornoDTO> GetTodosComOSGeradaPorPeriodo([FromBody] OrcamentoEnvioPeriodoDTO orcamentoEnvioPeriodoDTO)
+        {
+            try
+            {
+                var retorno = _orcamentoRepository.RecuperarTodosComOSGeradaPorPeriodo(orcamentoEnvioPeriodoDTO);
+                if (!retorno.Any()) return NotFound();
+
+                var retornoDTO = retorno.Select(x => OrcamentoRetornoDTO.MapearDTO(x)).ToList();
+                return Ok(retornoDTO);
+            }
+            catch (Exception e)
+            {
+                return Problem(e.Message, null, (int)HttpStatusCode.InternalServerError);
+            }
+        }
+
+        [HttpPost]
+        [Route("semos/periodo")]
+        public ActionResult<OrdemServicoRetornoDTO> GetTodosSemOSPorPeriodo([FromBody] OrcamentoEnvioPeriodoDTO orcamentoEnvioPeriodoDTO)
+        {
+            try
+            {
+                var retorno = _orcamentoRepository.RecuperarTodosSemOSPorPeriodo(orcamentoEnvioPeriodoDTO);
+                if (!retorno.Any()) return NotFound();
+
+                var retornoDTO = retorno.Select(x => OrcamentoRetornoDTO.MapearDTO(x)).ToList();
+                return Ok(retornoDTO);
+            }
+            catch (Exception e)
+            {
+                return Problem(e.Message, null, (int)HttpStatusCode.InternalServerError);
+            }
+        }
+
         [HttpGet]
         [Route("{id}")]
         public ActionResult<OrcamentoRetornoDTO> Get([FromRoute] int id)

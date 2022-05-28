@@ -30,7 +30,10 @@ namespace tcc.webapi.Repositories
 
         private IQueryable<OrdemServico> RecuperarTodosPorPeriodo(DateTime dataInicial, DateTime dataFinal)
         {
-            return RecuperarTodos().Where(x => dataInicial <= x.DataSaida && x.DataSaida <= dataFinal);
+            var dtIni = new DateTime(dataInicial.Year, dataInicial.Month, dataInicial.Day, 0, 0, 0);
+            var dtFim = new DateTime(dataFinal.Year, dataFinal.Month, dataFinal.Day, 23, 59, 59);
+
+            return RecuperarTodos().Where(x => dtIni <= x.DataSaida && x.DataSaida <= dtFim);
         }
 
     }

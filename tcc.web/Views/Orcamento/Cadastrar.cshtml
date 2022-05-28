@@ -1,0 +1,109 @@
+﻿@model OrcamentoViewModel
+@{
+    ViewData["Title"] = "Orçamento";
+}
+
+<style>
+    .fa-plus-circle {
+        cursor: pointer;
+    }
+</style>
+
+<form id="formCadOS" asp-action="cadastrar" asp-controller="orcamento" asp-route-returnlink="@ViewData["returnlink"]" method="post">
+
+    <input type="hidden" asp-for="UsuarioId" />
+    <input type="hidden" asp-for="Situacao" />
+
+    <div class="form-validacao"></div>
+
+    <div class="row">
+        <div class="col-12 text-start">
+            <button type="submit" class="btn btn-sm btn-light icone icone-salvar">Salvar orçamento</button>
+        </div>
+    </div>
+    
+    <hr class="mb-3 mt-3" />
+
+    <div class="row mb-3">
+        <div class="col-lg-3 col-sm-12 col-md-3">
+            <label asp-for="UsuarioNome" class="form-label"></label>
+            <input type="text" asp-for="UsuarioNome" class="form-control form-control-sm" readonly />
+        </div>
+    </div>
+
+    <div class="row mb-3">
+        <div class="col-lg-3 col-sm-12 col-md-3" id="selecaoClientes">
+            <partial name="_SelecaoClientes.cshtml" />
+        </div>
+
+        <div class="col-lg-3 col-sm-12 col-md-3" id="selecaoVeiculos">
+            <partial name="_SelecaoVeiculos.cshtml" />
+        </div>
+
+        <div class="col-lg-2 col-sm-12 col-md-2">
+            <label asp-for="DataPrevisao" class="form-label"></label>
+            <input type="date" asp-for="DataPrevisao" class="form-control form-control-sm" />
+        </div>
+    </div>
+
+    <div class="row mb-3">
+        <div class="col-12">
+            <textarea asp-for="Observacao" class="form-control form-control-sm" rows="4"></textarea>
+        </div>
+    </div>
+
+</form>
+
+<div class="row mt-5">
+    <div class="col-12" id="tbServicos"></div>
+</div>
+
+<script>
+    const recarregarConteudo = () => {
+        carregarAjax('/orcamento/clientes', 'selecaoClientes', ativarClientes);
+    };
+
+    const ativarClientes = () => {
+        $('#ClienteId').trigger('change');
+    };
+
+    $(document).ready(function () {
+        recarregarConteudo();
+
+        localStorage.removeItem('servicos-escolhidos');
+        carregarAjax('/orcamento/servicos?checkbox=true', 'tbServicos');
+    });
+
+    $('#formCadOS').off('submit').on('submit', function (e) {
+        e.preventDefault();
+
+        $("#formCadOS").validate();
+        if (!$('#formCadOS').valid()) return;
+
+        let form = new FormData($(this)[0]);
+        var object = {};
+        form.forEach(function (value, key) {
+            object[key] = value;
+        });
+        object.ListaServicosEscolhidosId = JSON.parse(localStorage.getItem('servicos-escolhidos'));
+
+        carregando(true);
+
+        $.ajax({
+            url: $(this).attr('action'),
+            contentType: "application/json; charset=utf-8",
+            dataType: "json",
+            data: JSON.stringify(object),
+            type: "POST",
+        }).done(function (dados) {
+            window.location.href = '/orcamento';
+        }).fail(function (error) {
+            processarErros('formCadOS', error.responseJSON.erros);
+        }).always(function () {
+            carregando(false);
+        });
+    });
+</script>
+
+
+

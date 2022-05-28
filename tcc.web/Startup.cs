@@ -74,6 +74,7 @@ namespace tcc.web
             services.AddScoped<IOrdemServicoService, OrdemServicoService>();
             services.AddScoped<IUsuarioService, UsuarioService>();
             services.AddScoped<IFuncionalidadeService, FuncionalidadeService>();
+            services.AddScoped<IOrcamentoService, OrcamentoService>();
             #endregion
         }
 

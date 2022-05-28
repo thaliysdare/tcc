@@ -1,0 +1,72 @@
+﻿@using tcc.web.Models.API
+@model OrcamentoViewModel
+@{
+    ViewData["Title"] = "Orçamento";
+}
+
+<div class="row">
+    <div class="col-12">
+        <a asp-action="index" asp-controller="orcamento" class="btn btn-sm btn-light icone icone-voltar">Voltar a listagem de orçamentos</a>
+    </div>
+</div>
+<hr class="mb-3 mt-3" />
+
+<div class="row mb-3">
+    <div class="col-lg-2 col-sm-2 col-md-2">
+        <label asp-for="OrcamentoId" class="form-label"></label>
+        <input type="text" asp-for="OrcamentoId" class="form-control form-control-sm" readonly />
+    </div>
+    <div class="col-lg-2 col-sm-2 col-md-2">
+        <label asp-for="OrdemServicoId" class="form-label"></label>
+        <input type="text" asp-for="OrdemServicoId" class="form-control form-control-sm" readonly />
+    </div>
+    <div class="col-lg-2 col-sm-4 col-md-2">
+        <label asp-for="UsuarioNome" class="form-label"></label>
+        <input type="text" asp-for="UsuarioNome" class="form-control form-control-sm" readonly />
+    </div>
+    <div class="col-lg-2 col-sm col-md-2">
+    </div>
+    <div class="col-lg-4 col-sm-4 col-md-4">
+        <label asp-for="Situacao" class="form-label"></label>
+        <input type="text" asp-for="SituacaoDescricao" class="form-control form-control-sm" readonly />
+        <span asp-validation-for="Situacao" class="text-danger"></span>
+    </div>
+</div>
+
+<div class="row mb-3">
+    <div class="col-lg-3 col-sm-6 col-md-3">
+        <label asp-for="ClienteNome" class="form-label"></label>
+        <input type="text" asp-for="ClienteNome" class="form-control form-control-sm" readonly />
+        <span asp-validation-for="ClienteNome" class="text-danger"></span>
+    </div>
+
+    <div class="col-lg-3 col-sm-6 col-md-3">
+        <label asp-for="VeiculoPlaca" class="form-label"></label>
+        <input type="text" asp-for="VeiculoPlaca" class="form-control form-control-sm" readonly />
+        <span asp-validation-for="VeiculoPlaca" class="text-danger"></span>
+    </div>
+
+    <div class="col-lg-2 col-sm-4 col-md-2">
+        <label asp-for="DataPrevisao" class="form-label"></label>
+        <input type="date" asp-for="DataPrevisao" class="form-control form-control-sm" readonly />
+    </div>
+</div>
+
+<div class="row mb-3">
+    <div class="col-12">
+        <textarea asp-for="Observacao" class="form-control form-control-sm" rows="4" readonly></textarea>
+    </div>
+</div>
+
+<div class="row mt-3">
+    <div class="col-lg-6 col-sm-12 col-md-6">
+        <div id="tbItens"></div>
+    </div>
+</div>
+
+<script>
+    carregarAjax(`/orcamento/servicos-os/${@Model.OrcamentoId}`, 'tbItens');
+</script>
+
+
+

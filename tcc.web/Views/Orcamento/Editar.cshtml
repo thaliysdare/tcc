@@ -1,0 +1,228 @@
+﻿@model OrcamentoViewModel
+@{
+    ViewData["Title"] = "Orçamento";
+}
+
+<style>
+    .inserir-servico-os,
+    .atualizar-servico-os,
+    .remover-servico-os {
+        cursor: pointer;
+    }
+</style>
+
+<form id="formEditarOS" asp-action="editar" asp-controller="orcamento" asp-route-returnlink="@ViewData["returnlink"]" method="post">
+    
+    <div class="form-validacao"></div>
+
+    <input type="hidden" asp-for="UsuarioId" />
+    <input type="hidden" asp-for="ClienteId" />
+    <input type="hidden" asp-for="VeiculoId" />
+
+    <div class="row">
+        <div class="col-12">
+            <button type="submit" class="btn btn-sm btn-light icone icone-salvar">Salvar orçamento</button>
+            <a asp-action="imprimir" asp-controller="orcamento" asp-route-id="@Model.OrcamentoId" class="btn btn-sm btn-light icone icone-imprimir" target="_blank">Imprimir</a>
+        </div>
+    </div>
+    <hr class="mb-3 mt-3"/>
+
+    <div class="row mb-3">
+        <div class="col-1">
+            <label asp-for="OrcamentoId" class="form-label"></label>
+            <input type="text" asp-for="OrcamentoId" class="form-control form-control-sm" readonly />
+        </div>
+        <div class="col-2">
+            <label asp-for="UsuarioNome" class="form-label"></label>
+            <input type="text" asp-for="UsuarioNome" class="form-control form-control-sm" readonly />
+        </div>
+        <div class="col-6 d-sm-none">
+        </div>
+        <div class="col-3">
+            <label asp-for="Situacao" class="form-label"></label>
+            <select asp-for="Situacao" asp-items="@Model.ListaSituacao" class="form-select form-select-sm">
+            </select>
+            <span asp-validation-for="Situacao" class="text-danger"></span>
+        </div>
+    </div>
+
+    <div class="row mb-3">
+        <div class="col-3">
+            <label asp-for="ClienteNome" class="form-label"></label>
+            <input type="text" asp-for="ClienteNome" class="form-control form-control-sm" readonly />
+            <span asp-validation-for="ClienteNome" class="text-danger"></span>
+        </div>
+
+        <div class="col-3">
+            <label asp-for="VeiculoPlaca" class="form-label"></label>
+            <input type="text" asp-for="VeiculoPlaca" class="form-control form-control-sm" readonly />
+            <span asp-validation-for="VeiculoPlaca" class="text-danger"></span>
+        </div>
+
+        <div class="col-2">
+            <label asp-for="DataPrevisao" class="form-label"></label>
+            <input type="date" asp-for="DataPrevisao" class="form-control form-control-sm" />
+        </div>
+    </div>
+
+    <div class="row mb-3">
+        <div class="col-12">
+            <textarea asp-for="Observacao" class="form-control form-control-sm" rows="4"></textarea>
+        </div>
+    </div>
+
+</form>
+
+<div class="row mt-3">
+    <div class="col-6">
+        <div id="tbServicos"></div>
+    </div>
+    <div class="col-6">
+        <div id="tbItens"></div>
+    </div>
+</div>
+
+<script>
+    const carregarTabelas = () => {
+        carregarAjax('/orcamento/servicos', 'tbServicos');
+        carregarAjax(`/orcamento/servicos-os/${@Model.OrcamentoId}`, 'tbItens', ativarClicks);
+        recuperarServicoOS();
+    };
+
+    const recuperarServicoOS = () => {
+        carregando(true);
+        $.ajax({
+            url: `/orcamento/servicos-os/${@Model.OrcamentoId}/json`,
+            type: "GET",
+        }).done(function (dados) {
+            localStorage.removeItem('os-itens');
+            localStorage.setItem('os-itens', JSON.stringify(dados.dados));
+        }).fail(function (error) {
+            processarErros('formEditarOS', error.responseJSON.erros);
+        }).always(function () {
+            carregando(false);
+        });
+    };
+
+    const ativarClicks = () => {
+        let servicos = document.querySelectorAll('#tbServicos td i');
+        for (let servico of servicos) {
+            servico.onclick = () => {
+                inserirServicoOS(servico);
+            }
+        }
+
+        servicos = document.querySelectorAll('#tbItens td i');
+        for (let servico of servicos) {
+            servico.onclick = () => {
+                if (servico.classList.contains('atualizar-servico-os'))
+                    atualizarValorServicoOS(servico);
+                else if (servico.classList.contains('remover-servico-os'))
+                    removerServicoOS(servico);
+            }
+        }
+    };
+
+    const inserirServicoOS = (servico) => {
+        let servicoId = servico.getAttribute('data-id');
+
+        let form = new FormData();
+        form.append('orcamentoId', @Model.OrcamentoId);
+        form.append('servicoId', servicoId);
+
+        carregando(true);
+        $.ajax({
+            url: '/orcamento/servicos-os/',
+            data: form,
+            processData: false,
+            contentType: false,
+            cache: false,
+            enctype: 'multipart/form-data',
+            type: "POST",
+        }).done(function (dados) {
+            carregarTabelas();
+        }).fail(function (error) {
+            processarErros('formEditarOS', error.responseJSON.erros);
+        }).always(function () {
+            carregando(false);
+        });
+    };
+
+    const removerServicoOS = (servico) => {
+        let servicoOrcamentoId = servico.getAttribute('data-id');
+
+        let form = new FormData();
+        form.append('orcamentoId', @Model.OrcamentoId);
+        form.append('servicoOrcamentoId', servicoOrcamentoId);
+
+        atualizarServico(form);
+    };
+
+    const atualizarValorServicoOS = (servico) => {
+        let servicoOrcamentoId = servico.getAttribute('data-id');
+        let inputValor = document.querySelector(`#tbItens td input[data-id="${servicoOrcamentoId}"`).value;
+
+        let form = new FormData();
+        form.append('orcamentoId', @Model.OrcamentoId);
+        form.append('servicoOrcamentoId', servicoOrcamentoId);
+        form.append('valor', inputValor);
+
+        atualizarServico(form);
+    };
+
+    const atualizarServico = (form) => {
+        carregando(true);
+        $.ajax({
+            url: '/orcamento/servicos-os/',
+            data: form,
+            processData: false,
+            contentType: false,
+            cache: false,
+            enctype: 'multipart/form-data',
+            type: "PUT",
+        }).done(function (dados) {
+            carregarTabelas();
+        }).fail(function (error) {
+            processarErros('formEditarOS', error.responseJSON.erros);
+        }).always(function () {
+            carregando(false);
+        });
+    };
+
+    $(document).ready(function () {
+        carregarTabelas();
+    });
+
+    $('#formEditarOS').off('submit').on('submit', function (e) {
+        e.preventDefault();
+
+        $("#formEditarOS").validate();
+        if (!$('#formEditarOS').valid()) return;
+
+        let form = new FormData($(this)[0]);
+        var object = {};
+        form.forEach(function (value, key) {
+            object[key] = value;
+        });
+        object.ListaItens = JSON.parse(localStorage.getItem('os-itens'));
+
+        carregando(true);
+
+        $.ajax({
+            url: $(this).attr('action'),
+            contentType: "application/json; charset=utf-8",
+            dataType: "json",
+            data: JSON.stringify(object),
+            type: "PUT",
+        }).done(function (dados) {
+            window.location.href = '/orcamento';
+        }).fail(function (error) {
+            processarErros('formEditarOS', error.responseJSON.erros);
+        }).always(function () {
+            carregando(false);
+        });
+    });
+</script>
+
+
+

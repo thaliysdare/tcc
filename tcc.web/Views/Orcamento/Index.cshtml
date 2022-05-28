@@ -1,0 +1,25 @@
+﻿@model OrcamentosViewModel
+@{
+    ViewData["Title"] = "Orçamento";
+}
+
+<style>
+    #tbOS tbody tr td[data-situacao="2"] span {
+        background-color: var(--bs-success);
+        color: var(--bs-white);
+    }
+</style>
+
+<div class="row align-items-center">
+    <div class="col-6">
+        <h5>Listagem de ordem de serviço</h5>
+    </div>
+    <div class="col-6 text-end">
+        @if (User.IsInRole("NV2"))
+        {
+            <a asp-area="" asp-controller="orcamento" asp-action="carregarcadastrar" class="btn btn-sm btn-light icone icone-novo ms-auto">Novo Orçamento</a>
+        }
+    </div>
+</div>
+
+<partial name="_OrcamentoGrid.cshtml" for="ListaOrcamento" />
