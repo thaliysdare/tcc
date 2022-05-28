@@ -25,6 +25,11 @@ namespace tcc.webapi.Models.Contexto
             {
                 x.HasIndex(e => e.Codigo).IsUnique();
             });
+
+            modelBuilder.Entity<Veiculo>(x =>
+            {
+                x.HasIndex(e => e.Placa).IsUnique();
+            });
         }
 
         public virtual DbSet<Usuario> Usuario { get; set; }
