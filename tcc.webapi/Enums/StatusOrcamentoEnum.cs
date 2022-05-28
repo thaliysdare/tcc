@@ -2,5 +2,7 @@
 {
     public enum StatusOrcamentoEnum
     {
+        OrcamentoGerado = 1,
+        OSGerada = 2
     }
 }
