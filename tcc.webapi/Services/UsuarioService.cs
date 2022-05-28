@@ -28,6 +28,11 @@ namespace tcc.webapi.Services
                 model.IdcStatusUsuario = Enums.StatusUsuarioEnum.Ativo;
                 modelNovo = _usuarioRepository.InserirERecuperar(model);
 
+                foreach (var item in model.UsuarioFuncionalidade)
+                {
+                    item.UsuarioId = modelNovo.UsuarioId;
+                    _usuarioFuncionalidadeRepository.Inserir(item);
+                }
 
                 scope.Complete();
             }

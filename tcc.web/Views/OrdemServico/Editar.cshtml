@@ -40,8 +40,16 @@
         </div>
         <div class="col-3">
             <label asp-for="Situacao" class="form-label"></label>
-            <select asp-for="Situacao" asp-items="@Model.ListaSituacao" class="form-select form-select-sm">
-            </select>
+            @if (User.IsInRole("NV2"))
+            {
+                <select asp-for="Situacao" asp-items="@Model.ListaSituacao" class="form-select form-select-sm">
+                </select>
+            }
+            else
+            {
+                <input type="hidden" asp-for="Situacao" class="form-control form-control-sm" readonly />
+                <input type="text" value="@Model.SituacaoDescricao" class="form-control form-control-sm" readonly />
+            }
             <span asp-validation-for="Situacao" class="text-danger"></span>
         </div>
     </div>

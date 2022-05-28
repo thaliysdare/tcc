@@ -12,7 +12,7 @@
 </style>
 
 <form id="formEditarOS" asp-action="editar" asp-controller="orcamento" asp-route-returnlink="@ViewData["returnlink"]" method="post">
-    
+
     <div class="form-validacao"></div>
 
     <input type="hidden" asp-for="UsuarioId" />
@@ -25,7 +25,7 @@
             <a asp-action="imprimir" asp-controller="orcamento" asp-route-id="@Model.OrcamentoId" class="btn btn-sm btn-light icone icone-imprimir" target="_blank">Imprimir</a>
         </div>
     </div>
-    <hr class="mb-3 mt-3"/>
+    <hr class="mb-3 mt-3" />
 
     <div class="row mb-3">
         <div class="col-1">
@@ -40,8 +40,16 @@
         </div>
         <div class="col-3">
             <label asp-for="Situacao" class="form-label"></label>
-            <select asp-for="Situacao" asp-items="@Model.ListaSituacao" class="form-select form-select-sm">
-            </select>
+            @if (User.IsInRole("NV2"))
+            {
+                <select asp-for="Situacao" asp-items="@Model.ListaSituacao" class="form-select form-select-sm">
+                </select>
+            }
+            else
+            {
+                <input type="hidden" asp-for="Situacao" class="form-control form-control-sm" readonly />
+                <input type="text" value="@Model.SituacaoDescricao" class="form-control form-control-sm" readonly />
+            }
             <span asp-validation-for="Situacao" class="text-danger"></span>
         </div>
     </div>

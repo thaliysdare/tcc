@@ -19,7 +19,11 @@ namespace tcc.web.Controllers
     [Authorize]
     public class AutenticacaoController : GenericoController
     {
-        public AutenticacaoController(IUsuarioService usuarioService) : base(usuarioService) { }
+        private readonly IFuncionalidadeService _funcionalidadeService;
+        public AutenticacaoController(IUsuarioService usuarioService, IFuncionalidadeService funcionalidadeService) : base(usuarioService)
+        {
+            _funcionalidadeService = funcionalidadeService;
+        }
 
         [AllowAnonymous]
         [Route("entrar")]
@@ -94,6 +98,40 @@ namespace tcc.web.Controllers
         public IActionResult AcessoNegado()
         {
             return View();
+        }
+
+        [AllowAnonymous]
+        [Route("registrar")]
+        [HttpGet]
+        public IActionResult CarregarRegistrar()
+        {
+            return View("Registrar", new UsuarioViewModel());
+        }
+
+        [AllowAnonymous]
+        [Route("registrar")]
+        [HttpPost]
+        public IActionResult Registrar(UsuarioViewModel viewModel)
+        {
+            if (!viewModel.Senha.Equals(viewModel.ConfirmaSenha))
+                ModelState.AddModelError("ErroServidor", "Senhas informadas não correspondem");
+
+            if (!ModelState.IsValid)
+                return Json(PrepararJsonRetornoErro());
+
+            try
+            {
+                viewModel.ListaFuncionalidadeIds = new List<int>() { _funcionalidadeService.RecuperarTodos().OrderBy(x => x.FuncionalidadeId).FirstOrDefault().FuncionalidadeId };
+                var model = viewModel.MapearModel();
+                _usuarioService.Inserir(model);
+
+                return Json(PrepararJsonRetorno(GenericoJsonRetorno.POST));
+            }
+            catch (Exception e)
+            {
+                ModelState.AddModelError("ErroServidor", e.Message);
+                return Json(PrepararJsonRetornoErro());
+            }
         }
     }
 }
